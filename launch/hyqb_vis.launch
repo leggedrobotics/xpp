@@ -1,5 +1,8 @@
 <launch>
-   <node name="hyqb_vis_node" pkg="hyqb_vis" type="hyqb_vis_node" output="screen">
+   <node name="hyqb_vis_node" pkg="hyqb_visualizer_low_dep" type="hyqb_vis_node" output="screen">
+   </node>
+   
+   <node name="state_publisher" pkg="hyqb_visualizer_low_dep" type="example_state_publisher" output="screen">
    </node>
    
    <param name="trajectory_topic" value="/hyqTrajectory" />

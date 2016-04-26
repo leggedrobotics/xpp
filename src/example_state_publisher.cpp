@@ -19,25 +19,33 @@ int main(int argc, char *argv[])
   ros::param::param<std::string>("trajectory_topic", trajectoryTopic, std::string("/trajectory"));
   ros::Publisher publisher = n.advertise<TrajectoryMsg>(trajectoryTopic, 10);
 
-  sleep(1); // give ros time to connect the publisher and subscriber
+  std::cout<<"Created example trajectory publisher node"<<std::endl;
 
-  // fill the trajectory
-  TrajectoryMsg traj;
-  traj.dt.data = 0.01;
-  int n_states = 100;
-  traj.states.resize(n_states);
-  for (int i=0; i<n_states; ++i) {
-    traj.states.at(i).pose.position.x = static_cast<double>(i)/n_states; // moves from zero to one meter forward
-    traj.states.at(i).pose.position.y = 0;
-    traj.states.at(i).pose.position.z = 0;
-    traj.states.at(i).pose.orientation.w = 1;
-    traj.states.at(i).joints.position.resize(12);
-    traj.states.at(i).joints.position.at(2) = -1.0;
+
+  double goal_x;
+  while (ros::ok) {
+    std::cout<<"Enter goal position x: ";
+    std::cin >> goal_x;
+
+    // fill the trajectory
+    TrajectoryMsg traj;
+    traj.dt.data = 0.01;
+    int n_states = 100;
+    traj.states.resize(n_states);
+    for (int i=0; i<n_states; ++i) {
+      traj.states.at(i).pose.position.x = goal_x*static_cast<double>(i)/n_states; // moves from zero to one meter forward
+      traj.states.at(i).pose.position.y = 0;
+      traj.states.at(i).pose.position.z = 0;
+      traj.states.at(i).pose.orientation.w = 1;
+      traj.states.at(i).joints.position.resize(12);
+      traj.states.at(i).joints.position.at(2) = -1.0;
+    }
+
+    // send out the trajectory
+    publisher.publish(traj);
+    ros::spinOnce();
+    sleep(1.0);
   }
-
-  // send out the trajectory
-  publisher.publish(traj);
-  ros::spin();
 
   return 1;
 }

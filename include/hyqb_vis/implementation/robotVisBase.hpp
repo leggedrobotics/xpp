@@ -36,7 +36,7 @@ void robotVisBase<NJOINTS>::init()
 	std::cout<<"Initializing node"<<std::endl;
 	// Subscriber and callback
   ros::NodeHandle nh;
-  state_sub_ =  nh.subscribe(stateTopic, 1, &robotVisBase::stateCallback, this);
+  state_sub_ = nh.subscribe(stateTopic, 1, &robotVisBase::stateCallback, this);
   traj_sub_  = nh.subscribe(trajectoryTopic, 1, &robotVisBase::trajectoryCallback, this);
 
   ROS_INFO("Subscribed to: %s", state_sub_.getTopic().c_str());

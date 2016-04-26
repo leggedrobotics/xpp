@@ -12,12 +12,10 @@ int main(int argc, char *argv[])
 {
 	ros::init(argc, argv, "hyqb_vis");
 
-	std::cout<<"Creating node"<<std::endl;
-
 	hyqb::hyqb_vis node;
 	node.init();
 
-	std::cout<<"Done creating node"<<std::endl;
+	std::cout<<"Created hyqb_visualizer node"<<std::endl;
 
 	ros::spin();
 
