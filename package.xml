@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <package>
-  <name>hyqb_visualizer</name>
+  <name>hyqb_visualizer_low_dep</name>
   <version>0.0.0</version>
   <description>The hyqb_vis package</description>
 
