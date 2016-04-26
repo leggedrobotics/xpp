@@ -1,0 +1,9 @@
+<launch>
+   <node name="hyqb_vis_node" pkg="hyqb_vis" type="hyqb_vis_node" output="screen">
+   </node>
+   
+   <param name="trajectory_topic" value="/hyqTrajectory" />
+   <param name="state_topic" value="/hyqState" />
+   <param name="robot_description" command="$(find xacro)/xacro.py '$(find hyqb_description)/urdf/robots/hyqb.urdf.xacro'"/>
+
+</launch>
