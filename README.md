@@ -12,6 +12,7 @@
 * Compile your ros workspace: `catkin_make' or 'catkin build`
 * Run the launch script `roslaunch hyqb_visualizer_low_dep hyqb_vis.launch` to run an example
 * Launch `rviz` and `Add->RobotModel` to display the sent marker message
+* Set the `FixedFrame` to "world"
 
 ### Who do I talk to? ###
 
