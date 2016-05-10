@@ -9,7 +9,7 @@
 * Clone this project into your catkin workspace/src folder
 * Do the same with the dependecy: `git clone git@bitbucket.org:adrlab/hyqb_essentials.git`
 * Install eigen: `sudo apt-get install libeigen3-dev`
-* Compile your ros workspace: `catkin_make' or 'catkin build`
+* Compile your ros workspace: `catkin_make` or `catkin build`
 * Run the launch script `roslaunch hyqb_visualizer_low_dep hyqb_vis.launch` to run an example
 * Launch `rviz` and `Add->RobotModel` to display the sent marker message
 * Set the `FixedFrame` to "world"
