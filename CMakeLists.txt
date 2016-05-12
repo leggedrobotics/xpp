@@ -116,4 +116,6 @@ target_link_libraries(hyqb_vis_node
  target_link_libraries(example_state_publisher
   ${catkin_LIBRARIES}
  )
-
+## add msg dependencies
+add_dependencies(hyqb_vis_node ${catkin_EXPORTED_TARGETS})
+add_dependencies(example_state_publisher ${catkin_EXPORTED_TARGETS})
