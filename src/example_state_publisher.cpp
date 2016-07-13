@@ -21,12 +21,10 @@ int main(int argc, char *argv[])
 
   std::cout<<"Created example trajectory publisher node"<<std::endl;
 
-
-  double goal_x;
+  // goal position in world frame
+  double goal_x = 1.0;
   while (ros::ok) {
-    std::cout<<"Enter goal position x: ";
-    std::cin >> goal_x;
-
+  
     // fill the trajectory
     TrajectoryMsg traj;
     traj.dt.data = 0.01;
