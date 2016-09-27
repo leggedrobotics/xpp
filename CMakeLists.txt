@@ -15,6 +15,7 @@ find_package(catkin REQUIRED COMPONENTS
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
 
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++11") 
 
 ## Uncomment this if the package has a setup.py. This macro ensures
 ## modules and global scripts declared therein get installed
@@ -108,7 +109,7 @@ generate_messages(
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
    INCLUDE_DIRS include
-#  LIBRARIES xpp_msgs
+   LIBRARIES xpp_msgs
    CATKIN_DEPENDS xpp_controller message_runtime
 #  DEPENDS system_lib
 )
@@ -119,12 +120,16 @@ catkin_package(
 
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
-# include_directories(include)
+include_directories(
+  include
+  ${catkin_INCLUDE_DIRS}
+)
 
 ## Declare a C++ library
-# add_library(xpp_msgs
-#   src/${PROJECT_NAME}/xpp_msgs.cpp
-# )
+add_library(xpp_msgs
+  src/hyq_state.cc
+  src/foothold.cc
+)
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
@@ -139,9 +144,9 @@ catkin_package(
 # add_dependencies(xpp_msgs_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
-# target_link_libraries(xpp_msgs_node
-#   ${catkin_LIBRARIES}
-# )
+target_link_libraries(xpp_msgs
+  ${catkin_LIBRARIES}
+)
 
 #############
 ## Install ##
