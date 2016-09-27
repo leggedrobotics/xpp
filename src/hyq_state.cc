@@ -11,8 +11,8 @@ namespace xpp {
 namespace hyq {
 
 using ::xpp::utils::Z;
-typedef utils::Point2d Pos2d;
-typedef utils::Ori Ori;
+typedef utils::BaseLin2d Pos2d;
+typedef utils::BaseAng3d Ori;
 typedef utils::Coords3D Coords3D;
 
 HyqState::HyqState()
@@ -28,10 +28,10 @@ HyqState::~HyqState()
 
 void HyqState::ZeroVelAcc()
 {
-  base_.pos.v.setZero();
-  base_.pos.a.setZero();
-  base_.ori.v.setZero();
-  base_.ori.a.setZero();
+  base_.lin.v.setZero();
+  base_.lin.a.setZero();
+  base_.ang.v.setZero();
+  base_.ang.a.setZero();
   for (hyq::LegID l : hyq::LegIDArray) {
    feet_[l].v.setZero();
    feet_[l].a.setZero();

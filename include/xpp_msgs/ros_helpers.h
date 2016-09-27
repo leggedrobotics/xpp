@@ -29,7 +29,7 @@ namespace ros {
 struct RosHelpers {
 
 typedef Eigen::Vector3d Vector3d;
-typedef xpp::utils::Point3d State;
+typedef xpp::utils::BaseLin3d State;
 typedef xpp::hyq::Foothold Foothold;
 typedef xpp::hyq::LegID LegID;
 
@@ -187,33 +187,33 @@ XppToRos(const Eigen::Quaterniond xpp)
 }
 
 static BaseStateMsg
-XppToRos(const xpp::utils::Pose& xpp)
+XppToRos(const xpp::utils::BaseState& xpp)
 {
   BaseStateMsg msg;
 
-  msg.pose.position = XppToRos<geometry_msgs::Point>(xpp.pos.p);
-  msg.twist.linear  = XppToRos<geometry_msgs::Vector3>(xpp.pos.v);
-  msg.accel.linear  = XppToRos<geometry_msgs::Vector3>(xpp.pos.a);
+  msg.pose.position = XppToRos<geometry_msgs::Point>(xpp.lin.p);
+  msg.twist.linear  = XppToRos<geometry_msgs::Vector3>(xpp.lin.v);
+  msg.accel.linear  = XppToRos<geometry_msgs::Vector3>(xpp.lin.a);
 
-  msg.pose.orientation = XppToRos(xpp.ori.q);
-  msg.twist.angular    = XppToRos<geometry_msgs::Vector3>(xpp.ori.v);
-  msg.accel.angular    = XppToRos<geometry_msgs::Vector3>(xpp.ori.a);
+  msg.pose.orientation = XppToRos(xpp.ang.q);
+  msg.twist.angular    = XppToRos<geometry_msgs::Vector3>(xpp.ang.v);
+  msg.accel.angular    = XppToRos<geometry_msgs::Vector3>(xpp.ang.a);
 
   return msg;
 }
 
-static xpp::utils::Pose
+static xpp::utils::BaseState
 RosToXpp(const BaseStateMsg& ros)
 {
-  xpp::utils::Pose xpp;
+  xpp::utils::BaseState xpp;
 
-  xpp.pos.p = RosToXpp(ros.pose.position);
-  xpp.pos.v = RosToXpp(ros.twist.linear);
-  xpp.pos.a = RosToXpp(ros.accel.linear);
+  xpp.lin.p = RosToXpp(ros.pose.position);
+  xpp.lin.v = RosToXpp(ros.twist.linear);
+  xpp.lin.a = RosToXpp(ros.accel.linear);
 
-  xpp.ori.q = RosToXpp(ros.pose.orientation);
-  xpp.ori.v = RosToXpp(ros.twist.angular);
-  xpp.ori.a = RosToXpp(ros.accel.angular);
+  xpp.ang.q = RosToXpp(ros.pose.orientation);
+  xpp.ang.v = RosToXpp(ros.twist.angular);
+  xpp.ang.a = RosToXpp(ros.accel.angular);
 
   return xpp;
 }

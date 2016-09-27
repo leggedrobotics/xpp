@@ -20,8 +20,8 @@ namespace hyq {
   */
 class HyqState {
 public:
-  typedef utils::Pose Pose;
-  typedef utils::Point3d Point3d;
+  typedef utils::BaseState Pose;
+  typedef utils::BaseLin3d Point3d;
   typedef Eigen::Vector3d Vector3d;
   typedef std::vector<Foothold> VecFoothold;
 
