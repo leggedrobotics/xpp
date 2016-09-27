@@ -109,7 +109,7 @@ generate_messages(
 catkin_package(
    INCLUDE_DIRS include
 #  LIBRARIES xpp_msgs
-   CATKIN_DEPENDS xpp_controller
+   CATKIN_DEPENDS xpp_controller message_runtime
 #  DEPENDS system_lib
 )
 
