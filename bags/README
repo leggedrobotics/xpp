@@ -1,0 +1,4 @@
+Some sample hyq trajectories that can be used as desired input for a controller.
+To send these messages over ros, type in the console:
+
+rosbag play --delay 1 8_steps_forward.bag 
