@@ -14,7 +14,7 @@
 #include <xpp_msgs/Foothold.h>
 #include <xpp_msgs/RobotStateTrajectoryCartesian.h>
 
-#include <xpp/utils/geometric_structs.h>
+#include <xpp/utils/base_state.h>
 #include <xpp/hyq/foothold.h>
 #include <xpp/hyq/hyq_state.h>
 #include <xpp/hyq/leg_data_map.h>
@@ -38,7 +38,6 @@ using StateLin3dMsg     = xpp_msgs::StateLin3d;
 using RobotStateTrajMsg = xpp_msgs::RobotStateTrajectoryCartesian;
 using RobotStateMsg     = xpp_msgs::RobotStateCartesianStamped;
 using BaseStateMsg      = xpp_msgs::BaseState;
-
 
 static double GetDoubleFromServer(const std::string& ros_param_name) {
   double val;
@@ -135,7 +134,6 @@ XppToRos(const xpp::hyq::Foothold& xpp)
 
   return ros;
 }
-
 
 static std::vector<FootholdMsg>
 XppToRos(const std::vector<xpp::hyq::Foothold>& xpp)

@@ -10,8 +10,7 @@
 
 #include <xpp/hyq/foothold.h>
 #include <xpp/hyq/leg_data_map.h>
-
-#include <xpp/utils/geometric_structs.h>
+#include <xpp/utils/base_state.h>
 
 namespace xpp {
 namespace hyq {
