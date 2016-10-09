@@ -14,6 +14,7 @@ static const std::string start_walking_topic("xpp/start_walking");
 static const std::string goal_state_topic("xpp/goal_state");
 static const std::string req_info_nlp("required_info_nlp");
 static const std::string robot_trajectory("robot_trajectory");
+static const std::string rviz_optimized("/optimization_variables");
 
 }
 
