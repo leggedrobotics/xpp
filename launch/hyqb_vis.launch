@@ -5,7 +5,7 @@
    <node name="state_publisher" pkg="hyqb_visualizer_low_dep" type="example_state_publisher" output="screen">
    </node>
    
-   <param name="trajectory_topic" value="/hyqTrajectory" />
+   <param name="trajectory_topic" value="/hyq_rviz_trajectory" />
    <param name="state_topic" value="/hyqState" />
    <param name="robot_description" command="$(find xacro)/xacro.py '$(find hyqb_description)/urdf/robots/hyqb.urdf.xacro'"/>
 

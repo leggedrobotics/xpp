@@ -64,7 +64,7 @@ void robotVisBase<NJOINTS>::init()
 	geometry_msgs::TransformStamped W_X_B_message;
 
 	W_X_B_message.header.stamp = ros::Time::now();
-	W_X_B_message.header.frame_id = "map";
+	W_X_B_message.header.frame_id = "world";
 	W_X_B_message.child_frame_id = "base_link";
 
 	broadcaster.sendTransform(W_X_B_message);
@@ -87,7 +87,7 @@ void robotVisBase<NJOINTS>::visualizeState(const ros::Time& stamp, const geometr
 
 	geometry_msgs::TransformStamped W_X_B_message;
 	W_X_B_message.header.stamp = stamp;
-	W_X_B_message.header.frame_id = "map";
+	W_X_B_message.header.frame_id = "world";
 	W_X_B_message.child_frame_id = "base_link";
 
 	setRobotJointsFromMessage(jointState, model_joint_positions_);
