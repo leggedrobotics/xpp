@@ -13,6 +13,7 @@
 #include <xpp_msgs/StateLin3d.h>
 #include <xpp_msgs/Foothold.h>
 #include <xpp_msgs/RobotStateTrajectoryCartesian.h>
+#include <hyqb_msgs/Trajectory.h>
 
 #include <xpp/utils/base_state.h>
 #include <xpp/hyq/foothold.h>
@@ -38,6 +39,8 @@ using StateLin3dMsg     = xpp_msgs::StateLin3d;
 using RobotStateTrajMsg = xpp_msgs::RobotStateTrajectoryCartesian;
 using RobotStateMsg     = xpp_msgs::RobotStateCartesianStamped;
 using BaseStateMsg      = xpp_msgs::BaseState;
+using RobotStateJoint   = hyqb_msgs::RobotState;
+using RobotStateJointTrajMsg = hyqb_msgs::Trajectory;
 
 static double GetDoubleFromServer(const std::string& ros_param_name) {
   double val;
@@ -268,6 +271,35 @@ RosToXpp(const RobotStateTrajMsg& ros)
     xpp.push_back(RosToXpp(state));
 
   return xpp;
+}
+
+static RobotStateJoint
+XppToRos(const xpp::hyq::HyQStateJoints& xpp)
+{
+  RobotStateJoint msg;
+  msg.pose.position = XppToRos<geometry_msgs::Point>(xpp.base_.lin.p);
+  msg.twist.linear  = XppToRos<geometry_msgs::Vector3>(xpp.base_.lin.v);
+
+  msg.pose.orientation = XppToRos(xpp.base_.ang.q);
+  msg.twist.angular    = XppToRos<geometry_msgs::Vector3>(xpp.base_.ang.v);
+
+  for (int q=0; q<xpp.joints_.rows(); ++q)
+    msg.joints.position.push_back(xpp.joints_(q));
+
+  return msg;
+}
+
+static RobotStateJointTrajMsg
+XppToRos(const std::vector<xpp::hyq::HyQStateJoints>& xpp)
+{
+  RobotStateJointTrajMsg msg;
+
+  msg.dt.data = 0.004;
+  for (const auto& state : xpp) {
+    msg.states.push_back(XppToRos(state));
+  }
+
+  return msg;
 }
 
 }; // RosHelpers

@@ -9,11 +9,13 @@
 #define _XPP_HYQ_STATE_H_
 
 #include <xpp/hyq/foothold.h>
+#include <xpp/hyq/declarations.h>
 #include <xpp/hyq/leg_data_map.h>
 #include <xpp/utils/base_state.h>
 
 namespace xpp {
 namespace hyq {
+
 
 /** Captures the full state of the robot (body, feet)
   */
@@ -47,6 +49,18 @@ public:
 class HyqStateStamped : public HyqState {
 public:
   double t_;
+};
+
+/** State of HyQ represented by base state and joint angles
+  *
+  */
+class HyQStateJoints {
+public:
+  using State3d    = xpp::utils::BaseState;
+  using JointState = xpp::hyq::JointState;
+
+  JointState joints_;
+  State3d base_;
 };
 
 
