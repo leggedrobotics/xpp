@@ -8,6 +8,7 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   std_msgs
   geometry_msgs
+  sensor_msgs
   message_generation
   xpp_controller  # this is where the xpp states are defined
 )
@@ -51,6 +52,8 @@ add_message_files(
    FILES
    BaseState.msg
    Foothold.msg
+   HyqState.msg
+   HyqStateTrajectory.msg
    RobotStateCartesian.msg
    RobotStateCartesianStamped.msg
    RobotStateTrajectoryCartesian.msg
@@ -76,6 +79,7 @@ generate_messages(
    DEPENDENCIES
    std_msgs
    geometry_msgs
+   sensor_msgs
 )
 
 ################################################
@@ -110,7 +114,7 @@ generate_messages(
 catkin_package(
    INCLUDE_DIRS include
    LIBRARIES xpp_msgs
-   CATKIN_DEPENDS xpp_controller message_runtime
+   CATKIN_DEPENDS xpp_controller message_runtime sensor_msgs
 #  DEPENDS system_lib
 )
 

@@ -13,6 +13,7 @@
 #include <xpp_msgs/StateLin3d.h>
 #include <xpp_msgs/Foothold.h>
 #include <xpp_msgs/RobotStateTrajectoryCartesian.h>
+#include <xpp_msgs/HyqStateTrajectory.h>
 #include <hyqb_msgs/Trajectory.h>
 
 #include <xpp/utils/base_state.h>
@@ -34,12 +35,15 @@ typedef xpp::utils::BaseLin3d State;
 typedef xpp::hyq::Foothold Foothold;
 typedef xpp::hyq::LegID LegID;
 
+// Aliases for all ros messages
 using FootholdMsg       = xpp_msgs::Foothold;
 using StateLin3dMsg     = xpp_msgs::StateLin3d;
 using RobotStateTrajMsg = xpp_msgs::RobotStateTrajectoryCartesian;
 using RobotStateMsg     = xpp_msgs::RobotStateCartesianStamped;
 using BaseStateMsg      = xpp_msgs::BaseState;
 using RobotStateJoint   = hyqb_msgs::RobotState;
+using HyqStateMsg       = xpp_msgs::HyqState;
+using HyqStateTrajMsg   = xpp_msgs::HyqStateTrajectory;
 using RobotStateJointTrajMsg = hyqb_msgs::Trajectory;
 
 static double GetDoubleFromServer(const std::string& ros_param_name) {
@@ -283,8 +287,8 @@ XppToRos(const xpp::hyq::HyQStateJoints& xpp)
   msg.pose.orientation = XppToRos(xpp.base_.ang.q);
   msg.twist.angular    = XppToRos<geometry_msgs::Vector3>(xpp.base_.ang.v);
 
-  for (int q=0; q<xpp.joints_.rows(); ++q)
-    msg.joints.position.push_back(xpp.joints_(q));
+  for (int j=0; j<xpp::hyq::jointsCount; ++j)
+    msg.joints.position.push_back(xpp.q(j));
 
   return msg;
 }
@@ -297,6 +301,26 @@ XppToRos(const std::vector<xpp::hyq::HyQStateJoints>& xpp)
   msg.dt.data = 0.004;
   for (const auto& state : xpp) {
     msg.states.push_back(XppToRos(state));
+  }
+
+  return msg;
+}
+
+// inv_kin rename this to standard and change signature above to special
+static HyqStateMsg
+XppToRosHyq(const xpp::hyq::HyQStateJoints& xpp)
+{
+  HyqStateMsg msg;
+  msg.base = XppToRos(xpp.base_);
+
+  for (int leg=0; leg<4; ++leg) {
+    msg.ee_in_contact[leg] = !xpp.swingleg_[leg];
+  }
+
+  for (int j=0; j<xpp::hyq::jointsCount; ++j) {
+    msg.joints.position.push_back(xpp.q(j));
+    msg.joints.velocity.push_back(xpp.qd(j));
+    msg.joint_acc.at(j) = xpp.qdd(j);
   }
 
   return msg;

@@ -59,8 +59,9 @@ public:
   using State3d    = xpp::utils::BaseState;
   using JointState = xpp::hyq::JointState;
 
-  JointState joints_;
+  JointState q, qd, qdd;
   State3d base_;
+  LegDataMap< bool > swingleg_;
 };
 
 
