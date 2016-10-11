@@ -326,6 +326,51 @@ XppToRosHyq(const xpp::hyq::HyQStateJoints& xpp)
   return msg;
 }
 
+static xpp::hyq::HyQStateJoints
+RosToXpp(const HyqStateMsg& msg)
+{
+  xpp::hyq::HyQStateJoints xpp;
+
+  xpp.base_ = RosToXpp(msg.base);
+
+  for (int leg=0; leg<4; ++leg) {
+    xpp.swingleg_[leg] = !msg.ee_in_contact[leg];
+  }
+
+  for (int j=0; j<xpp::hyq::jointsCount; ++j) {
+    xpp.q(j)   = msg.joints.position.at(j);
+    xpp.qd(j)  = msg.joints.velocity.at(j);
+    xpp.qdd(j) = msg.joint_acc.at(j);
+  }
+
+  return xpp;
+}
+
+static HyqStateTrajMsg
+XppToRosHyq(const std::vector<xpp::hyq::HyQStateJoints>& xpp)
+{
+  HyqStateTrajMsg msg;
+
+  msg.dt.data = 0.004;
+  for (const auto& state : xpp) {
+    msg.states.push_back(XppToRosHyq(state));
+  }
+
+  return msg;
+}
+
+static std::vector<xpp::hyq::HyQStateJoints>
+RosToXpp(const HyqStateTrajMsg& msg)
+{
+  std::vector<xpp::hyq::HyQStateJoints> xpp;
+
+  for (const auto& state : msg.states) {
+    xpp.push_back(RosToXpp(state));
+  }
+
+  return xpp;
+}
+
 }; // RosHelpers
 
 } // namespace ros

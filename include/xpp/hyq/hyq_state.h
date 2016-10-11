@@ -19,6 +19,8 @@ namespace hyq {
 
 /** Captures the full state of the robot (body, feet)
   */
+// inv_kin think about merging this with HyQStateJoints (DRY)
+// and using inverse/forward kinematics as mediator.
 class HyqState {
 public:
   typedef utils::BaseState Pose;
@@ -54,14 +56,11 @@ public:
 /** State of HyQ represented by base state and joint angles
   *
   */
-class HyQStateJoints {
+class HyQStateJoints : public HyqState {
 public:
-  using State3d    = xpp::utils::BaseState;
   using JointState = xpp::hyq::JointState;
 
   JointState q, qd, qdd;
-  State3d base_;
-  LegDataMap< bool > swingleg_;
 };
 
 
