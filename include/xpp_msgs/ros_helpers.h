@@ -315,6 +315,7 @@ XppToRosHyq(const xpp::hyq::HyQStateJoints& xpp)
 
   for (int leg=0; leg<4; ++leg) {
     msg.ee_in_contact[leg] = !xpp.swingleg_[leg];
+    msg.endeffectors[leg]  = XppToRos(xpp.feet_[leg]);
   }
 
   for (int j=0; j<xpp::hyq::jointsCount; ++j) {
@@ -335,6 +336,7 @@ RosToXpp(const HyqStateMsg& msg)
 
   for (int leg=0; leg<4; ++leg) {
     xpp.swingleg_[leg] = !msg.ee_in_contact[leg];
+    xpp.feet_[leg]     = RosToXpp(msg.endeffectors[leg]);
   }
 
   for (int j=0; j<xpp::hyq::jointsCount; ++j) {
