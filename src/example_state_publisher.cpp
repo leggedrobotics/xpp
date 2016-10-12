@@ -17,7 +17,7 @@ int main(int argc, char *argv[])
 
   ros::NodeHandle n;
   std::string trajectoryTopic;
-  ros::param::param<std::string>("trajectory_topic", trajectoryTopic, std::string("/trajectory"));
+  ros::param::param<std::string>("hyq_rviz_trajectory_topic", trajectoryTopic, std::string("/hyq_rviz_trajectory"));
   ros::Publisher publisher = n.advertise<TrajectoryMsg>(trajectoryTopic, 10);
 
   std::cout<<"Created example trajectory publisher node"<<std::endl;

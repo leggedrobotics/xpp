@@ -29,8 +29,8 @@ template <size_t NJOINTS>
 void robotVisBase<NJOINTS>::init()
 {
   std::string trajectoryTopic, stateTopic;
-  ros::param::param<std::string>("trajectory_topic", trajectoryTopic, std::string("/trajectory"));
-  ros::param::param<std::string>("state_topic", stateTopic, std::string("/state"));
+  ros::param::param<std::string>("hyq_rviz_trajectory_topic", trajectoryTopic, std::string("/hyq_rviz_trajectory"));
+  ros::param::param<std::string>("hyq_rviz_state_topic", stateTopic, std::string("/hyq_rviz_state"));
 //	std::string stateTopic = getParam("state_topic", std::string("/state"));
 
 	std::cout<<"Initializing node"<<std::endl;
@@ -45,7 +45,7 @@ void robotVisBase<NJOINTS>::init()
   // Load model from file
   KDL::Tree my_kdl_tree;
   urdf::Model my_urdf_model;
-  bool model_ok  = my_urdf_model.initParam("robot_description");
+  bool model_ok  = my_urdf_model.initParam("hyq_rviz_urdf_robot_description");
   if(!model_ok)
   {
 	  ROS_ERROR("Invalid URDF File");
