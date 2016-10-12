@@ -41,9 +41,9 @@ using StateLin3dMsg     = xpp_msgs::StateLin3d;
 using RobotStateTrajMsg = xpp_msgs::RobotStateTrajectoryCartesian;
 using RobotStateMsg     = xpp_msgs::RobotStateCartesianStamped;
 using BaseStateMsg      = xpp_msgs::BaseState;
-using RobotStateJoint   = hyqb_msgs::RobotState;
 using HyqStateMsg       = xpp_msgs::HyqState;
 using HyqStateTrajMsg   = xpp_msgs::HyqStateTrajectory;
+using RobotStateJoint   = hyqb_msgs::RobotState;
 using RobotStateJointTrajMsg = hyqb_msgs::Trajectory;
 
 static double GetDoubleFromServer(const std::string& ros_param_name) {
@@ -235,12 +235,11 @@ RosToXpp(const BaseStateMsg& ros)
 }
 
 static RobotStateMsg
-XppToRos(const xpp::hyq::HyqStateStamped& xpp)
+XppToRos(const xpp::hyq::HyqState& xpp)
 {
   RobotStateMsg ros;
 
   ros.state.base = XppToRos(xpp.base_);
-  ros.time       = xpp.t_;
 
   for (int leg=0; leg<4; ++leg) {
     ros.state.ee_in_contact[leg] = !xpp.swingleg_[leg];
@@ -250,13 +249,12 @@ XppToRos(const xpp::hyq::HyqStateStamped& xpp)
   return ros;
 }
 
-static xpp::hyq::HyqStateStamped
+static xpp::hyq::HyqState
 RosToXpp(const RobotStateMsg& ros)
 {
-  xpp::hyq::HyqStateStamped xpp;
+  xpp::hyq::HyqState xpp;
 
   xpp.base_ = RosToXpp(ros.state.base);
-  xpp.t_    = ros.time;
 
   for (int leg=0; leg<4; ++leg) {
     xpp.swingleg_[leg] = !ros.state.ee_in_contact[leg];
@@ -267,7 +265,7 @@ RosToXpp(const RobotStateMsg& ros)
 }
 
 static RobotStateTrajMsg
-XppToRos(const std::vector<xpp::hyq::HyqStateStamped>& xpp)
+XppToRos(const std::vector<xpp::hyq::HyqState>& xpp)
 {
   RobotStateTrajMsg msg;
 
@@ -277,10 +275,10 @@ XppToRos(const std::vector<xpp::hyq::HyqStateStamped>& xpp)
   return msg;
 }
 
-static std::vector<xpp::hyq::HyqStateStamped>
+static std::vector<xpp::hyq::HyqState>
 RosToXpp(const RobotStateTrajMsg& ros)
 {
-  std::vector<xpp::hyq::HyqStateStamped> xpp;
+  std::vector<xpp::hyq::HyqState> xpp;
 
   for (const auto& state : ros.states)
     xpp.push_back(RosToXpp(state));

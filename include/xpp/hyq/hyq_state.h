@@ -48,11 +48,6 @@ public:
   int SwinglegID() const;
 };
 
-class HyqStateStamped : public HyqState {
-public:
-  double t_;
-};
-
 /** State of HyQ represented by base state and joint angles
   *
   */
