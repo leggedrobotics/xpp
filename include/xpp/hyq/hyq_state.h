@@ -56,13 +56,13 @@ public:
 
 /** State of HyQ represented by base state and joint angles
   */
-class HyQStateJoints : public HyqState {
+class HyqStateJoints : public HyqState {
 public:
   using JointState = xpp::hyq::JointState;
   using VecFoothold = std::vector<Foothold>;
 
-  HyQStateJoints();
-  virtual ~HyQStateJoints();
+  HyqStateJoints();
+  virtual ~HyqStateJoints();
 
   VecFoothold GetStanceLegsInWorld() const;
 

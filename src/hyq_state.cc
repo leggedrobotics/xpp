@@ -122,19 +122,19 @@ Foothold HyqStateEE::FootToFoothold(LegID leg) const
   return foothold;
 }
 
-HyQStateJoints::HyQStateJoints ()
+HyqStateJoints::HyqStateJoints ()
 {
   q.setZero();
   qd.setZero();
   qdd.setZero();
 }
 
-HyQStateJoints::~HyQStateJoints ()
+HyqStateJoints::~HyqStateJoints ()
 {
 }
 
-HyQStateJoints::VecFoothold
-HyQStateJoints::GetStanceLegsInBase () const
+HyqStateJoints::VecFoothold
+HyqStateJoints::GetStanceLegsInBase () const
 {
   using namespace ff;
   HyQKinematics kinematics;
@@ -152,8 +152,8 @@ HyQStateJoints::GetStanceLegsInBase () const
   return footholds;
 }
 
-HyQStateJoints::VecFoothold
-HyQStateJoints::GetStanceLegsInWorld () const
+HyqStateJoints::VecFoothold
+HyqStateJoints::GetStanceLegsInWorld () const
 {
   auto all_ee_B = GetStanceLegsInBase();
 

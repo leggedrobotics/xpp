@@ -45,8 +45,9 @@ using RobotStateMsg     = xpp_msgs::RobotStateCartesianStamped;
 using BaseStateMsg      = xpp_msgs::BaseState;
 using HyqStateMsg       = xpp_msgs::HyqState;
 using HyqStateTrajMsg   = xpp_msgs::HyqStateTrajectory;
-using RobotStateJoint   = hyqb_msgs::RobotState;
-using RobotStateJointTrajMsg = hyqb_msgs::Trajectory;
+
+using HyqRvizStateMsg   = hyqb_msgs::RobotState;
+using HyqRvizTrajectoryMsg = hyqb_msgs::Trajectory;
 
 static double GetDoubleFromServer(const std::string& ros_param_name) {
   double val;
@@ -288,46 +289,14 @@ RosToXpp(const RobotStateTrajMsg& ros)
   return xpp;
 }
 
-static RobotStateJoint
-XppToRos(const xpp::hyq::HyQStateJoints& xpp)
-{
-  RobotStateJoint msg;
-  msg.pose.position = XppToRos<geometry_msgs::Point>(xpp.base_.lin.p);
-  msg.twist.linear  = XppToRos<geometry_msgs::Vector3>(xpp.base_.lin.v);
-
-  msg.pose.orientation = XppToRos(xpp.base_.ang.q);
-  msg.twist.angular    = XppToRos<geometry_msgs::Vector3>(xpp.base_.ang.v);
-
-  for (int j=0; j<xpp::hyq::jointsCount; ++j)
-    msg.joints.position.push_back(xpp.q(j));
-
-  return msg;
-}
-
-static RobotStateJointTrajMsg
-XppToRos(const std::vector<xpp::hyq::HyQStateJoints>& xpp)
-{
-  RobotStateJointTrajMsg msg;
-
-  // inv_kin remove these
-  msg.dt.data = 0.004;
-  for (const auto& state : xpp) {
-    msg.states.push_back(XppToRos(state));
-  }
-
-  return msg;
-}
-
-// inv_kin rename this to standard and change signature above to special
 static HyqStateMsg
-XppToRosHyq(const xpp::hyq::HyQStateJoints& xpp)
+XppToRos(const xpp::hyq::HyqStateJoints& xpp)
 {
   HyqStateMsg msg;
   msg.base = XppToRos(xpp.base_);
 
   for (int leg=0; leg<4; ++leg) {
     msg.ee_in_contact[leg] = !xpp.swingleg_[leg];
-//    msg.endeffectors[leg]  = XppToRos(xpp.feet_[leg]);
   }
 
   for (int j=0; j<xpp::hyq::jointsCount; ++j) {
@@ -339,10 +308,10 @@ XppToRosHyq(const xpp::hyq::HyQStateJoints& xpp)
   return msg;
 }
 
-static xpp::hyq::HyQStateJoints
+static xpp::hyq::HyqStateJoints
 RosToXpp(const HyqStateMsg& msg)
 {
-  xpp::hyq::HyQStateJoints xpp;
+  xpp::hyq::HyqStateJoints xpp;
 
   xpp.base_ = RosToXpp(msg.base);
 
@@ -360,22 +329,21 @@ RosToXpp(const HyqStateMsg& msg)
 }
 
 static HyqStateTrajMsg
-XppToRosHyq(const std::vector<xpp::hyq::HyQStateJoints>& xpp)
+XppToRos(const std::vector<xpp::hyq::HyqStateJoints>& xpp)
 {
   HyqStateTrajMsg msg;
 
-  msg.dt.data = 0.004;
   for (const auto& state : xpp) {
-    msg.states.push_back(XppToRosHyq(state));
+    msg.states.push_back(XppToRos(state));
   }
 
   return msg;
 }
 
-static std::vector<xpp::hyq::HyQStateJoints>
+static std::vector<xpp::hyq::HyqStateJoints>
 RosToXpp(const HyqStateTrajMsg& msg)
 {
-  std::vector<xpp::hyq::HyQStateJoints> xpp;
+  std::vector<xpp::hyq::HyqStateJoints> xpp;
 
   for (const auto& state : msg.states) {
     xpp.push_back(RosToXpp(state));
@@ -383,6 +351,37 @@ RosToXpp(const HyqStateTrajMsg& msg)
 
   return xpp;
 }
+
+// conversions to display hyq state in rviz using hyqb_visualizer
+static HyqRvizStateMsg
+XppToRosRviz(const xpp::hyq::HyqStateJoints& xpp)
+{
+  HyqRvizStateMsg msg;
+  msg.pose.position = XppToRos<geometry_msgs::Point>(xpp.base_.lin.p);
+  msg.twist.linear  = XppToRos<geometry_msgs::Vector3>(xpp.base_.lin.v);
+
+  msg.pose.orientation = XppToRos(xpp.base_.ang.q);
+  msg.twist.angular    = XppToRos<geometry_msgs::Vector3>(xpp.base_.ang.v);
+
+  for (int j=0; j<xpp::hyq::jointsCount; ++j)
+    msg.joints.position.push_back(xpp.q(j));
+
+  return msg;
+}
+
+static HyqRvizTrajectoryMsg
+XppToRosRviz(const std::vector<xpp::hyq::HyqStateJoints>& xpp)
+{
+  HyqRvizTrajectoryMsg msg;
+
+  msg.dt.data = 0.004; // task servo rate
+  for (const auto& state : xpp) {
+    msg.states.push_back(XppToRosRviz(state));
+  }
+
+  return msg;
+}
+
 
 }; // RosHelpers
 
