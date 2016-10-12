@@ -24,42 +24,59 @@ namespace hyq {
 class HyqState {
 public:
   typedef utils::BaseState Pose;
-  typedef utils::BaseLin3d Point3d;
-  typedef Eigen::Vector3d Vector3d;
-  typedef std::vector<Foothold> VecFoothold;
 
   HyqState();
   virtual ~HyqState();
 
   LegDataMap< bool > swingleg_;
-  LegDataMap<Point3d> feet_;
   Pose base_; // geometric center of mass, vel, acc
+
+  void ZeroVelAcc();
+  int SwinglegID() const;
+  void SetSwingleg(LegID leg);
+};
+
+class HyqStateEE : public HyqState {
+public:
+  using Vector3d = Eigen::Vector3d;
+  using VecFoothold = std::vector<Foothold>;
+  using Point3d = xpp::utils::BaseLin3d;
+
+  // inv_kin only save position, not vel and acc (disregarding anyway)
+  LegDataMap<Point3d> feet_;
 
   LegDataMap< Foothold > FeetToFootholds() const;
   Foothold FootToFoothold(LegID leg) const;
   VecFoothold GetStanceLegs() const;
-
   const LegDataMap<Vector3d> GetFeetPosOnly();
-
-  void SetSwingleg(LegID leg);
   std::array<Vector3d, kNumSides> GetAvgSides() const;
   double GetZAvg() const;
-  void ZeroVelAcc();
-  int SwinglegID() const;
 };
 
+
 /** State of HyQ represented by base state and joint angles
-  *
   */
 class HyQStateJoints : public HyqState {
 public:
   using JointState = xpp::hyq::JointState;
+  using VecFoothold = std::vector<Foothold>;
+
+  HyQStateJoints();
+  virtual ~HyQStateJoints();
+
+  VecFoothold GetStanceLegsInWorld() const;
 
   JointState q, qd, qdd;
+
+private:
+  /** Forward kinematics.
+    */
+  VecFoothold GetStanceLegsInBase() const;
 };
 
 
-inline std::ostream& operator<<(std::ostream& out, const HyqState& hyq)
+
+inline std::ostream& operator<<(std::ostream& out, const HyqStateEE& hyq)
 {
   out << "base: " << hyq.base_ << "\n"
       << "feet: " << "\tLF = " <<  hyq.feet_[LF] << "\n"

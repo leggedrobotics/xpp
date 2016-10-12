@@ -11,6 +11,7 @@ find_package(catkin REQUIRED COMPONENTS
   sensor_msgs
   message_generation
   xpp_controller  # this is where the xpp states are defined
+  ff_controller       # needed for forward kinematics
 )
 
 ## System dependencies are found with CMake's conventions

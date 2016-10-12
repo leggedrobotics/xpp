@@ -38,6 +38,8 @@ typedef xpp::hyq::LegID LegID;
 // Aliases for all ros messages
 using FootholdMsg       = xpp_msgs::Foothold;
 using StateLin3dMsg     = xpp_msgs::StateLin3d;
+
+// inv_kin rename these and Hyq state to EE and Joint Hyq message
 using RobotStateTrajMsg = xpp_msgs::RobotStateTrajectoryCartesian;
 using RobotStateMsg     = xpp_msgs::RobotStateCartesianStamped;
 using BaseStateMsg      = xpp_msgs::BaseState;
@@ -235,7 +237,7 @@ RosToXpp(const BaseStateMsg& ros)
 }
 
 static RobotStateMsg
-XppToRos(const xpp::hyq::HyqState& xpp)
+XppToRos(const xpp::hyq::HyqStateEE& xpp)
 {
   RobotStateMsg ros;
 
@@ -249,10 +251,10 @@ XppToRos(const xpp::hyq::HyqState& xpp)
   return ros;
 }
 
-static xpp::hyq::HyqState
+static xpp::hyq::HyqStateEE
 RosToXpp(const RobotStateMsg& ros)
 {
-  xpp::hyq::HyqState xpp;
+  xpp::hyq::HyqStateEE xpp;
 
   xpp.base_ = RosToXpp(ros.state.base);
 
@@ -265,7 +267,7 @@ RosToXpp(const RobotStateMsg& ros)
 }
 
 static RobotStateTrajMsg
-XppToRos(const std::vector<xpp::hyq::HyqState>& xpp)
+XppToRos(const std::vector<xpp::hyq::HyqStateEE>& xpp)
 {
   RobotStateTrajMsg msg;
 
@@ -275,10 +277,10 @@ XppToRos(const std::vector<xpp::hyq::HyqState>& xpp)
   return msg;
 }
 
-static std::vector<xpp::hyq::HyqState>
+static std::vector<xpp::hyq::HyqStateEE>
 RosToXpp(const RobotStateTrajMsg& ros)
 {
-  std::vector<xpp::hyq::HyqState> xpp;
+  std::vector<xpp::hyq::HyqStateEE> xpp;
 
   for (const auto& state : ros.states)
     xpp.push_back(RosToXpp(state));
@@ -307,6 +309,7 @@ XppToRos(const std::vector<xpp::hyq::HyQStateJoints>& xpp)
 {
   RobotStateJointTrajMsg msg;
 
+  // inv_kin remove these
   msg.dt.data = 0.004;
   for (const auto& state : xpp) {
     msg.states.push_back(XppToRos(state));
@@ -324,7 +327,7 @@ XppToRosHyq(const xpp::hyq::HyQStateJoints& xpp)
 
   for (int leg=0; leg<4; ++leg) {
     msg.ee_in_contact[leg] = !xpp.swingleg_[leg];
-    msg.endeffectors[leg]  = XppToRos(xpp.feet_[leg]);
+//    msg.endeffectors[leg]  = XppToRos(xpp.feet_[leg]);
   }
 
   for (int j=0; j<xpp::hyq::jointsCount; ++j) {
@@ -345,7 +348,6 @@ RosToXpp(const HyqStateMsg& msg)
 
   for (int leg=0; leg<4; ++leg) {
     xpp.swingleg_[leg] = !msg.ee_in_contact[leg];
-    xpp.feet_[leg]     = RosToXpp(msg.endeffectors[leg]);
   }
 
   for (int j=0; j<xpp::hyq::jointsCount; ++j) {

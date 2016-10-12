@@ -6,6 +6,7 @@
  */
 
 #include <xpp/hyq/hyq_state.h>
+#include <ff_controller/hyq/hyq_kinematics.h>
 
 namespace xpp {
 namespace hyq {
@@ -32,13 +33,28 @@ void HyqState::ZeroVelAcc()
   base_.lin.a.setZero();
   base_.ang.v.setZero();
   base_.ang.a.setZero();
-  for (hyq::LegID l : hyq::LegIDArray) {
-   feet_[l].v.setZero();
-   feet_[l].a.setZero();
-  }
+//  for (hyq::LegID l : hyq::LegIDArray) {
+//   feet_[l].v.setZero();
+//   feet_[l].a.setZero();
+//  }
 }
 
-const LegDataMap<Eigen::Vector3d> HyqState::GetFeetPosOnly()
+int HyqState::SwinglegID() const
+{
+  for (LegID leg : LegIDArray)
+    if (swingleg_[leg])
+      return leg;
+
+  return NO_SWING_LEG;
+}
+
+void HyqState::SetSwingleg(LegID leg)
+{
+  swingleg_ = false;
+  swingleg_[leg] = true;
+}
+
+const LegDataMap<Eigen::Vector3d> HyqStateEE::GetFeetPosOnly()
 {
   static LegDataMap<Eigen::Vector3d> feet_pos;
   for (LegID leg : LegIDArray)
@@ -46,7 +62,7 @@ const LegDataMap<Eigen::Vector3d> HyqState::GetFeetPosOnly()
   return feet_pos;
 }
 
-std::array<Eigen::Vector3d, kNumSides> HyqState::GetAvgSides() const
+std::array<Eigen::Vector3d, kNumSides> HyqStateEE::GetAvgSides() const
 {
   typedef std::pair <Side,Side> LegSide;
   static LegDataMap<LegSide> leg_sides;
@@ -71,28 +87,14 @@ std::array<Eigen::Vector3d, kNumSides> HyqState::GetAvgSides() const
 }
 
 
-double HyqState::GetZAvg() const
+double HyqStateEE::GetZAvg() const
 {
   std::array<Vector3d, kNumSides> avg = GetAvgSides();
   return (avg[FRONT_SIDE](Z) + avg[HIND_SIDE](Z)) / 2;
 }
 
-int HyqState::SwinglegID() const
-{
-  for (LegID leg : LegIDArray)
-    if (swingleg_[leg])
-      return leg;
 
-  return NO_SWING_LEG;
-}
-
-void HyqState::SetSwingleg(LegID leg)
-{
-  swingleg_ = false;
-  swingleg_[leg] = true;
-}
-
-LegDataMap<Foothold> HyqState::FeetToFootholds() const
+LegDataMap<Foothold> HyqStateEE::FeetToFootholds() const
 {
   LegDataMap<Foothold> footholds;
   for (LegID leg : LegIDArray)
@@ -100,8 +102,8 @@ LegDataMap<Foothold> HyqState::FeetToFootholds() const
   return footholds;
 }
 
-HyqState::VecFoothold
-HyqState::GetStanceLegs() const
+HyqStateEE::VecFoothold
+HyqStateEE::GetStanceLegs() const
 {
   VecFoothold stance_legs;
   for (LegID leg : LegIDArray)
@@ -111,7 +113,7 @@ HyqState::GetStanceLegs() const
   return stance_legs;
 }
 
-Foothold HyqState::FootToFoothold(LegID leg) const
+Foothold HyqStateEE::FootToFoothold(LegID leg) const
 {
   Foothold foothold;
   foothold.p = feet_[leg].p;
@@ -120,5 +122,53 @@ Foothold HyqState::FootToFoothold(LegID leg) const
   return foothold;
 }
 
+HyQStateJoints::HyQStateJoints ()
+{
+  q.setZero();
+  qd.setZero();
+  qdd.setZero();
+}
+
+HyQStateJoints::~HyQStateJoints ()
+{
+}
+
+HyQStateJoints::VecFoothold
+HyQStateJoints::GetStanceLegsInBase () const
+{
+  using namespace ff;
+  HyQKinematics kinematics;
+  auto ee_B = kinematics.getEEPosInBase(q);
+
+  VecFoothold footholds;
+  for (auto leg : xpp::hyq::LegIDArray) {
+    Foothold f;
+    if (!swingleg_[leg]) {
+      f.p = ee_B.at(leg);
+      f.leg = leg;
+    }
+    footholds.push_back(f);
+  }
+  return footholds;
+}
+
+HyQStateJoints::VecFoothold
+HyQStateJoints::GetStanceLegsInWorld () const
+{
+  auto all_ee_B = GetStanceLegsInBase();
+
+  Eigen::Matrix3d W_R_B = base_.ang.q.normalized().toRotationMatrix();
+
+  VecFoothold all_ee_W;
+  for (auto ee_B : all_ee_B) {
+    Foothold f_W = ee_B;
+    f_W.p = W_R_B * ee_B.p + base_.lin.p;
+    all_ee_W.push_back(f_W);
+  }
+
+  return all_ee_W;
+}
+
 } // namespace hyq
 } // namespace xpp
+
