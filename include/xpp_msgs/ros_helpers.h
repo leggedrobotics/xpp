@@ -12,7 +12,9 @@
 
 #include <xpp_msgs/StateLin3d.h>
 #include <xpp_msgs/Foothold.h>
-#include <xpp_msgs/RobotStateTrajectoryCartesian.h>
+#include <xpp_msgs/HyqStateEETrajectory.h>
+#include <xpp_msgs/HyqStateJointsTrajectory.h>
+#include <hyqb_msgs/Trajectory.h>
 
 #include <xpp/utils/base_state.h>
 #include <xpp/hyq/foothold.h>
@@ -33,11 +35,17 @@ typedef xpp::utils::BaseLin3d State;
 typedef xpp::hyq::Foothold Foothold;
 typedef xpp::hyq::LegID LegID;
 
+// Aliases for all ros messages
 using FootholdMsg       = xpp_msgs::Foothold;
 using StateLin3dMsg     = xpp_msgs::StateLin3d;
-using RobotStateTrajMsg = xpp_msgs::RobotStateTrajectoryCartesian;
-using RobotStateMsg     = xpp_msgs::RobotStateCartesianStamped;
 using BaseStateMsg      = xpp_msgs::BaseState;
+using HyqStateEETrajMsg = xpp_msgs::HyqStateEETrajectory;
+using HyqStateEEMsg     = xpp_msgs::HyqStateEE;
+using HyqStateJointsMsg      = xpp_msgs::HyqStateJoints;
+using HyqStateJointsTrajMsg  = xpp_msgs::HyqStateJointsTrajectory;
+
+using HyqRvizStateMsg      = hyqb_msgs::RobotState;
+using HyqRvizTrajectoryMsg = hyqb_msgs::Trajectory;
 
 static double GetDoubleFromServer(const std::string& ros_param_name) {
   double val;
@@ -46,10 +54,21 @@ static double GetDoubleFromServer(const std::string& ros_param_name) {
   return val;
 }
 
-static double GetBoolFromServer(const std::string& ros_param_name) {
+static bool GetBoolFromServer(const std::string& ros_param_name) {
   bool val;
   if(!::ros::param::get(ros_param_name,val))
     throw ::ros::Exception("GetBoolFromServer: Couldn't read parameter: " + ros_param_name);
+  return val;
+}
+
+static std::string GetStringFromServer(const std::string& ros_param_name) {
+  std::string val;
+  if(!::ros::param::get(ros_param_name,val)) {
+    ROS_ERROR_STREAM("GetStringFromServer: Couldn't read parameter: " << ros_param_name);
+    ROS_INFO_STREAM("\nIngore?");
+    std::cin.get(); // wait for user input
+//    throw ::ros::Exception("GetStringFromServer: Couldn't read parameter: " + ros_param_name);
+  }
   return val;
 }
 
@@ -216,42 +235,40 @@ RosToXpp(const BaseStateMsg& ros)
   return xpp;
 }
 
-static RobotStateMsg
-XppToRos(const xpp::hyq::HyqStateStamped& xpp)
+static HyqStateEEMsg
+XppToRos(const xpp::hyq::HyqStateEE& xpp)
 {
-  RobotStateMsg ros;
+  HyqStateEEMsg ros;
 
-  ros.state.base = XppToRos(xpp.base_);
-  ros.time       = xpp.t_;
+  ros.base = XppToRos(xpp.base_);
 
   for (int leg=0; leg<4; ++leg) {
-    ros.state.ee_in_contact[leg] = !xpp.swingleg_[leg];
-    ros.state.endeffectors[leg]  = XppToRos(xpp.feet_[leg]);
+    ros.ee_in_contact[leg] = !xpp.swingleg_[leg];
+    ros.endeffectors[leg]  = XppToRos(xpp.feet_[leg]);
   }
 
   return ros;
 }
 
-static xpp::hyq::HyqStateStamped
-RosToXpp(const RobotStateMsg& ros)
+static xpp::hyq::HyqStateEE
+RosToXpp(const HyqStateEEMsg& ros)
 {
-  xpp::hyq::HyqStateStamped xpp;
+  xpp::hyq::HyqStateEE xpp;
 
-  xpp.base_ = RosToXpp(ros.state.base);
-  xpp.t_    = ros.time;
+  xpp.base_ = RosToXpp(ros.base);
 
   for (int leg=0; leg<4; ++leg) {
-    xpp.swingleg_[leg] = !ros.state.ee_in_contact[leg];
-    xpp.feet_[leg]     = RosToXpp(ros.state.endeffectors[leg]);
+    xpp.swingleg_[leg] = !ros.ee_in_contact[leg];
+    xpp.feet_[leg]     = RosToXpp(ros.endeffectors[leg]);
   }
 
   return xpp;
 }
 
-static RobotStateTrajMsg
-XppToRos(const std::vector<xpp::hyq::HyqStateStamped>& xpp)
+static HyqStateEETrajMsg
+XppToRos(const std::vector<xpp::hyq::HyqStateEE>& xpp)
 {
-  RobotStateTrajMsg msg;
+  HyqStateEETrajMsg msg;
 
   for (const auto& state : xpp)
     msg.states.push_back(XppToRos(state));
@@ -259,16 +276,110 @@ XppToRos(const std::vector<xpp::hyq::HyqStateStamped>& xpp)
   return msg;
 }
 
-static std::vector<xpp::hyq::HyqStateStamped>
-RosToXpp(const RobotStateTrajMsg& ros)
+static std::vector<xpp::hyq::HyqStateEE>
+RosToXpp(const HyqStateEETrajMsg& ros)
 {
-  std::vector<xpp::hyq::HyqStateStamped> xpp;
+  std::vector<xpp::hyq::HyqStateEE> xpp;
 
   for (const auto& state : ros.states)
     xpp.push_back(RosToXpp(state));
 
   return xpp;
 }
+
+static HyqStateJointsMsg
+XppToRos(const xpp::hyq::HyqStateJoints& xpp)
+{
+  HyqStateJointsMsg msg;
+  msg.base = XppToRos(xpp.base_);
+
+  for (int leg=0; leg<4; ++leg) {
+    msg.ee_in_contact[leg] = !xpp.swingleg_[leg];
+  }
+
+  for (int j=0; j<xpp::hyq::jointsCount; ++j) {
+    msg.joints.position.push_back(xpp.q(j));
+    msg.joints.velocity.push_back(xpp.qd(j));
+    msg.joint_acc.at(j) = xpp.qdd(j);
+  }
+
+  return msg;
+}
+
+static xpp::hyq::HyqStateJoints
+RosToXpp(const HyqStateJointsMsg& msg)
+{
+  xpp::hyq::HyqStateJoints xpp;
+
+  xpp.base_ = RosToXpp(msg.base);
+
+  for (int leg=0; leg<4; ++leg) {
+    xpp.swingleg_[leg] = !msg.ee_in_contact[leg];
+  }
+
+  for (int j=0; j<xpp::hyq::jointsCount; ++j) {
+    xpp.q(j)   = msg.joints.position.at(j);
+    xpp.qd(j)  = msg.joints.velocity.at(j);
+    xpp.qdd(j) = msg.joint_acc.at(j);
+  }
+
+  return xpp;
+}
+
+static HyqStateJointsTrajMsg
+XppToRos(const std::vector<xpp::hyq::HyqStateJoints>& xpp)
+{
+  HyqStateJointsTrajMsg msg;
+
+  for (const auto& state : xpp) {
+    msg.states.push_back(XppToRos(state));
+  }
+
+  return msg;
+}
+
+static std::vector<xpp::hyq::HyqStateJoints>
+RosToXpp(const HyqStateJointsTrajMsg& msg)
+{
+  std::vector<xpp::hyq::HyqStateJoints> xpp;
+
+  for (const auto& state : msg.states) {
+    xpp.push_back(RosToXpp(state));
+  }
+
+  return xpp;
+}
+
+// conversions to display hyq state in rviz using hyqb_visualizer
+static HyqRvizStateMsg
+XppToRosRviz(const xpp::hyq::HyqStateJoints& xpp)
+{
+  HyqRvizStateMsg msg;
+  msg.pose.position = XppToRos<geometry_msgs::Point>(xpp.base_.lin.p);
+  msg.twist.linear  = XppToRos<geometry_msgs::Vector3>(xpp.base_.lin.v);
+
+  msg.pose.orientation = XppToRos(xpp.base_.ang.q);
+  msg.twist.angular    = XppToRos<geometry_msgs::Vector3>(xpp.base_.ang.v);
+
+  for (int j=0; j<xpp::hyq::jointsCount; ++j)
+    msg.joints.position.push_back(xpp.q(j));
+
+  return msg;
+}
+
+static HyqRvizTrajectoryMsg
+XppToRosRviz(const std::vector<xpp::hyq::HyqStateJoints>& xpp)
+{
+  HyqRvizTrajectoryMsg msg;
+
+  msg.dt.data = 0.004; // task servo rate
+  for (const auto& state : xpp) {
+    msg.states.push_back(XppToRosRviz(state));
+  }
+
+  return msg;
+}
+
 
 }; // RosHelpers
 

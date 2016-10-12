@@ -22,6 +22,9 @@ static const std::string req_info_nlp("required_info_nlp");
 // sequence of full body hyq states as reference for a walking controller
 static const std::string robot_trajectory("robot_trajectory");
 
+// sequence of full body hyq states as reference for a walking controller
+static const std::string robot_trajectory_joints("robot_trajectory_joints");
+
 // rviz marker topic for NLP's optimized variables (spline coefficients, footholds,...)
 static const std::string rviz_optimized("/optimization_variables");
 
