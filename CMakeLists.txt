@@ -49,23 +49,32 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++11")
 
 ## Generate messages in the 'msg' folder
 add_message_files(
-   FILES
-   BaseState.msg
-   Foothold.msg
-   HyqState.msg
-   HyqStateTrajectory.msg
-   RobotStateCartesian.msg
-   RobotStateCartesianStamped.msg
-   RobotStateTrajectoryCartesian.msg
-   StateLin3d.msg
+  FILES
+  BaseState.msg
+  Foothold.msg
+  HyqState.msg
+  HyqStateTrajectory.msg
+  RobotStateCartesian.msg
+  RobotStateCartesianStamped.msg
+  RobotStateTrajectoryCartesian.msg
+  StateLin3d.msg
+  Contact.msg
+  Spline.msg
+  PhaseInfo.msg
+  RequiredInfoNlp.msg
+  OptimizedParametersNlp.msg
+  RequiredInfoQp.msg
+  OptimizedParametersQp.msg
 )
 
 ## Generate services in the 'srv' folder
-# add_service_files(
-#   FILES
-#   Service1.srv
-#   Service2.srv
-# )
+add_service_files(
+  FILES
+  SolveQp.srv
+  GetStateLin3d.srv
+  ReturnOptSplines.srv
+  ReturnOptFootholds.srv
+)
 
 ## Generate actions in the 'action' folder
 # add_action_files(
