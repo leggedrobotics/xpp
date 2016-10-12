@@ -44,7 +44,7 @@ using HyqStateEEMsg     = xpp_msgs::HyqStateEE;
 using HyqStateJointsMsg      = xpp_msgs::HyqStateJoints;
 using HyqStateJointsTrajMsg  = xpp_msgs::HyqStateJointsTrajectory;
 
-using HyqRvizStateMsg   = hyqb_msgs::RobotState;
+using HyqRvizStateMsg      = hyqb_msgs::RobotState;
 using HyqRvizTrajectoryMsg = hyqb_msgs::Trajectory;
 
 static double GetDoubleFromServer(const std::string& ros_param_name) {

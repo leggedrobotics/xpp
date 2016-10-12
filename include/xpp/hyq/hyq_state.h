@@ -19,8 +19,6 @@ namespace hyq {
 
 /** Captures the full state of the robot (body, feet)
   */
-// inv_kin think about merging this with HyQStateJoints (DRY)
-// and using inverse/forward kinematics as mediator.
 class HyqState {
 public:
   typedef utils::BaseState Pose;
@@ -42,7 +40,6 @@ public:
   using VecFoothold = std::vector<Foothold>;
   using Point3d = xpp::utils::BaseLin3d;
 
-  // inv_kin only save position, not vel and acc (disregarding anyway)
   LegDataMap<Point3d> feet_;
 
   LegDataMap< Foothold > FeetToFootholds() const;
