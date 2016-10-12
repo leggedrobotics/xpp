@@ -53,11 +53,6 @@ add_message_files(
   FILES
   BaseState.msg
   Foothold.msg
-  HyqState.msg
-  HyqStateTrajectory.msg
-  RobotStateCartesian.msg
-  RobotStateCartesianStamped.msg
-  RobotStateTrajectoryCartesian.msg
   StateLin3d.msg
   Contact.msg
   Spline.msg
@@ -66,6 +61,10 @@ add_message_files(
   OptimizedParametersNlp.msg
   RequiredInfoQp.msg
   OptimizedParametersQp.msg
+  HyqStateJoints.msg
+  HyqStateJointsTrajectory.msg
+  HyqStateEE.msg
+  HyqStateEETrajectory.msg
 )
 
 ## Generate services in the 'srv' folder

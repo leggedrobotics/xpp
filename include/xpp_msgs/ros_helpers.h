@@ -12,8 +12,8 @@
 
 #include <xpp_msgs/StateLin3d.h>
 #include <xpp_msgs/Foothold.h>
-#include <xpp_msgs/RobotStateTrajectoryCartesian.h>
-#include <xpp_msgs/HyqStateTrajectory.h>
+#include <xpp_msgs/HyqStateEETrajectory.h>
+#include <xpp_msgs/HyqStateJointsTrajectory.h>
 #include <hyqb_msgs/Trajectory.h>
 
 #include <xpp/utils/base_state.h>
@@ -38,13 +38,11 @@ typedef xpp::hyq::LegID LegID;
 // Aliases for all ros messages
 using FootholdMsg       = xpp_msgs::Foothold;
 using StateLin3dMsg     = xpp_msgs::StateLin3d;
-
-// inv_kin rename these and Hyq state to EE and Joint Hyq message
-using RobotStateTrajMsg = xpp_msgs::RobotStateTrajectoryCartesian;
-using RobotStateMsg     = xpp_msgs::RobotStateCartesianStamped;
 using BaseStateMsg      = xpp_msgs::BaseState;
-using HyqStateMsg       = xpp_msgs::HyqState;
-using HyqStateTrajMsg   = xpp_msgs::HyqStateTrajectory;
+using HyqStateEETrajMsg = xpp_msgs::HyqStateEETrajectory;
+using HyqStateEEMsg     = xpp_msgs::HyqStateEE;
+using HyqStateJointsMsg      = xpp_msgs::HyqStateJoints;
+using HyqStateJointsTrajMsg  = xpp_msgs::HyqStateJointsTrajectory;
 
 using HyqRvizStateMsg   = hyqb_msgs::RobotState;
 using HyqRvizTrajectoryMsg = hyqb_msgs::Trajectory;
@@ -237,40 +235,40 @@ RosToXpp(const BaseStateMsg& ros)
   return xpp;
 }
 
-static RobotStateMsg
+static HyqStateEEMsg
 XppToRos(const xpp::hyq::HyqStateEE& xpp)
 {
-  RobotStateMsg ros;
+  HyqStateEEMsg ros;
 
-  ros.state.base = XppToRos(xpp.base_);
+  ros.base = XppToRos(xpp.base_);
 
   for (int leg=0; leg<4; ++leg) {
-    ros.state.ee_in_contact[leg] = !xpp.swingleg_[leg];
-    ros.state.endeffectors[leg]  = XppToRos(xpp.feet_[leg]);
+    ros.ee_in_contact[leg] = !xpp.swingleg_[leg];
+    ros.endeffectors[leg]  = XppToRos(xpp.feet_[leg]);
   }
 
   return ros;
 }
 
 static xpp::hyq::HyqStateEE
-RosToXpp(const RobotStateMsg& ros)
+RosToXpp(const HyqStateEEMsg& ros)
 {
   xpp::hyq::HyqStateEE xpp;
 
-  xpp.base_ = RosToXpp(ros.state.base);
+  xpp.base_ = RosToXpp(ros.base);
 
   for (int leg=0; leg<4; ++leg) {
-    xpp.swingleg_[leg] = !ros.state.ee_in_contact[leg];
-    xpp.feet_[leg]     = RosToXpp(ros.state.endeffectors[leg]);
+    xpp.swingleg_[leg] = !ros.ee_in_contact[leg];
+    xpp.feet_[leg]     = RosToXpp(ros.endeffectors[leg]);
   }
 
   return xpp;
 }
 
-static RobotStateTrajMsg
+static HyqStateEETrajMsg
 XppToRos(const std::vector<xpp::hyq::HyqStateEE>& xpp)
 {
-  RobotStateTrajMsg msg;
+  HyqStateEETrajMsg msg;
 
   for (const auto& state : xpp)
     msg.states.push_back(XppToRos(state));
@@ -279,7 +277,7 @@ XppToRos(const std::vector<xpp::hyq::HyqStateEE>& xpp)
 }
 
 static std::vector<xpp::hyq::HyqStateEE>
-RosToXpp(const RobotStateTrajMsg& ros)
+RosToXpp(const HyqStateEETrajMsg& ros)
 {
   std::vector<xpp::hyq::HyqStateEE> xpp;
 
@@ -289,10 +287,10 @@ RosToXpp(const RobotStateTrajMsg& ros)
   return xpp;
 }
 
-static HyqStateMsg
+static HyqStateJointsMsg
 XppToRos(const xpp::hyq::HyqStateJoints& xpp)
 {
-  HyqStateMsg msg;
+  HyqStateJointsMsg msg;
   msg.base = XppToRos(xpp.base_);
 
   for (int leg=0; leg<4; ++leg) {
@@ -309,7 +307,7 @@ XppToRos(const xpp::hyq::HyqStateJoints& xpp)
 }
 
 static xpp::hyq::HyqStateJoints
-RosToXpp(const HyqStateMsg& msg)
+RosToXpp(const HyqStateJointsMsg& msg)
 {
   xpp::hyq::HyqStateJoints xpp;
 
@@ -328,10 +326,10 @@ RosToXpp(const HyqStateMsg& msg)
   return xpp;
 }
 
-static HyqStateTrajMsg
+static HyqStateJointsTrajMsg
 XppToRos(const std::vector<xpp::hyq::HyqStateJoints>& xpp)
 {
-  HyqStateTrajMsg msg;
+  HyqStateJointsTrajMsg msg;
 
   for (const auto& state : xpp) {
     msg.states.push_back(XppToRos(state));
@@ -341,7 +339,7 @@ XppToRos(const std::vector<xpp::hyq::HyqStateJoints>& xpp)
 }
 
 static std::vector<xpp::hyq::HyqStateJoints>
-RosToXpp(const HyqStateTrajMsg& msg)
+RosToXpp(const HyqStateJointsTrajMsg& msg)
 {
   std::vector<xpp::hyq::HyqStateJoints> xpp;
 
