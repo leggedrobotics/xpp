@@ -53,10 +53,21 @@ static double GetDoubleFromServer(const std::string& ros_param_name) {
   return val;
 }
 
-static double GetBoolFromServer(const std::string& ros_param_name) {
+static bool GetBoolFromServer(const std::string& ros_param_name) {
   bool val;
   if(!::ros::param::get(ros_param_name,val))
     throw ::ros::Exception("GetBoolFromServer: Couldn't read parameter: " + ros_param_name);
+  return val;
+}
+
+static std::string GetStringFromServer(const std::string& ros_param_name) {
+  std::string val;
+  if(!::ros::param::get(ros_param_name,val)) {
+    ROS_ERROR_STREAM("GetStringFromServer: Couldn't read parameter: " << ros_param_name);
+    ROS_INFO_STREAM("\nIngore?");
+    std::cin.get(); // wait for user input
+//    throw ::ros::Exception("GetStringFromServer: Couldn't read parameter: " + ros_param_name);
+  }
   return val;
 }
 
