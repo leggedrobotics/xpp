@@ -11,6 +11,7 @@ find_package(catkin REQUIRED COMPONENTS
   sensor_msgs
   message_generation
   xpp_common
+  hyqb_msgs
 )
 
 ## System dependencies are found with CMake's conventions
@@ -124,7 +125,7 @@ generate_messages(
 catkin_package(
    INCLUDE_DIRS include
    LIBRARIES
-   CATKIN_DEPENDS xpp_controller message_runtime sensor_msgs
+   CATKIN_DEPENDS message_runtime sensor_msgs
 #  DEPENDS system_lib
 )
 
