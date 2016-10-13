@@ -10,14 +10,15 @@ find_package(catkin REQUIRED COMPONENTS
   geometry_msgs
   sensor_msgs
   message_generation
-  xpp_controller  # this is where the xpp states are defined
-  ff_controller       # needed for forward kinematics
+  xpp_common
 )
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++11") 
+
+set(LIB_NAME xpp_msgs)
 
 ## Uncomment this if the package has a setup.py. This macro ensures
 ## modules and global scripts declared therein get installed
@@ -122,7 +123,7 @@ generate_messages(
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
    INCLUDE_DIRS include
-   LIBRARIES xpp_msgs
+   LIBRARIES
    CATKIN_DEPENDS xpp_controller message_runtime sensor_msgs
 #  DEPENDS system_lib
 )
@@ -139,10 +140,13 @@ include_directories(
 )
 
 ## Declare a C++ library
-add_library(xpp_msgs
-  src/hyq_state.cc
-  src/foothold.cc
-)
+#add_library(xpp_msgs
+#)
+
+# makes sure messages are built before the package
+#add_dependencies(${LIB_NAME} 
+#  ${LIB_NAME}_generate_messages_cpp
+#)
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
@@ -157,9 +161,9 @@ add_library(xpp_msgs
 # add_dependencies(xpp_msgs_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
-target_link_libraries(xpp_msgs
-  ${catkin_LIBRARIES}
-)
+#target_link_libraries(xpp_msgs
+#  ${catkin_LIBRARIES}
+#)
 
 #############
 ## Install ##
