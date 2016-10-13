@@ -60,6 +60,8 @@ using ContactMsg   = xpp_msgs::Contact;
 using PhaseInfoMsg = xpp_msgs::PhaseInfo;
 using Polynomial   = xpp::utils::Polynomial;
 
+static const int kHyqJointsCount = iit::HyQ::jointsCount;
+
 
 static double GetDoubleFromServer(const std::string& ros_param_name) {
   double val;
@@ -311,7 +313,7 @@ XppToRos(const xpp::hyq::HyqStateJoints& xpp)
     msg.ee_in_contact[leg] = !xpp.swingleg_[leg];
   }
 
-  for (int j=0; j<xpp::hyq::jointsCount; ++j) {
+  for (int j=0; j<kHyqJointsCount; ++j) {
     msg.joints.position.push_back(xpp.q(j));
     msg.joints.velocity.push_back(xpp.qd(j));
     msg.joint_acc.at(j) = xpp.qdd(j);
@@ -331,7 +333,7 @@ RosToXpp(const HyqStateJointsMsg& msg)
     xpp.swingleg_[leg] = !msg.ee_in_contact[leg];
   }
 
-  for (int j=0; j<xpp::hyq::jointsCount; ++j) {
+  for (int j=0; j<kHyqJointsCount; ++j) {
     xpp.q(j)   = msg.joints.position.at(j);
     xpp.qd(j)  = msg.joints.velocity.at(j);
     xpp.qdd(j) = msg.joint_acc.at(j);
@@ -375,7 +377,7 @@ XppToRosRviz(const xpp::hyq::HyqStateJoints& xpp)
   msg.pose.orientation = XppToRos(xpp.base_.ang.q);
   msg.twist.angular    = XppToRos<geometry_msgs::Vector3>(xpp.base_.ang.v);
 
-  for (int j=0; j<xpp::hyq::jointsCount; ++j)
+  for (int j=0; j<kHyqJointsCount; ++j)
     msg.joints.position.push_back(xpp.q(j));
 
   return msg;
