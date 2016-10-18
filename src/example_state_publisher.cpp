@@ -8,7 +8,6 @@
 #include <ros/ros.h>
 #include <hyqb_vis/hyqb_vis.hpp>
 
-// inv_kin use xpp messages for this
 typedef hyqb_msgs::Trajectory TrajectoryMsg;
 
 int main(int argc, char *argv[])
