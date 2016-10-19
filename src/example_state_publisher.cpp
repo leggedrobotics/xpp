@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
 
   // goal position in world frame
   double goal_x = 1.0;
-  while (ros::ok) {
+  while (ros::ok()) {
   
     // fill the trajectory
     TrajectoryMsg traj;
