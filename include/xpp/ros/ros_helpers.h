@@ -14,8 +14,8 @@
 #include <xpp_msgs/Foothold.h>
 #include <xpp_msgs/HyqStateEETrajectory.h>
 #include <xpp_msgs/HyqStateJointsTrajectory.h>
-#include <xpp_msgs/PhaseInfo.h>
-#include <xpp_msgs/Contact.h>
+//#include <xpp_msgs/PhaseInfo.h>
+//#include <xpp_msgs/Contact.h>
 #include <xpp_msgs/Spline.h>
 #include <hyqb_msgs/Trajectory.h>
 
@@ -24,7 +24,7 @@
 #include <xpp/hyq/hyq_state.h>
 #include <xpp/hyq/leg_data_map.h>
 #include <xpp/utils/polynomial_helpers.h>
-#include <xpp/opt/phase_info.h>
+//#include <xpp/opt/phase_info.h>
 
 namespace xpp {
 namespace ros {
@@ -54,10 +54,10 @@ using HyqRvizTrajectoryMsg = hyqb_msgs::Trajectory;
 
 using VecComPoly   = std::vector<xpp::utils::ComPolynomial>;
 using SplineMsg    = xpp_msgs::Spline;
-using ContactXpp   = xpp::opt::Contact;
-using PhaseInfoXpp = xpp::opt::PhaseInfo;
-using ContactMsg   = xpp_msgs::Contact;
-using PhaseInfoMsg = xpp_msgs::PhaseInfo;
+//using ContactXpp   = xpp::hyq::Contact;
+//using PhaseInfoXpp = xpp::opt::PhaseInfo;
+//using ContactMsg   = xpp_msgs::Contact;
+//using PhaseInfoMsg = xpp_msgs::PhaseInfo;
 using Polynomial   = xpp::utils::Polynomial;
 
 static const int kHyqJointsCount = iit::HyQ::jointsCount;
@@ -396,79 +396,10 @@ XppToRosRviz(const std::vector<xpp::hyq::HyqStateJoints>& xpp)
   return msg;
 }
 
-static ContactMsg
-XppToRos(const ContactXpp& xpp)
-{
-  ContactMsg msg;
-  msg.id = xpp.id;
-  msg.ee = static_cast<int>(xpp.ee);
-
-  return msg;
-}
-
-static ContactXpp
-RosToXpp(const ContactMsg& msg)
-{
-  ContactXpp xpp;
-  xpp.id = msg.id;
-  xpp.ee = static_cast<xpp::opt::EndeffectorID>(msg.ee);
-
-  return xpp;
-}
-
-static PhaseInfoMsg
-XppToRos(const PhaseInfoXpp& xpp)
-{
-  PhaseInfoMsg msg;
-  msg.n_completed_steps = xpp.n_completed_steps_;
-  for (auto c : xpp.free_contacts_)  msg.free_contacts.push_back(XppToRos(c));
-  for (auto f : xpp.fixed_contacts_) msg.fixed_contacts.push_back(xpp::ros::RosHelpers::XppToRos(f));
-  msg.id                = xpp.id_;
-  msg.duration          = xpp.duration_;
-
-  return msg;
-}
-
-static PhaseInfoXpp
-RosToXpp(const PhaseInfoMsg& msg)
-{
-  PhaseInfoXpp xpp;
-  xpp.n_completed_steps_ = msg.n_completed_steps;
-  for (auto c : msg.free_contacts)  xpp.free_contacts_.push_back(RosToXpp(c));
-  for (auto f : msg.fixed_contacts) xpp.fixed_contacts_.push_back(xpp::ros::RosHelpers::RosToXpp(f));
-  xpp.id_                = msg.id;
-  xpp.duration_          = msg.duration;
-
-  return xpp;
-}
-
-static std::vector<PhaseInfoMsg>
-XppToRos(const std::vector<PhaseInfoXpp>& xpp)
-{
-  std::vector<PhaseInfoMsg> msg;
-
-  for (const auto& phase : xpp)
-    msg.push_back(XppToRos(phase));
-
-  return msg;
-}
-
-static std::vector<PhaseInfoXpp>
-RosToXpp(const std::vector<PhaseInfoMsg>& msg)
-{
-  std::vector<PhaseInfoXpp> xpp;
-
-  for (auto phase : msg)
-    xpp.push_back(RosToXpp(phase));
-
-  return xpp;
-}
 
 static std::vector<SplineMsg>
 XppToRos(const VecComPoly& opt_splines)
 {
-  using namespace xpp::opt;
-
   int n_splines = opt_splines.size();
   std::vector<SplineMsg> msgs(n_splines);
 
@@ -490,8 +421,6 @@ XppToRos(const VecComPoly& opt_splines)
 static VecComPoly
 RosToXpp(const std::vector<SplineMsg>& msgs)
 {
-  using namespace xpp::opt;
-
   uint n_splines = msgs.size();
   VecComPoly xpp(n_splines);
 
@@ -507,6 +436,73 @@ RosToXpp(const std::vector<SplineMsg>& msgs)
   return xpp;
 }
 
+//static ContactMsg
+//XppToRos(const ContactXpp& xpp)
+//{
+//  ContactMsg msg;
+//  msg.id = xpp.id;
+//  msg.ee = static_cast<int>(xpp.ee);
+//
+//  return msg;
+//}
+//
+//static ContactXpp
+//RosToXpp(const ContactMsg& msg)
+//{
+//  ContactXpp xpp;
+//  xpp.id = msg.id;
+//  xpp.ee = static_cast<xpp::opt::EndeffectorID>(msg.ee);
+//
+//  return xpp;
+//}
+//
+//static PhaseInfoMsg
+//XppToRos(const PhaseInfoXpp& xpp)
+//{
+//  PhaseInfoMsg msg;
+//  msg.n_completed_steps = xpp.n_completed_steps_;
+//  for (auto c : xpp.free_contacts_)  msg.free_contacts.push_back(XppToRos(c));
+//  for (auto f : xpp.fixed_contacts_) msg.fixed_contacts.push_back(xpp::ros::RosHelpers::XppToRos(f));
+//  msg.id                = xpp.id_;
+//  msg.duration          = xpp.duration_;
+//
+//  return msg;
+//}
+//
+//static PhaseInfoXpp
+//RosToXpp(const PhaseInfoMsg& msg)
+//{
+//  PhaseInfoXpp xpp;
+//  xpp.n_completed_steps_ = msg.n_completed_steps;
+//  for (auto c : msg.free_contacts)  xpp.free_contacts_.push_back(RosToXpp(c));
+//  for (auto f : msg.fixed_contacts) xpp.fixed_contacts_.push_back(xpp::ros::RosHelpers::RosToXpp(f));
+//  xpp.id_                = msg.id;
+//  xpp.duration_          = msg.duration;
+//
+//  return xpp;
+//}
+//
+//static std::vector<PhaseInfoMsg>
+//XppToRos(const std::vector<PhaseInfoXpp>& xpp)
+//{
+//  std::vector<PhaseInfoMsg> msg;
+//
+//  for (const auto& phase : xpp)
+//    msg.push_back(XppToRos(phase));
+//
+//  return msg;
+//}
+//
+//static std::vector<PhaseInfoXpp>
+//RosToXpp(const std::vector<PhaseInfoMsg>& msg)
+//{
+//  std::vector<PhaseInfoXpp> xpp;
+//
+//  for (auto phase : msg)
+//    xpp.push_back(RosToXpp(phase));
+//
+//  return xpp;
+//}
 
 }; // RosHelpers
 
