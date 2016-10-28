@@ -10,8 +10,6 @@ find_package(catkin REQUIRED COMPONENTS
   geometry_msgs
   sensor_msgs
   message_generation
-  xpp_common
-#  hyqb_msgs
 )
 
 ## System dependencies are found with CMake's conventions
@@ -125,7 +123,7 @@ generate_messages(
 catkin_package(
    INCLUDE_DIRS include
    LIBRARIES
-   CATKIN_DEPENDS message_runtime sensor_msgs xpp_common
+   CATKIN_DEPENDS message_runtime sensor_msgs
 #  DEPENDS system_lib
 )
 
