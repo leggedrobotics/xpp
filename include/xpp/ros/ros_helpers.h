@@ -17,7 +17,7 @@
 //#include <xpp_msgs/PhaseInfo.h>
 //#include <xpp_msgs/Contact.h>
 #include <xpp_msgs/Spline.h>
-#include <hyqb_msgs/Trajectory.h>
+//#include <hyqb_msgs/Trajectory.h>
 
 #include <xpp/utils/base_state.h>
 #include <xpp/hyq/foothold.h>
@@ -49,8 +49,8 @@ using HyqStateEEMsg     = xpp_msgs::HyqStateEE;
 using HyqStateJointsMsg      = xpp_msgs::HyqStateJoints;
 using HyqStateJointsTrajMsg  = xpp_msgs::HyqStateJointsTrajectory;
 
-using HyqRvizStateMsg      = hyqb_msgs::RobotState;
-using HyqRvizTrajectoryMsg = hyqb_msgs::Trajectory;
+//using HyqRvizStateMsg      = hyqb_msgs::RobotState;
+//using HyqRvizTrajectoryMsg = hyqb_msgs::Trajectory;
 
 using VecComPoly   = std::vector<xpp::utils::ComPolynomial>;
 using SplineMsg    = xpp_msgs::Spline;
@@ -366,35 +366,35 @@ RosToXpp(const HyqStateJointsTrajMsg& msg)
   return xpp;
 }
 
-// conversions to display hyq state in rviz using hyqb_visualizer
-static HyqRvizStateMsg
-XppToRosRviz(const xpp::hyq::HyqStateJoints& xpp)
-{
-  HyqRvizStateMsg msg;
-  msg.pose.position = XppToRos<geometry_msgs::Point>(xpp.base_.lin.p);
-  msg.twist.linear  = XppToRos<geometry_msgs::Vector3>(xpp.base_.lin.v);
-
-  msg.pose.orientation = XppToRos(xpp.base_.ang.q);
-  msg.twist.angular    = XppToRos<geometry_msgs::Vector3>(xpp.base_.ang.v);
-
-  for (int j=0; j<kHyqJointsCount; ++j)
-    msg.joints.position.push_back(xpp.q(j));
-
-  return msg;
-}
-
-static HyqRvizTrajectoryMsg
-XppToRosRviz(const std::vector<xpp::hyq::HyqStateJoints>& xpp)
-{
-  HyqRvizTrajectoryMsg msg;
-
-  msg.dt.data = 0.004; // task servo rate
-  for (const auto& state : xpp) {
-    msg.states.push_back(XppToRosRviz(state));
-  }
-
-  return msg;
-}
+//// conversions to display hyq state in rviz using hyqb_visualizer
+//static HyqRvizStateMsg
+//XppToRosRviz(const xpp::hyq::HyqStateJoints& xpp)
+//{
+//  HyqRvizStateMsg msg;
+//  msg.pose.position = XppToRos<geometry_msgs::Point>(xpp.base_.lin.p);
+//  msg.twist.linear  = XppToRos<geometry_msgs::Vector3>(xpp.base_.lin.v);
+//
+//  msg.pose.orientation = XppToRos(xpp.base_.ang.q);
+//  msg.twist.angular    = XppToRos<geometry_msgs::Vector3>(xpp.base_.ang.v);
+//
+//  for (int j=0; j<kHyqJointsCount; ++j)
+//    msg.joints.position.push_back(xpp.q(j));
+//
+//  return msg;
+//}
+//
+//static HyqRvizTrajectoryMsg
+//XppToRosRviz(const std::vector<xpp::hyq::HyqStateJoints>& xpp)
+//{
+//  HyqRvizTrajectoryMsg msg;
+//
+//  msg.dt.data = 0.004; // task servo rate
+//  for (const auto& state : xpp) {
+//    msg.states.push_back(XppToRosRviz(state));
+//  }
+//
+//  return msg;
+//}
 
 
 static std::vector<SplineMsg>
