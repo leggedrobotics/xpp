@@ -7,6 +7,8 @@
   Based on code provided by Alexander Winkler
  */
 
+#include <xpp/ros/topic_names.h>
+
 namespace hyqb {
 
 template <size_t NJOINTS>
@@ -28,18 +30,13 @@ robotVisBase<NJOINTS>::~robotVisBase()
 template <size_t NJOINTS>
 void robotVisBase<NJOINTS>::init()
 {
-  std::string trajectoryTopic, stateTopic;
-  ros::param::param<std::string>("hyq_rviz_trajectory_topic", trajectoryTopic, std::string("/hyq_rviz_trajectory"));
-  ros::param::param<std::string>("hyq_rviz_state_topic", stateTopic, std::string("/hyq_rviz_state"));
-//	std::string stateTopic = getParam("state_topic", std::string("/state"));
-
 	std::cout<<"Initializing node"<<std::endl;
 	// Subscriber and callback
   ros::NodeHandle nh;
-  state_sub_ = nh.subscribe(stateTopic, 1, &robotVisBase::stateCallback, this);
-  traj_sub_  = nh.subscribe(trajectoryTopic, 1, &robotVisBase::trajectoryCallback, this);
+//  state_sub_ = nh.subscribe(stateTopic, 1, &robotVisBase::stateCallback, this);
+  traj_sub_  = nh.subscribe(xpp_msgs::robot_trajectory_joints, 1, &robotVisBase::trajectoryCallback, this);
 
-  ROS_INFO("Subscribed to: %s", state_sub_.getTopic().c_str());
+//  ROS_INFO("Subscribed to: %s", state_sub_.getTopic().c_str());
   ROS_INFO("Subscribed to: %s", traj_sub_.getTopic().c_str());
 
   // Load model from file
@@ -84,7 +81,6 @@ template <size_t NJOINTS>
 void robotVisBase<NJOINTS>::visualizeState(const ros::Time& stamp, const geometry_msgs::Pose& baseState, const sensor_msgs::JointState& jointState)
 {
 	// Converting from joint messages to robot state
-
 	geometry_msgs::TransformStamped W_X_B_message;
 	W_X_B_message.header.stamp = stamp;
 	W_X_B_message.header.frame_id = "world";
@@ -101,26 +97,19 @@ void robotVisBase<NJOINTS>::visualizeState(const ros::Time& stamp, const geometr
 
 // Callback for the subscriber
 template <size_t NJOINTS>
-void robotVisBase<NJOINTS>::stateCallback(const hyqb_msgs::StateEstimate::ConstPtr& msg)
-{
-	visualizeState(ros::Time::now(), msg->base.pose, msg->joints);
-}
-
-// Callback for the subscriber
-template <size_t NJOINTS>
 void robotVisBase<NJOINTS>::trajectoryCallback(const TrajectoryMsg::ConstPtr& msg)
 {
   ROS_INFO("Trajectory received, forwarding to rviz...");
-	ros::Rate loop_rate(1.0/msg->dt.data*playbackSpeed_);
+  double dt = 0.004; //[s]
+	ros::Rate loop_rate(1.0/dt*playbackSpeed_);
 
 	for (size_t i=0; i<msg->states.size(); i++)
 	{
-		visualizeState(ros::Time::now(), msg->states[i].pose, msg->states[i].joints);
+		visualizeState(ros::Time::now(), msg->states[i].base.pose, msg->states[i].joints);
 
 		loop_rate.sleep();
 	}
 }
-
 
 template<size_t NJOINTS>
 void robotVisBase<NJOINTS>::setZeroState()
@@ -161,6 +150,13 @@ void robotVisBase<NJOINTS>::setRobotJointNames(const std::array<std::string, NJO
 {
 	robot_joint_names = my_robot_joints;
 }
+
+//// Callback for the subscriber
+//template <size_t NJOINTS>
+//void robotVisBase<NJOINTS>::stateCallback(const hyqb_msgs::StateEstimate::ConstPtr& msg)
+//{
+//  visualizeState(ros::Time::now(), msg->base.pose, msg->joints);
+//}
 
 
 } /* namespace hyqb */

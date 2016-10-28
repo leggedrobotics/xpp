@@ -5,9 +5,8 @@ project(hyqb_visualizer_low_dep)
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
-  # in hyqb_essentials repo
-  hyqb_msgs 
   hyqb_description #urdf file for rviz
+  xpp_msgs         
   # ros stuff
   tf
   kdl_parser

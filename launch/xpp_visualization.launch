@@ -1,6 +1,9 @@
 <launch>
-  <!-- for visualizing in rviz -->
-  <include file="$(find hyqb_visualizer_low_dep)/launch/hyqb_vis.launch"></include>
+   <node name="hyqb_vis_node" pkg="hyqb_visualizer_low_dep" type="hyqb_vis_node" output="screen">
+   </node>
+   
+   <param name="hyq_rviz_urdf_robot_description" command="$(find xacro)/xacro.py '$(find hyqb_description)/urdf/robots/hyqb.urdf.xacro'"/>
+  
   <node name="rviz" pkg="rviz" type="rviz"  args="-d $(find hyqb_visualizer_low_dep)/rviz/xpp.rviz">
   </node>
 </launch>
