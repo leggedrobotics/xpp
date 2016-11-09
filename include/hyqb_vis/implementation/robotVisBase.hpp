@@ -14,7 +14,7 @@ namespace hyqb {
 template <size_t NJOINTS>
 robotVisBase<NJOINTS>::robotVisBase(std::string my_robot_name, const std::array<std::string, NJOINTS>& my_robot_joints) :
 	robot_joint_names(my_robot_joints),
-	playbackSpeed_(1.0)
+	playbackSpeed_(5.0)
 {
 	std::cout<<"Calling constructor"<<std::endl;
 	ros::NodeHandle nh;
