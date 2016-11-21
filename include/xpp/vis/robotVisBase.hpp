@@ -27,7 +27,8 @@
 #include <xpp_msgs/HyqStateTrajectory.h>
 #include <xpp_msgs/HyqState.h>
 
-namespace hyqb {
+namespace xpp {
+namespace vis {
 
 template <size_t NJOINTS>
 class robotVisBase {
@@ -61,7 +62,8 @@ private:
   void setZeroState();
 };
 
-} /* namespace hyqb */
+} // namespace vis
+} // namespace xpp
 
 #include "implementation/robotVisBase.hpp"
 

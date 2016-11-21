@@ -6,7 +6,7 @@
  */
 
 #include <ros/ros.h>
-#include <hyqb_vis/hyqb_vis.hpp>
+#include <xpp/vis/hyqb_vis.hpp>
 #include <xpp_msgs/HyqStateTrajectory.h>
 #include <xpp/ros/topic_names.h>
 

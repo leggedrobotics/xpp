@@ -9,7 +9,8 @@
 
 #include <xpp/ros/topic_names.h>
 
-namespace hyqb {
+namespace xpp {
+namespace vis {
 
 template <size_t NJOINTS>
 robotVisBase<NJOINTS>::robotVisBase(std::string my_robot_name, const std::array<std::string, NJOINTS>& my_robot_joints) :
@@ -136,7 +137,8 @@ void robotVisBase<NJOINTS>::setRobotJointNames(const std::array<std::string, NJO
 	robot_joint_names = my_robot_joints;
 }
 
-} /* namespace hyqb */
+} // namespace vis
+} // namespace xpp
 
 
 

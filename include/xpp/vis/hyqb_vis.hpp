@@ -33,7 +33,8 @@ static const std::array<std::string, hyqJoints> hyq_joint_names =
 
 };
 
-namespace hyqb {
+namespace xpp {
+namespace vis {
 
 class hyqb_vis : public robotVisBase<hyqJoints>
 {
@@ -45,6 +46,7 @@ public:
 
 };
 
-} /* namespace hyqb */
+} // namespace vis
+} // namespace xpp
 
 #endif /* HYQB_VIS_HPP */
