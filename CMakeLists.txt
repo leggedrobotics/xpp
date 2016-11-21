@@ -57,14 +57,12 @@ add_message_files(
   Contact.msg
   Spline.msg
   PhaseInfo.msg
-  RequiredInfoNlp.msg
   OptimizedParametersNlp.msg
   RequiredInfoQp.msg
   OptimizedParametersQp.msg
-  HyqStateJoints.msg
-  HyqStateJointsTrajectory.msg
-  HyqStateEE.msg
-  HyqStateEETrajectory.msg
+  HyqState.msg
+  HyqStateTrajectory.msg
+  PDGainsHyq.msg
 )
 
 ## Generate services in the 'srv' folder
