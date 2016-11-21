@@ -7,10 +7,10 @@
 
 #include <ros/ros.h>
 #include <hyqb_vis/hyqb_vis.hpp>
-#include <xpp_msgs/HyqStateJointsTrajectory.h>
+#include <xpp_msgs/HyqStateTrajectory.h>
 #include <xpp/ros/topic_names.h>
 
-typedef xpp_msgs::HyqStateJointsTrajectory TrajectoryMsg;
+using TrajectoryMsg = xpp_msgs::HyqStateTrajectory;
 
 int main(int argc, char *argv[])
 {
