@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package>
-  <name>hyqb_visualizer_low_dep</name>
+  <name>xpp_vis</name>
   <version>0.0.0</version>
-  <description>The hyqb_vis package</description>
+  <description>Visualizes values in the xpp framework over ROS</description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag --> 
   <!-- Example:  -->

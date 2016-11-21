@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(hyqb_visualizer_low_dep)
+project(xpp_vis)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
@@ -16,9 +16,7 @@ find_package(catkin REQUIRED COMPONENTS
 ## System dependencies are found with CMake's conventions
 find_package(Eigen3 REQUIRED)
 
-set(CXX_COMPILE_FLAGS "-Wall -O3 -DEIGEN_NO_DEBUG")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -march=native -fopenmp" )
-
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11" )
 
 ## Uncomment this if the package has a setup.py. This macro ensures
 ## modules and global scripts declared therein get installed
@@ -105,16 +103,16 @@ include_directories(
 )
  
 ## Declare a cpp executable
-add_executable(hyqb_vis_node src/hyqb_vis_node.cpp)
+add_executable(xpp_vis_node src/xpp_vis_node.cpp)
+target_link_libraries(xpp_vis_node
+  ${catkin_LIBRARIES}
+)
+ 
 add_executable(example_state_publisher src/example_state_publisher.cpp)
-
-## Specify libraries to link a library or executable target against
-target_link_libraries(hyqb_vis_node
+target_link_libraries(example_state_publisher
   ${catkin_LIBRARIES}
- )
- target_link_libraries(example_state_publisher
-  ${catkin_LIBRARIES}
- )
+)
+ 
 ## add msg dependencies
-add_dependencies(hyqb_vis_node ${catkin_EXPORTED_TARGETS})
+add_dependencies(xpp_vis_node ${catkin_EXPORTED_TARGETS})
 add_dependencies(example_state_publisher ${catkin_EXPORTED_TARGETS})

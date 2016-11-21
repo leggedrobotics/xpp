@@ -2,8 +2,9 @@
    <node name="xpp_vis_node" pkg="xpp_vis" type="xpp_vis_node" output="screen">
    </node>
    
+   <node name="state_publisher" pkg="xpp_vis" type="example_state_publisher" output="screen">
+   </node>
+   
    <param name="hyq_rviz_urdf_robot_description" command="$(find xacro)/xacro.py '$(find hyqb_description)/urdf/robots/hyqb.urdf.xacro'"/>
-  
-  <node name="rviz" pkg="rviz" type="rviz"  args="-d $(find xpp_vis)/rviz/xpp.rviz">
-  </node>
+
 </launch>
