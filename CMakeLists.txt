@@ -63,6 +63,8 @@ add_message_files(
   HyqState.msg
   HyqStateTrajectory.msg
   PDGainsHyq.msg
+  CurrentInfo.msg
+  UserCommand.msg
 )
 
 ## Generate services in the 'srv' folder
