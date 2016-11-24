@@ -98,9 +98,9 @@ void robotVisBase<NJOINTS>::trajectoryCallback(const TrajectoryMsg::ConstPtr& ms
 }
 
 template <size_t NJOINTS>
-void robotVisBase<NJOINTS>::stateCallback(const HyqStateMsg::ConstPtr& msg)
+void robotVisBase<NJOINTS>::stateCallback(const CurrentInfoMsg::ConstPtr& msg)
 {
-  visualizeState(ros::Time::now(), msg->base.pose, msg->joints);
+  visualizeState(ros::Time::now(), msg->state.base.pose, msg->state.joints);
 }
 
 template<size_t NJOINTS>
