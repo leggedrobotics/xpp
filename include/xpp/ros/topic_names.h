@@ -26,7 +26,7 @@ static const std::string robot_trajectory_joints("hyq_state_trajectory");
 static const std::string rviz_optimized("/optimization_variables");
 
 // rviz marker topic for fixed variables of NLP optimization (e.g. start stance)
-static const std::string rviz_fixed("optimization_fixed");
+static const std::string rviz_fixed("/optimization_fixed");
 
 // gains for hyq
 static const std::string controller_pd_gains("hyq_pd_gains");
