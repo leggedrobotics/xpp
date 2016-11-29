@@ -25,7 +25,7 @@
 #include <kdl_parser/kdl_parser.hpp>
 
 #include <xpp_msgs/HyqStateTrajectory.h>
-#include <xpp_msgs/HyqState.h>
+#include <xpp_msgs/CurrentInfo.h>
 
 namespace xpp {
 namespace vis {
@@ -34,7 +34,7 @@ template <size_t NJOINTS>
 class robotVisBase {
 public:
   using TrajectoryMsg = xpp_msgs::HyqStateTrajectory;
-  using HyqStateMsg   = xpp_msgs::HyqState;
+  using CurrentInfoMsg   = xpp_msgs::CurrentInfo;
 
   std::map<std::string, double> model_joint_positions_;
 
@@ -54,7 +54,7 @@ private:
   tf::TransformBroadcaster broadcaster;
   std::shared_ptr<robot_state_publisher::RobotStatePublisher> robot_state_publisher;
 
-  void stateCallback(const HyqStateMsg::ConstPtr& msg);
+  void stateCallback(const CurrentInfoMsg::ConstPtr& msg);
   void trajectoryCallback(const TrajectoryMsg::ConstPtr& msg);
   void visualizeState(const ros::Time& stamp, const geometry_msgs::Pose& baseState, const sensor_msgs::JointState& jointState);
   void setRobotJointsFromMessage(const sensor_msgs::JointState &msg, std::map<std::string, double>& model_joint_positions);
