@@ -110,13 +110,13 @@ void robotVisBase<NJOINTS>::setZeroState()
 		model_joint_positions_[robot_joint_names[i]] = 0;
 }
 
-// updating global variables from messages
-template<size_t NJOINTS>
-void robotVisBase<NJOINTS>::setRobotJointsFromMessage(const sensor_msgs::JointState &msg, std::map<std::string, double>& model_joint_positions)
-{
-	for(size_t i = 0 ; i < NJOINTS ; i++)
-		model_joint_positions[robot_joint_names[i]] = msg.position[i];
-}
+//// updating global variables from messages
+//template<size_t NJOINTS>
+//void robotVisBase<NJOINTS>::setRobotJointsFromMessage(const sensor_msgs::JointState &msg, std::map<std::string, double>& model_joint_positions)
+//{
+//	for(size_t i = 0 ; i < NJOINTS ; i++)
+//		model_joint_positions[robot_joint_names[i]] = msg.position[i];
+//}
 
 template<size_t NJOINTS>
 void robotVisBase<NJOINTS>::setRobotBaseStateFromMessage(const geometry_msgs::Pose &msg, geometry_msgs::TransformStamped& W_X_B_message)

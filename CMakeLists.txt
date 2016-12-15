@@ -6,9 +6,10 @@ project(xpp_vis)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
   hyqb_description #urdf file for rviz
-  xpp_msgs         
+  xpp_msgs
+  xpp_common    # only for hyq_endeffectors       
   # ros stuff
-  tf
+  tf 
   kdl_parser
   robot_state_publisher
 )

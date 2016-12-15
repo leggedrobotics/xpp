@@ -33,10 +33,11 @@ namespace vis {
 template <size_t NJOINTS>
 class robotVisBase {
 public:
-  using TrajectoryMsg = xpp_msgs::HyqStateTrajectory;
-  using CurrentInfoMsg   = xpp_msgs::CurrentInfo;
+  using TrajectoryMsg     = xpp_msgs::HyqStateTrajectory;
+  using CurrentInfoMsg    = xpp_msgs::CurrentInfo;
+  using NameJointAngleMap = std::map<std::string, double>;
 
-  std::map<std::string, double> model_joint_positions_;
+  NameJointAngleMap model_joint_positions_;
 
   robotVisBase(std::string my_robot_name, const std::array<std::string, NJOINTS>& my_robot_joints);
   virtual ~robotVisBase();
@@ -44,9 +45,13 @@ public:
   void init();
   void setRobotJointNames(const std::array<std::string, NJOINTS>& my_robot_joints,size_t array_size);
 
+
+protected:
+  std::array<std::string, NJOINTS> robot_joint_names;
+
+
 private:
   static const size_t base_dof = 6;
-  std::array<std::string, NJOINTS> robot_joint_names;
   double playbackSpeed_;
 
   ros::Subscriber state_sub_; /// gets joint states, floating base and stance estimation
@@ -57,7 +62,7 @@ private:
   void stateCallback(const CurrentInfoMsg::ConstPtr& msg);
   void trajectoryCallback(const TrajectoryMsg::ConstPtr& msg);
   void visualizeState(const ros::Time& stamp, const geometry_msgs::Pose& baseState, const sensor_msgs::JointState& jointState);
-  void setRobotJointsFromMessage(const sensor_msgs::JointState &msg, std::map<std::string, double>& model_joint_positions);
+  virtual void setRobotJointsFromMessage(const sensor_msgs::JointState &msg, NameJointAngleMap& model_joint_positions) = 0;
   void setRobotBaseStateFromMessage(const geometry_msgs::Pose &msg, geometry_msgs::TransformStamped& W_X_B_message);
   void setZeroState();
 };
