@@ -10,7 +10,7 @@
 #define HYQB_VIS_HPP
 
 #include "robotVisBase.hpp"
-#include <xpp/hyq/hyq_endeffectors.h>
+//#include <xpp/hyq/ee_hyq.h>
 
 static const std::size_t hyqJoints = 12;
 
