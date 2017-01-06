@@ -37,6 +37,7 @@ public:
   using CurrentInfoMsg    = xpp_msgs::CurrentInfo;
   using NameJointAngleMap = std::map<std::string, double>;
 
+  // this has to be built for publishing in rviz with the correct name of each joint
   NameJointAngleMap model_joint_positions_;
 
   robotVisBase(std::string my_robot_name, const std::array<std::string, NJOINTS>& my_robot_joints);
