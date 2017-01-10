@@ -8,6 +8,8 @@
 #ifndef XPP_MSGS_INCLUDE_XPP_MSGS_TOPIC_NAMES_H_
 #define XPP_MSGS_INCLUDE_XPP_MSGS_TOPIC_NAMES_H_
 
+#include <string>
+
 namespace xpp_msgs {
 
 // command that tells the walking controller to start executing
