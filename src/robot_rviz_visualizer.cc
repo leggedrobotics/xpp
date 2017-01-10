@@ -8,28 +8,26 @@
  */
 
 #include <xpp/ros/topic_names.h>
+#include <xpp/vis/robot_rviz_visualizer.h>
 
 namespace xpp {
 namespace vis {
 
-template <size_t NJOINTS>
-robotVisBase<NJOINTS>::robotVisBase(std::string my_robot_name, const std::array<std::string, NJOINTS>& my_robot_joints) :
-	robot_joint_names(my_robot_joints),
+RobotRvizVisualizer::RobotRvizVisualizer(std::string my_robot_name) :
 	playbackSpeed_(2.0)
 {
 }
 
-template <size_t NJOINTS>
-robotVisBase<NJOINTS>::~robotVisBase()
+RobotRvizVisualizer::~RobotRvizVisualizer()
 {
 }
 
-template <size_t NJOINTS>
-void robotVisBase<NJOINTS>::init()
+void
+RobotRvizVisualizer::init()
 {
   ros::NodeHandle nh;
-  state_sub_ = nh.subscribe(xpp_msgs::curr_robot_state, 1, &robotVisBase::stateCallback, this);
-  traj_sub_  = nh.subscribe(xpp_msgs::robot_trajectory_joints, 1, &robotVisBase::trajectoryCallback, this);
+  state_sub_ = nh.subscribe(xpp_msgs::curr_robot_state, 1, &RobotRvizVisualizer::stateCallback, this);
+  traj_sub_  = nh.subscribe(xpp_msgs::robot_trajectory_joints, 1, &RobotRvizVisualizer::trajectoryCallback, this);
 
   ROS_INFO("Subscribed to: %s", state_sub_.getTopic().c_str());
   ROS_INFO("Subscribed to: %s", traj_sub_.getTopic().c_str());
@@ -50,9 +48,6 @@ void robotVisBase<NJOINTS>::init()
   // initialize the state publisher
   robot_state_publisher = std::make_shared<robot_state_publisher::RobotStatePublisher>(my_kdl_tree);
 
-
-  setZeroState();
-
 	geometry_msgs::TransformStamped W_X_B_message;
 
 	W_X_B_message.header.stamp = ros::Time::now();
@@ -65,8 +60,8 @@ void robotVisBase<NJOINTS>::init()
 	robot_state_publisher->publishFixedTransforms("");
 }
 
-template <size_t NJOINTS>
-void robotVisBase<NJOINTS>::visualizeState(const ros::Time& stamp, const geometry_msgs::Pose& baseState, const sensor_msgs::JointState& jointState)
+void
+RobotRvizVisualizer::visualizeState(const ros::Time& stamp, const geometry_msgs::Pose& baseState, const sensor_msgs::JointState& jointState)
 {
 	// Converting from joint messages to robot state
 	geometry_msgs::TransformStamped W_X_B_message;
@@ -83,8 +78,9 @@ void robotVisBase<NJOINTS>::visualizeState(const ros::Time& stamp, const geometr
 	robot_state_publisher->publishFixedTransforms("");
 }
 
-template <size_t NJOINTS>
-void robotVisBase<NJOINTS>::trajectoryCallback(const TrajectoryMsg::ConstPtr& msg)
+
+void
+RobotRvizVisualizer::trajectoryCallback(const TrajectoryMsg::ConstPtr& msg)
 {
   ROS_INFO("Trajectory received, forwarding to rviz...");
   double dt = 0.004; //[s]
@@ -97,29 +93,14 @@ void robotVisBase<NJOINTS>::trajectoryCallback(const TrajectoryMsg::ConstPtr& ms
 	}
 }
 
-template <size_t NJOINTS>
-void robotVisBase<NJOINTS>::stateCallback(const CurrentInfoMsg::ConstPtr& msg)
+void
+RobotRvizVisualizer::stateCallback(const CurrentInfoMsg::ConstPtr& msg)
 {
   visualizeState(ros::Time::now(), msg->state.base.pose, msg->state.joints);
 }
 
-template<size_t NJOINTS>
-void robotVisBase<NJOINTS>::setZeroState()
-{
-	for(int i = 0 ; i < NJOINTS ; i++)
-		model_joint_positions_[robot_joint_names[i]] = 0;
-}
-
-//// updating global variables from messages
-//template<size_t NJOINTS>
-//void robotVisBase<NJOINTS>::setRobotJointsFromMessage(const sensor_msgs::JointState &msg, std::map<std::string, double>& model_joint_positions)
-//{
-//	for(size_t i = 0 ; i < NJOINTS ; i++)
-//		model_joint_positions[robot_joint_names[i]] = msg.position[i];
-//}
-
-template<size_t NJOINTS>
-void robotVisBase<NJOINTS>::setRobotBaseStateFromMessage(const geometry_msgs::Pose &msg, geometry_msgs::TransformStamped& W_X_B_message)
+void
+RobotRvizVisualizer::setRobotBaseStateFromMessage(const geometry_msgs::Pose &msg, geometry_msgs::TransformStamped& W_X_B_message)
 {
 	W_X_B_message.transform.translation.x =  msg.position.x;
 	W_X_B_message.transform.translation.y =  msg.position.y;
@@ -131,11 +112,6 @@ void robotVisBase<NJOINTS>::setRobotBaseStateFromMessage(const geometry_msgs::Po
 	W_X_B_message.transform.rotation.w = msg.orientation.w;
 }
 
-template<size_t NJOINTS>
-void robotVisBase<NJOINTS>::setRobotJointNames(const std::array<std::string, NJOINTS>& my_robot_joints,size_t array_size)
-{
-	robot_joint_names = my_robot_joints;
-}
 
 } // namespace vis
 } // namespace xpp

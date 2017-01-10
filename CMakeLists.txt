@@ -104,12 +104,12 @@ include_directories(
 )
  
 ## Declare a cpp executable
-add_executable(xpp_vis_node src/xpp_vis_node.cpp)
+add_executable(xpp_vis_node src/xpp_vis_node.cpp src/robot_rviz_visualizer.cc)
 target_link_libraries(xpp_vis_node
   ${catkin_LIBRARIES}
 )
  
-add_executable(example_state_publisher src/example_state_publisher.cpp)
+add_executable(example_state_publisher src/example_state_publisher.cpp src/robot_rviz_visualizer.cc)
 target_link_libraries(example_state_publisher
   ${catkin_LIBRARIES}
 )

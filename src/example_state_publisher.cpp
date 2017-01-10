@@ -6,9 +6,9 @@
  */
 
 #include <ros/ros.h>
-#include <xpp/vis/hyqb_vis.hpp>
 #include <xpp_msgs/HyqStateTrajectory.h>
 #include <xpp/ros/topic_names.h>
+#include "../include/xpp/vis/hyq_rviz_visualizer.hpp"
 
 using TrajectoryMsg = xpp_msgs::HyqStateTrajectory;
 

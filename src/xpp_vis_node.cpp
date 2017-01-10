@@ -6,13 +6,14 @@
  */
 
 #include <ros/ros.h>
-#include <xpp/vis/hyqb_vis.hpp>
+
+#include "../include/xpp/vis/hyq_rviz_visualizer.hpp"
 
 int main(int argc, char *argv[])
 {
 	ros::init(argc, argv, "hyqb_vis");
 
-	xpp::vis::hyqb_vis node;
+	xpp::vis::HyqRvizVisualizer node;
 	node.init();
 
 	std::cout<<"Created hyqb_visualizer node"<<std::endl;
