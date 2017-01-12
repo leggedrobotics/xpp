@@ -17,7 +17,10 @@ namespace vis {
 
 class HyqRvizVisualizer : public RobotRvizVisualizer {
 public:
-	HyqRvizVisualizer() :RobotRvizVisualizer("hyq") {};
+	HyqRvizVisualizer() :RobotRvizVisualizer("hyq") {
+	  playbackSpeed_ = 1.0;
+	};
+
 	virtual ~HyqRvizVisualizer() {};
 
 	void setRobotJointsFromMessage(const sensor_msgs::JointState &msg,

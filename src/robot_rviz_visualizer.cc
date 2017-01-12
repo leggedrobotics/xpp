@@ -13,9 +13,9 @@
 namespace xpp {
 namespace vis {
 
-RobotRvizVisualizer::RobotRvizVisualizer(std::string my_robot_name) :
-	playbackSpeed_(2.0)
+RobotRvizVisualizer::RobotRvizVisualizer(std::string my_robot_name)
 {
+  playbackSpeed_ = 1.0;
 }
 
 RobotRvizVisualizer::~RobotRvizVisualizer()

@@ -36,7 +36,6 @@ public:
   using CurrentInfoMsg    = xpp_msgs::CurrentInfo;
   using NameJointAngleMap = std::map<std::string, double>;
 
-
   RobotRvizVisualizer(std::string my_robot_name);
   virtual ~RobotRvizVisualizer();
 
@@ -45,7 +44,6 @@ public:
 private:
   // this has to be built for publishing in rviz with the correct name of each joint
   NameJointAngleMap model_joint_positions_;
-  double playbackSpeed_;
 
   ros::Subscriber state_sub_; /// gets joint states, floating base and stance estimation
   ros::Subscriber traj_sub_; /// gets joint states, floating base and stance estimation
@@ -57,6 +55,9 @@ private:
   void visualizeState(const ros::Time& stamp, const geometry_msgs::Pose& baseState, const sensor_msgs::JointState& jointState);
   virtual void setRobotJointsFromMessage(const sensor_msgs::JointState &msg, NameJointAngleMap& model_joint_positions) = 0;
   void setRobotBaseStateFromMessage(const geometry_msgs::Pose &msg, geometry_msgs::TransformStamped& W_X_B_message);
+
+protected:
+  double playbackSpeed_;
 };
 
 } // namespace vis
