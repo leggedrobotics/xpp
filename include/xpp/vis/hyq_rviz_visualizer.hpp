@@ -18,7 +18,7 @@ namespace vis {
 class HyqRvizVisualizer : public RobotRvizVisualizer {
 public:
 	HyqRvizVisualizer() :RobotRvizVisualizer("hyq") {
-	  playbackSpeed_ = 1.0;
+	  playbackSpeed_ = 1.0;//0.25;
 	};
 
 	virtual ~HyqRvizVisualizer() {};

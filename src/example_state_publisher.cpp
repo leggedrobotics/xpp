@@ -6,11 +6,10 @@
  */
 
 #include <ros/ros.h>
-#include <xpp_msgs/HyqStateTrajectory.h>
+#include <xpp_msgs/RobotStateTrajectory.h>
 #include <xpp/ros/topic_names.h>
-#include "../include/xpp/vis/hyq_rviz_visualizer.hpp"
 
-using TrajectoryMsg = xpp_msgs::HyqStateTrajectory;
+using TrajectoryMsg = xpp_msgs::RobotStateTrajectory;
 
 int main(int argc, char *argv[])
 {
