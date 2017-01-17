@@ -60,8 +60,8 @@ add_message_files(
   OptimizedParametersNlp.msg
   RequiredInfoQp.msg
   OptimizedParametersQp.msg
-  HyqState.msg
-  HyqStateTrajectory.msg
+  RobotState.msg
+  RobotStateTrajectory.msg
   PDGainsHyq.msg
   CurrentInfo.msg
   UserCommand.msg
