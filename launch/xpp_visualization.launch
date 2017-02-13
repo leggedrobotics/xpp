@@ -1,9 +1,14 @@
 <launch>
-   <node name="xpp_vis_node" pkg="xpp_vis" type="xpp_vis_node" output="screen">
+   <!-- visualizes the robot in rviz through the URDF -->
+   <node name="robot_rviz_visualizer" pkg="xpp_vis" type="robot_rviz_visualizer" output="screen">
+   </node>
+   
+      <!-- visualizes the robot in rviz through the URDF -->
+   <node name="base_state_visualizer" pkg="xpp_vis" type="base_state_visualizer" output="screen">
    </node>
    
    <param name="hyq_rviz_urdf_robot_description" command="$(find xacro)/xacro.py '$(find hyqb_description)/urdf/robots/hyqb.urdf.xacro'"/>
   
-  <node name="rviz" pkg="rviz" type="rviz"  args="-d $(find xpp_vis)/rviz/xpp.rviz">
-  </node>
+<!--   <node name="rviz" pkg="rviz" type="rviz"  args="-d $(find xpp_vis)/rviz/xpp.rviz"> -->
+<!--   </node> -->
 </launch>

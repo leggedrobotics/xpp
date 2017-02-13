@@ -102,10 +102,10 @@ include_directories(
   include
   ${catkin_INCLUDE_DIRS}
 )
- 
+
 ## Declare a cpp executable
-add_executable(xpp_vis_node src/xpp_vis_node.cpp src/robot_rviz_visualizer.cc)
-target_link_libraries(xpp_vis_node
+add_executable(robot_rviz_visualizer src/xpp_vis_node.cpp src/robot_rviz_visualizer.cc)
+target_link_libraries(robot_rviz_visualizer
   ${catkin_LIBRARIES}
 )
  
@@ -113,7 +113,17 @@ add_executable(example_state_publisher src/example_state_publisher.cpp src/robot
 target_link_libraries(example_state_publisher
   ${catkin_LIBRARIES}
 )
+
+add_executable(gazebo_state_publisher src/gazebo_state_publisher.cpp)
+target_link_libraries(gazebo_state_publisher
+  ${catkin_LIBRARIES}
+)
+
+add_executable(base_state_visualizer src/base_state_visualizer.cpp)
+target_link_libraries(base_state_visualizer
+  ${catkin_LIBRARIES}
+)
  
 ## add msg dependencies
-add_dependencies(xpp_vis_node ${catkin_EXPORTED_TARGETS})
+add_dependencies(robot_rviz_visualizer ${catkin_EXPORTED_TARGETS})
 add_dependencies(example_state_publisher ${catkin_EXPORTED_TARGETS})
