@@ -21,11 +21,17 @@ static const std::string goal_state_topic("xpp/goal_state");
 // information necessary to setup an NLP
 static const std::string curr_robot_state("current_robot_state");
 
+// information necessary to setup an NLP
+static const std::string curr_base_pose("current_base_pose");
+
 // sequence of full body hyq states as reference for a walking controller
 static const std::string robot_trajectory_joints("hyq_state_trajectory");
 
 // rviz marker topic for NLP's optimized variables (spline coefficients, footholds,...)
 static const std::string rviz_optimized("/optimization_variables");
+
+// rviz marker topic for NLP's optimized variables (spline coefficients, footholds,...)
+static const std::string rviz_optimized_single("/optimization_variables_single");
 
 // rviz marker topic for fixed variables of NLP optimization (e.g. start stance)
 static const std::string rviz_fixed("/optimization_fixed");
