@@ -18,11 +18,14 @@ static const std::string start_walking_topic("xpp/start_walking");
 // position of the desired goal to reach
 static const std::string goal_state_topic("xpp/goal_state");
 
-// information necessary to setup an NLP
+// the complete robot state including base, joints, time, ...
 static const std::string curr_robot_state("current_robot_state");
 
-// information necessary to setup an NLP
+// the current position of the robot as a ros pose marker
 static const std::string curr_base_pose("current_base_pose");
+
+// initial velocity (force vector)
+static const std::string init_velocity("initial_velocity");
 
 // sequence of full body hyq states as reference for a walking controller
 static const std::string robot_trajectory_joints("hyq_state_trajectory");
