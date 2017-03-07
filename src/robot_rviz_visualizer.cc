@@ -29,6 +29,8 @@ RobotRvizVisualizer::init()
   state_sub_ = nh.subscribe(xpp_msgs::curr_robot_state, 1, &RobotRvizVisualizer::stateCallback, this);
   traj_sub_  = nh.subscribe(xpp_msgs::robot_trajectory_joints, 1, &RobotRvizVisualizer::trajectoryCallback, this);
 
+  curr_state_pub_ = nh.advertise<CurrentInfoMsg>(xpp_msgs::curr_robot_state, 1);
+
   ROS_INFO("Subscribed to: %s", state_sub_.getTopic().c_str());
   ROS_INFO("Subscribed to: %s", traj_sub_.getTopic().c_str());
 
@@ -89,6 +91,9 @@ RobotRvizVisualizer::trajectoryCallback(const TrajectoryMsg::ConstPtr& msg)
 	for (size_t i=0; i<msg->states.size(); i++)
 	{
 		visualizeState(ros::Time::now(), msg->states[i].base.pose, msg->states[i].joints);
+		if (get_curr_from_vis_)
+		  curr_state_pub_.publish(msg->states[i]);
+
 		loop_rate.sleep();
 	}
 }

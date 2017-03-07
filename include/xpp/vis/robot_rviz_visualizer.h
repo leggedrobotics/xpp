@@ -47,6 +47,9 @@ private:
 
   ros::Subscriber state_sub_; /// gets joint states, floating base and stance estimation
   ros::Subscriber traj_sub_; /// gets joint states, floating base and stance estimation
+
+  ros::Publisher curr_state_pub_; ///< publishes the current state, so can be used as simulator
+
   tf::TransformBroadcaster broadcaster;
   std::shared_ptr<robot_state_publisher::RobotStatePublisher> robot_state_publisher;
 
@@ -58,6 +61,7 @@ private:
 
 protected:
   double playbackSpeed_;
+  bool get_curr_from_vis_ = false; /// default is that simulator should send out current state
 };
 
 } // namespace vis

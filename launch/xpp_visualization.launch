@@ -3,8 +3,12 @@
    <node name="robot_rviz_visualizer" pkg="xpp_vis" type="robot_rviz_visualizer" output="screen">
    </node>
    
-      <!-- visualizes the robot in rviz through the URDF -->
+      <!-- visualizes the current state of hyq with xyz-axis -->
    <node name="base_state_visualizer" pkg="xpp_vis" type="base_state_visualizer" output="screen">
+   </node>
+   
+      <!-- visualizes the initial velocity as an arrow -->
+   <node name="initial_state_visualizer" pkg="xpp_vis" type="initial_state_visualizer" output="screen">
    </node>
    
    <param name="hyq_rviz_urdf_robot_description" command="$(find xacro)/xacro.py '$(find hyqb_description)/urdf/robots/hyqb.urdf.xacro'"/>

@@ -123,6 +123,11 @@ add_executable(base_state_visualizer src/base_state_visualizer.cpp)
 target_link_libraries(base_state_visualizer
   ${catkin_LIBRARIES}
 )
+
+add_executable(initial_state_visualizer src/initial_state_visualizer.cpp)
+target_link_libraries(initial_state_visualizer
+  ${catkin_LIBRARIES}
+)
  
 ## add msg dependencies
 add_dependencies(robot_rviz_visualizer ${catkin_EXPORTED_TARGETS})
