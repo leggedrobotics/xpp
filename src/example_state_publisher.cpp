@@ -6,10 +6,10 @@
  */
 
 #include <ros/ros.h>
-#include <xpp_msgs/RobotStateTrajectory.h>
+#include <xpp_msgs/RobotStateJointsTrajectory.h>
 #include <xpp/ros/topic_names.h>
 
-using TrajectoryMsg = xpp_msgs::RobotStateTrajectory;
+using TrajectoryMsg = xpp_msgs::RobotStateJointsTrajectory;
 
 int main(int argc, char *argv[])
 {
@@ -29,10 +29,10 @@ int main(int argc, char *argv[])
     int n_states = 100;
     traj.states.resize(n_states);
     for (int i=0; i<n_states; ++i) {
-      traj.states.at(i).base.pose.position.x = goal_x*static_cast<double>(i)/n_states; // moves from zero to one meter forward
-      traj.states.at(i).base.pose.position.y = 0;
-      traj.states.at(i).base.pose.position.z = 0;
-      traj.states.at(i).base.pose.orientation.w = 1;
+      traj.states.at(i).common.base.pose.position.x = goal_x*static_cast<double>(i)/n_states; // moves from zero to one meter forward
+      traj.states.at(i).common.base.pose.position.y = 0;
+      traj.states.at(i).common.base.pose.position.z = 0;
+      traj.states.at(i).common.base.pose.orientation.w = 1;
       traj.states.at(i).joints.position.resize(12);
       traj.states.at(i).joints.position.at(2) = -1.0;
     }

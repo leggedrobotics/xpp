@@ -90,7 +90,7 @@ RobotRvizVisualizer::trajectoryCallback(const TrajectoryMsg::ConstPtr& msg)
 
 	for (size_t i=0; i<msg->states.size(); i++)
 	{
-		visualizeState(ros::Time::now(), msg->states[i].base.pose, msg->states[i].joints);
+		visualizeState(ros::Time::now(), msg->states[i].common.base.pose, msg->states[i].joints);
 		if (get_curr_from_vis_)
 		  curr_state_pub_.publish(msg->states[i]);
 
@@ -101,7 +101,7 @@ RobotRvizVisualizer::trajectoryCallback(const TrajectoryMsg::ConstPtr& msg)
 void
 RobotRvizVisualizer::stateCallback(const CurrentInfoMsg::ConstPtr& msg)
 {
-  visualizeState(ros::Time::now(), msg->state.base.pose, msg->state.joints);
+  visualizeState(ros::Time::now(), msg->state.common.base.pose, msg->state.joints);
 }
 
 void

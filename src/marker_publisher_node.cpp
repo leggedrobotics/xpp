@@ -7,16 +7,15 @@
 
 #include <ros/ros.h>
 
-#include <xpp/vis/hyq_rviz_visualizer.h>
+#include <xpp/ros/ros_visualizer.h>
 
 int main(int argc, char *argv[])
 {
-	ros::init(argc, argv, "hyqb_vis");
+	ros::init(argc, argv, "optimization_visualizer");
 
-	xpp::vis::HyqRvizVisualizer node;
-	node.init();
+	xpp::ros::RosVisualizer node;
 
-	std::cout<<"Created hyqb_visualizer node"<<std::endl;
+	ROS_INFO_STREAM("Created optimization visualizer node");
 
 	ros::spin();
 

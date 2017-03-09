@@ -9,11 +9,13 @@
 #include <xpp/ros/topic_names.h>
 
 #include <geometry_msgs/PoseStamped.h>
-#include <xpp_msgs/RobotStateTrajectory.h>
+#include <xpp_msgs/RobotStateJointsTrajectory.h>
 
 using PoseMsg        = geometry_msgs::PoseStamped;
-using TrajectoryMsg  = xpp_msgs::RobotStateTrajectory;
+using TrajectoryMsg  = xpp_msgs::RobotStateJointsTrajectory;
 
+/** Draws an arrow in RVIZ to visualize push that generates initial velocity
+  */
 class InitialStateVisualizer {
 public:
   InitialStateVisualizer() {
@@ -29,11 +31,11 @@ private:
   {
     // Get very first state
     pose_arrow_msg_.header.stamp = ::ros::Time::now();
-    pose_arrow_msg_.pose = msg->states.front().base.pose;
+    pose_arrow_msg_.pose = msg->states.front().common.base.pose;
     ROS_DEBUG_STREAM("received current hyq state");
 
     // orient according to initial velocity
-    auto initial_vel = msg->states.front().base.twist;
+    auto initial_vel = msg->states.front().common.base.twist;
     double alpha = atan2( initial_vel.linear.y, initial_vel.linear.x);
 
     pose_arrow_msg_.pose.position.x -= cos(alpha)*0.8;

@@ -28,7 +28,7 @@ private:
   {
     // receiving complete body state
     hyq_pose_msg_.header.stamp = ::ros::Time::now();
-    hyq_pose_msg_.pose = msg->state.base.pose;
+    hyq_pose_msg_.pose = msg->state.common.base.pose;
     ROS_DEBUG_STREAM("received current hyq state");
 
     // publishing only the pose part

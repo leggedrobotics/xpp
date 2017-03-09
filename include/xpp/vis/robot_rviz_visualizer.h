@@ -24,7 +24,7 @@
 #include <robot_state_publisher/robot_state_publisher.h>
 #include <kdl_parser/kdl_parser.hpp>
 
-#include <xpp_msgs/RobotStateTrajectory.h>
+#include <xpp_msgs/RobotStateJointsTrajectory.h>
 #include <xpp_msgs/CurrentInfo.h>
 
 namespace xpp {
@@ -32,7 +32,7 @@ namespace vis {
 
 class RobotRvizVisualizer {
 public:
-  using TrajectoryMsg     = xpp_msgs::RobotStateTrajectory;
+  using TrajectoryMsg     = xpp_msgs::RobotStateJointsTrajectory;
   using CurrentInfoMsg    = xpp_msgs::CurrentInfo;
   using NameJointAngleMap = std::map<std::string, double>;
 

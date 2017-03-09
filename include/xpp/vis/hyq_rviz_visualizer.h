@@ -19,7 +19,7 @@ class HyqRvizVisualizer : public RobotRvizVisualizer {
 public:
 	HyqRvizVisualizer() :RobotRvizVisualizer("hyq") {
 	  playbackSpeed_ = 2.0;//0.25;
-	  get_curr_from_vis_ = true;
+	  get_curr_from_vis_ = false;
 	};
 
 	virtual ~HyqRvizVisualizer() {};

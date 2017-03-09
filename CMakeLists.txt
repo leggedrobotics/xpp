@@ -7,7 +7,8 @@ project(xpp_vis)
 find_package(catkin REQUIRED COMPONENTS
   hyqb_description #urdf file for rviz
   xpp_msgs
-  xpp_common    # only for hyq_endeffectors       
+  xpp_common    # only for hyq_endeffectors  
+  xpp_ros       # spring_clean_ remove again, only messages should be interface     
   # ros stuff
   tf 
   kdl_parser
@@ -126,6 +127,11 @@ target_link_libraries(base_state_visualizer
 
 add_executable(initial_state_visualizer src/initial_state_visualizer.cpp)
 target_link_libraries(initial_state_visualizer
+  ${catkin_LIBRARIES}
+)
+
+add_executable(optimization_visualizer src/marker_publisher_node.cpp)
+target_link_libraries(optimization_visualizer
   ${catkin_LIBRARIES}
 )
  
