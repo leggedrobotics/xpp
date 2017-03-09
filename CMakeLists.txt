@@ -6,13 +6,12 @@ project(xpp_vis)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
   hyqb_description #urdf file for rviz
-  xpp_msgs
-  xpp_common    # only for hyq_endeffectors  
-  xpp_ros       # spring_clean_ remove again, only messages should be interface     
+  xpp_conversions     
   # ros stuff
-  tf 
+  tf
   kdl_parser
   robot_state_publisher
+  xpp_hyq
 )
 
 ## System dependencies are found with CMake's conventions
@@ -104,34 +103,56 @@ include_directories(
   ${catkin_INCLUDE_DIRS}
 )
 
+# Declare a C++ library
+add_library(xpp_vis
+  src/robot_rviz_visualizer.cc
+  src/marker_array_builder.cc
+  src/opt_visualizer.cc
+)
+target_link_libraries(xpp_vis
+  ${catkin_LIBRARIES}
+)
+
 ## Declare a cpp executable
-add_executable(robot_rviz_visualizer src/xpp_vis_node.cpp src/robot_rviz_visualizer.cc)
+add_executable(robot_rviz_visualizer src/exe/hyq_visualizer_node.cc)
 target_link_libraries(robot_rviz_visualizer
-  ${catkin_LIBRARIES}
-)
- 
-add_executable(example_state_publisher src/example_state_publisher.cpp src/robot_rviz_visualizer.cc)
-target_link_libraries(example_state_publisher
+  xpp_vis
   ${catkin_LIBRARIES}
 )
 
-add_executable(gazebo_state_publisher src/gazebo_state_publisher.cpp)
-target_link_libraries(gazebo_state_publisher
-  ${catkin_LIBRARIES}
-)
-
-add_executable(base_state_visualizer src/base_state_visualizer.cpp)
+add_executable(base_state_visualizer src/exe/base_state_visualizer.cc)
 target_link_libraries(base_state_visualizer
+  xpp_vis
   ${catkin_LIBRARIES}
 )
 
-add_executable(initial_state_visualizer src/initial_state_visualizer.cpp)
+add_executable(initial_state_visualizer src/exe/initial_state_visualizer.cc)
 target_link_libraries(initial_state_visualizer
+  xpp_vis
   ${catkin_LIBRARIES}
 )
 
-add_executable(optimization_visualizer src/marker_publisher_node.cpp)
+add_executable(optimization_visualizer src/exe/opt_visualizer_node.cc)
 target_link_libraries(optimization_visualizer
+  xpp_vis
+  ${catkin_LIBRARIES}
+)
+
+add_executable(goal_visualizer_node src/exe/goal_visualizer_node.cc)
+target_link_libraries(goal_visualizer_node 
+  xpp_vis
+  ${catkin_LIBRARIES}
+)
+
+add_executable(gazebo_state_publisher src/exe/gazebo_state_publisher.cc)
+target_link_libraries(gazebo_state_publisher
+  xpp_vis
+  ${catkin_LIBRARIES}
+)
+
+add_executable(example_state_publisher src/exe/example_state_publisher.cc)
+target_link_libraries(example_state_publisher
+  xpp_vis
   ${catkin_LIBRARIES}
 )
  

@@ -48,7 +48,11 @@
   <build_depend>xpp_common</build_depend>
   <build_depend>xpp_ros</build_depend>
   
+  <build_depend>xpp_hyq</build_depend>
+  <run_depend>xpp_hyq</run_depend>
+  
   <run_depend>hyqb_description</run_depend>
+  
 
   <!-- The export tag contains other, unspecified, tags -->
   <export>
