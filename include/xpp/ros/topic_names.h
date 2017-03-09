@@ -28,7 +28,13 @@ static const std::string curr_base_pose("current_base_pose");
 static const std::string init_velocity("initial_velocity");
 
 // sequence of full body hyq states as reference for a walking controller
-static const std::string robot_trajectory_joints("hyq_state_trajectory");
+static const std::string robot_trajectory_joints("hyq_joint_state_trajectory");
+
+// sequence of cartesian robot states
+static const std::string robot_trajectory_cart("hyq_cart_state_trajectory");
+
+// sequence of full body hyq states as reference for a walking controller
+static const std::string contact_vector("contact_vector");
 
 // rviz marker topic for NLP's optimized variables (spline coefficients, footholds,...)
 static const std::string rviz_optimized("/optimization_variables");
