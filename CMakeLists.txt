@@ -5,13 +5,12 @@ project(xpp_vis)
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
-  hyqb_description #urdf file for rviz
-  xpp_conversions     
-  # ros stuff
   tf
   kdl_parser
   robot_state_publisher
-  xpp_hyq
+  hyqb_description        # urdf file for rviz
+  xpp_hyq                 # for inverse kinematics
+  xpp_msgs
 )
 
 ## System dependencies are found with CMake's conventions
@@ -108,6 +107,7 @@ add_library(xpp_vis
   src/robot_rviz_visualizer.cc
   src/marker_array_builder.cc
   src/opt_visualizer.cc
+  src/hyq_rviz_visualizer.cc
 )
 target_link_libraries(xpp_vis
   ${catkin_LIBRARIES}

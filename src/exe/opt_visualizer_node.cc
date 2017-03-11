@@ -6,14 +6,13 @@
  */
 
 #include <ros/ros.h>
-
-#include <xpp/vis/opt_visualizer.h>
+#include <xpp/opt_visualizer.h>
 
 int main(int argc, char *argv[])
 {
 	ros::init(argc, argv, "optimization_visualizer");
 
-	xpp::ros::OptVisualizer node;
+	xpp::OptVisualizer node;
 
 	ROS_INFO_STREAM("Created optimization visualizer node");
 
@@ -21,3 +20,5 @@ int main(int argc, char *argv[])
 
 	return 1;
 }
+
+

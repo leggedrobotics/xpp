@@ -5,14 +5,13 @@
  @brief   Brief description
  */
 
-#include <xpp/vis/opt_visualizer.h>
-#include <xpp/vis/marker_array_builder.h>
+#include <xpp/opt_visualizer.h>
+#include <xpp/marker_array_builder.h>
 
 #include <xpp/ros/ros_helpers.h>
 #include <xpp/ros/topic_names.h>
 
 namespace xpp {
-namespace ros {
 
 using MarkerArrayMsg = visualization_msgs::MarkerArray;
 
@@ -38,7 +37,7 @@ OptVisualizer::TrajectoryCallback (const TrajMsg::ConstPtr& traj_msg)
 {
   ROS_INFO_STREAM("Received new robot trajectory");
   MarkerArrayBuilder msg_builder;
-  msg_builder.robot_traj_ = RosHelpers::RosToXppCart(*traj_msg);
+  msg_builder.robot_traj_ = ros::RosHelpers::RosToXppCart(*traj_msg);
 
 
   MarkerArrayMsg msg;
@@ -55,7 +54,7 @@ OptVisualizer::TrajectoryCallback (const TrajMsg::ConstPtr& traj_msg)
 void
 OptVisualizer::ContactsCallback (const ContactVecMsg& contact_msg)
 {
-  auto contacts = RosHelpers::RosToXpp(contact_msg);
+  auto contacts = ros::RosHelpers::RosToXpp(contact_msg);
   MarkerArrayMsg msg;
 
   // already publishing using trajectory callback
@@ -63,5 +62,4 @@ OptVisualizer::ContactsCallback (const ContactVecMsg& contact_msg)
 //  ros_publisher_optimized_.publish(msg);
 }
 
-} /* namespace ros */
 } /* namespace xpp */

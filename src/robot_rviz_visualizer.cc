@@ -8,10 +8,9 @@
  */
 
 #include <xpp/ros/topic_names.h>
-#include <xpp/vis/robot_rviz_visualizer.h>
+#include <xpp/robot_rviz_visualizer.h>
 
 namespace xpp {
-namespace vis {
 
 RobotRvizVisualizer::RobotRvizVisualizer(std::string my_robot_name)
 {
@@ -27,7 +26,7 @@ RobotRvizVisualizer::init()
 {
   ros::NodeHandle nh;
   state_sub_ = nh.subscribe(xpp_msgs::curr_robot_state, 1, &RobotRvizVisualizer::stateCallback, this);
-  traj_sub_  = nh.subscribe(xpp_msgs::robot_trajectory_joints, 1, &RobotRvizVisualizer::trajectoryCallback, this);
+  traj_sub_  = nh.subscribe(xpp_msgs::robot_trajectory_cart, 1, &RobotRvizVisualizer::trajectoryCallback, this);
 
   curr_state_pub_ = nh.advertise<CurrentInfoMsg>(xpp_msgs::curr_robot_state, 1);
 
@@ -80,7 +79,6 @@ RobotRvizVisualizer::visualizeState(const ros::Time& stamp, const geometry_msgs:
 	robot_state_publisher->publishFixedTransforms("");
 }
 
-
 void
 RobotRvizVisualizer::trajectoryCallback(const TrajectoryMsg::ConstPtr& msg)
 {
@@ -90,7 +88,8 @@ RobotRvizVisualizer::trajectoryCallback(const TrajectoryMsg::ConstPtr& msg)
 
 	for (size_t i=0; i<msg->states.size(); i++)
 	{
-		visualizeState(ros::Time::now(), msg->states[i].common.base.pose, msg->states[i].joints);
+	  VisualizeCartesian(msg->states.at(i));
+//		visualizeState(ros::Time::now(), msg->states[i].common.base.pose, msg->states[i].joints);
 		if (get_curr_from_vis_)
 		  curr_state_pub_.publish(msg->states[i]);
 
@@ -101,7 +100,8 @@ RobotRvizVisualizer::trajectoryCallback(const TrajectoryMsg::ConstPtr& msg)
 void
 RobotRvizVisualizer::stateCallback(const CurrentInfoMsg::ConstPtr& msg)
 {
-  visualizeState(ros::Time::now(), msg->state.common.base.pose, msg->state.joints);
+  VisualizeCartesian(msg->state);
+//  visualizeState(ros::Time::now(), msg->state.common.base.pose, msg->state.joints);
 }
 
 void
@@ -117,10 +117,5 @@ RobotRvizVisualizer::setRobotBaseStateFromMessage(const geometry_msgs::Pose &msg
 	W_X_B_message.transform.rotation.w = msg.orientation.w;
 }
 
-
-} // namespace vis
 } // namespace xpp
-
-
-
 

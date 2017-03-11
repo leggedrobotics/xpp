@@ -8,12 +8,11 @@
 #ifndef XPP_OPT_INCLUDE_MARKER_ARRAY_BUILDER_H_
 #define XPP_OPT_INCLUDE_MARKER_ARRAY_BUILDER_H_
 
-#include <xpp/opt/robot_state_cartesian.h>
+#include <xpp/robot_state_cartesian.h>
 #include <visualization_msgs/MarkerArray.h>
 #include <functional> //std::function
 
 namespace xpp {
-namespace ros {
 
 /** @brief Builds ROS marker array messages that can be visualized in rviz.
   *
@@ -23,14 +22,14 @@ namespace ros {
   */
 class MarkerArrayBuilder {
 public:
-  using ContactVec      = std::vector<xpp::opt::Contact>;
+  using ContactVec      = std::vector<Contact>;
   using Vector2d        = Eigen::Vector2d;
   using Marker          = visualization_msgs::Marker;
   using MarkerArray     = visualization_msgs::MarkerArray;
-  using EEID            = xpp::utils::EndeffectorID;
+  using EEID            = EndeffectorID;
 
-  using RobotCartTraj   = std::vector<opt::RobotStateCartesian>;
-  using FctPtr          = const std::function<Eigen::Vector2d(const utils::StateLin3d&)>;
+  using RobotCartTraj   = std::vector<RobotStateCartesian>;
+  using FctPtr          = const std::function<Eigen::Vector2d(const StateLin3d&)>;
 
 
 public:
@@ -91,7 +90,6 @@ private:
 //                   double alpha = 1.0) const;
 };
 
-} /* namespace ros */
 } /* namespace xpp */
 
 #endif /* XPP_OPT_INCLUDE_MARKER_ARRAY_BUILDER_H_ */

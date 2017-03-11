@@ -9,6 +9,7 @@
 #include <xpp_msgs/RobotStateJointsTrajectory.h>
 #include <xpp/ros/topic_names.h>
 
+
 using TrajectoryMsg = xpp_msgs::RobotStateJointsTrajectory;
 
 int main(int argc, char *argv[])
@@ -45,3 +46,4 @@ int main(int argc, char *argv[])
 
   return 1;
 }
+

@@ -11,6 +11,8 @@
 #include <geometry_msgs/PoseStamped.h>
 #include <xpp_msgs/RobotStateJointsTrajectory.h>
 
+namespace xpp {
+
 using PoseMsg        = geometry_msgs::PoseStamped;
 using TrajectoryMsg  = xpp_msgs::RobotStateJointsTrajectory;
 
@@ -55,13 +57,15 @@ private:
   ros::Publisher  rviz_pub_; ///< sends out an arrow showing the initial states' velocity/push-force.
 };
 
+} // namespace xpp
 
 int main(int argc, char *argv[])
 {
   ros::init(argc, argv, "base_pose_publisher");
 
-  InitialStateVisualizer initial_state_visualizer;
+  xpp::InitialStateVisualizer initial_state_visualizer;
   ros::spin();
 
   return 1;
 }
+

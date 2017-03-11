@@ -15,7 +15,6 @@
 #include <ros/subscriber.h>
 
 namespace xpp {
-namespace ros {
 
 /** @brief Visualizes the current values of the optimization variables.
   *
@@ -41,7 +40,6 @@ private:
   void ContactsCallback (const ContactVecMsg& msg);
 };
 
-} /* namespace ros */
 } /* namespace xpp */
 
 #endif /* XPP_VIS_OPT_VISUALIZER */

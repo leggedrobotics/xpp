@@ -13,7 +13,6 @@
 using CurrentInfoMsg = xpp_msgs::CurrentInfo;
 using PoseMsg        = geometry_msgs::PoseStamped;
 
-
 class BaseStateConverter {
 public:
   BaseStateConverter() {

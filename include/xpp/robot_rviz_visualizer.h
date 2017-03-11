@@ -24,15 +24,14 @@
 #include <robot_state_publisher/robot_state_publisher.h>
 #include <kdl_parser/kdl_parser.hpp>
 
-#include <xpp_msgs/RobotStateJointsTrajectory.h>
+#include <xpp_msgs/RobotStateCartesianTrajectory.h>
 #include <xpp_msgs/CurrentInfo.h>
 
 namespace xpp {
-namespace vis {
 
 class RobotRvizVisualizer {
 public:
-  using TrajectoryMsg     = xpp_msgs::RobotStateJointsTrajectory;
+  using TrajectoryMsg     = xpp_msgs::RobotStateCartesianTrajectory;
   using CurrentInfoMsg    = xpp_msgs::CurrentInfo;
   using NameJointAngleMap = std::map<std::string, double>;
 
@@ -55,16 +54,20 @@ private:
 
   void stateCallback(const CurrentInfoMsg::ConstPtr& msg);
   void trajectoryCallback(const TrajectoryMsg::ConstPtr& msg);
-  void visualizeState(const ros::Time& stamp, const geometry_msgs::Pose& baseState, const sensor_msgs::JointState& jointState);
+
+  virtual void VisualizeCartesian(const xpp_msgs::RobotStateCartesian&) = 0;
+
   virtual void setRobotJointsFromMessage(const sensor_msgs::JointState &msg, NameJointAngleMap& model_joint_positions) = 0;
   void setRobotBaseStateFromMessage(const geometry_msgs::Pose &msg, geometry_msgs::TransformStamped& W_X_B_message);
 
 protected:
   double playbackSpeed_;
   bool get_curr_from_vis_ = false; /// default is that simulator should send out current state
+
+  void visualizeState(const ros::Time& stamp, const geometry_msgs::Pose& baseState,
+                      const sensor_msgs::JointState& jointState);
 };
 
-} // namespace vis
 } // namespace xpp
 
 #endif /* ROBOT_VIS_BASE_H_ */

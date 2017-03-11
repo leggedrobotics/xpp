@@ -5,11 +5,12 @@
 @brief   Visualizes a goal state in rviz that is subscribes to.
  */
 
-#include <xpp/vis/marker_array_builder.h>
+#include <xpp/marker_array_builder.h>
 #include <xpp/ros/ros_helpers.h>
 #include <xpp/ros/topic_names.h>
 #include <xpp_msgs/UserCommand.h>   // listen to goal state
 #include <ros/ros.h>
+
 
 static ros::Publisher rviz_pub;
 static ros::Subscriber goal_sub;
@@ -19,7 +20,7 @@ void CallbackGoal(const xpp_msgs::UserCommand& msg)
   auto goal = xpp::ros::RosHelpers::RosToXpp(msg.goal);
 
   visualization_msgs::MarkerArray msg_rviz;
-  xpp::ros::MarkerArrayBuilder msg_builder_;
+  xpp::MarkerArrayBuilder msg_builder_;
   msg_builder_.AddPoint(msg_rviz, goal.Get2D().p, "goal", visualization_msgs::Marker::CYLINDER);
   rviz_pub.publish(msg_rviz);
 }

@@ -5,11 +5,10 @@
  @brief   Defines a class that builds rviz markers
  */
 
-#include <xpp/vis/marker_array_builder.h>
+#include <xpp/marker_array_builder.h>
 #include <xpp/ros/ros_helpers.h>
 
 namespace xpp {
-namespace ros {
 
 static const std::string supp_tr_topic = "support_polygons";
 static const std::string frame_id_ = "world";
@@ -237,7 +236,7 @@ MarkerArrayBuilder::AddBodyTrajectory (MarkerArray& msg) const
   double dt = 0.01;
   double marker_size = 0.011;
   AddTrajectory(msg, "body", dt, marker_size,
-                [](const utils::StateLin3d& base){return base.Get2D().p;}
+                [](const StateLin3d& base){return base.Get2D().p;}
   );
 }
 
@@ -247,7 +246,7 @@ MarkerArrayBuilder::AddZmpTrajectory (MarkerArray& msg) const
   double dt = 0.1;
   double marker_size = 0.011;
   AddTrajectory(msg, "zmp", dt, marker_size,
-                [](const utils::StateLin3d& base)
+                [](const StateLin3d& base)
                 {return base.GetZmp(base.p.z());}
   );
 }
@@ -311,7 +310,7 @@ void MarkerArrayBuilder::AddFootholds(
     visualization_msgs::Marker marker_msg;
     marker_msg.type = type;
     marker_msg.action = visualization_msgs::Marker::MODIFY;
-    marker_msg.pose.position = RosHelpers::XppToRos<geometry_msgs::Point>(contacts.at(j).p);
+    marker_msg.pose.position = ros::RosHelpers::XppToRos<geometry_msgs::Point>(contacts.at(j).p);
     marker_msg.header.frame_id = frame_id_;
     marker_msg.header.stamp = ::ros::Time();
     marker_msg.ns = rviz_namespace;
@@ -441,5 +440,4 @@ std_msgs::ColorRGBA MarkerArrayBuilder::GetLegColor(EEID ee) const
 ////  }
 //}
 
-} /* namespace ros */
 } /* namespace xpp */
