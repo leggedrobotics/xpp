@@ -10,13 +10,13 @@ find_package(catkin REQUIRED COMPONENTS
   geometry_msgs
   sensor_msgs
   message_generation
+  xpp_states
 )
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++11") 
-
 set(LIB_NAME xpp_msgs)
 
 ## Uncomment this if the package has a setup.py. This macro ensures
@@ -119,7 +119,7 @@ generate_messages(
 catkin_package(
    INCLUDE_DIRS include
    LIBRARIES
-   CATKIN_DEPENDS message_runtime sensor_msgs
+   CATKIN_DEPENDS message_runtime sensor_msgs xpp_states
 #  DEPENDS system_lib
 )
 
@@ -129,13 +129,14 @@ catkin_package(
 
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
-include_directories(
-  include
-  ${catkin_INCLUDE_DIRS}
-)
+#include_directories(
+#  include
+#  ${catkin_INCLUDE_DIRS}
+#)
 
-## Declare a C++ library
-#add_library(xpp_msgs
+# Declare a C++ library
+#add_library(${LIB_NAME}
+#  src/
 #)
 
 # makes sure messages are built before the package
