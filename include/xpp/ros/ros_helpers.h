@@ -188,9 +188,7 @@ RosToXpp(const RobotStateCommonMsg& ros)
   RobotStateCommon xpp(n_ee);
 
   xpp.base_          = RosToXpp(ros.base);
-  xpp.percent_phase_ = ros.percent_phase;
   xpp.t_global_      = ros.t_global;
-  xpp.curr_phase_    = ros.phase;
 
   RobotStateCommon::ContactState contact_state(n_ee);
   for (int ee=0; ee<n_ee; ++ee)
@@ -205,9 +203,7 @@ XppToRos(const RobotStateCommon& xpp)
   RobotStateCommonMsg ros;
 
   ros.base          = XppToRos(xpp.base_);
-  ros.percent_phase = xpp.percent_phase_;
   ros.t_global      = xpp.t_global_;
-  ros.phase         = xpp.curr_phase_;
 
   for (auto ee : xpp.is_contact_.GetEEsOrdered()) {
     ros.ee_in_contact.push_back(xpp.is_contact_.At(ee));
