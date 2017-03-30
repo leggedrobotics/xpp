@@ -33,10 +33,12 @@ MarkerArrayBuilder::AddStartStance (MarkerArray& msg) const
 void
 MarkerArrayBuilder::AddSupportPolygons (MarkerArray& msg) const
 {
-  int prev_phase = -1;
+  int marker_size_start = msg.markers.size();
+
+  auto prev_contact_state = robot_traj_.front().GetContactState();
   for (const auto& state : robot_traj_) {
 
-    if (state.GetCurrentPhase() != prev_phase) {
+    if (state.GetContactState() != prev_contact_state) {
 
       // plot in color of last swingleg
       EEID swingleg = EEID::E0;
@@ -45,13 +47,15 @@ MarkerArrayBuilder::AddSupportPolygons (MarkerArray& msg) const
           swingleg = ee;
 
       BuildSupportPolygon(msg, state.GetContacts(), swingleg);
-      prev_phase = state.GetCurrentPhase();
+      prev_contact_state = state.GetContactState();
     }
   }
 
+  int n_markers_inserted = msg.markers.size() - marker_size_start;
+
   // delete the other markers, maximum of 30 support polygons.
   int i = (msg.markers.size() == 0)? 0 : msg.markers.back().id + 1;
-  for (uint j=prev_phase; j<30; ++j) {
+  for (uint j=n_markers_inserted; j<30; ++j) {
     visualization_msgs::Marker marker;
     marker.id = i++;
     marker.ns = supp_tr_topic;
@@ -63,13 +67,13 @@ MarkerArrayBuilder::AddSupportPolygons (MarkerArray& msg) const
 void
 MarkerArrayBuilder::AddFootholds (MarkerArray& msg) const
 {
-  int prev_phase = -1;
+  auto prev_contact_state = robot_traj_.front().GetContactState();
   ContactVec contacts;
   for (const auto& state : robot_traj_)
-    if (state.GetCurrentPhase() != prev_phase) {
+    if (state.GetContactState() != prev_contact_state) {
       for (auto c : state.GetContacts())
         contacts.push_back(c);
-      prev_phase = state.GetCurrentPhase();
+      prev_contact_state = state.GetContactState();
     }
 
   AddFootholds(msg, contacts, "footholds", visualization_msgs::Marker::SPHERE, 1.0);
