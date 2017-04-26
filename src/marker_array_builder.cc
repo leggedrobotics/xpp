@@ -20,7 +20,7 @@ MarkerArrayBuilder::MarkerArrayBuilder()
 void
 MarkerArrayBuilder::AddStart (MarkerArray& msg) const
 {
-  auto start = robot_traj_.front().GetBase().lin.Get2D().p;
+  auto start = robot_traj_.front().GetBase().lin.Get2D().p_;
   AddPoint(msg, start, "start", visualization_msgs::Marker::CYLINDER);
 }
 
@@ -240,18 +240,29 @@ MarkerArrayBuilder::AddBodyTrajectory (MarkerArray& msg) const
   double dt = 0.01;
   double marker_size = 0.011;
   AddTrajectory(msg, "body", dt, marker_size,
-                [](const StateLin3d& base){return base.Get2D().p;}
+                [](const StateLin3d& base)
+                {
+    return base.Get2D().p_;
+                }
   );
 }
 
 void
 MarkerArrayBuilder::AddZmpTrajectory (MarkerArray& msg) const
 {
-  double dt = 0.1;
-  double marker_size = 0.011;
+  double dt = 0.01;
+  double marker_size = 0.008;
   AddTrajectory(msg, "zmp", dt, marker_size,
                 [](const StateLin3d& base)
-                {return base.GetZmp(base.p.z());}
+                {
+    // calculate zero moment point
+    double z_acc   = base.a_.z();
+    double height  = base.p_.z();
+
+    Vector3d zmp = base.p_ - height/(kGravity+z_acc) * base.a_;
+    Vector2d zmp_xy = zmp.topRows<kDim2d>();
+    return zmp_xy;
+                }
   );
 }
 

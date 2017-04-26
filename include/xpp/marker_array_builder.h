@@ -29,7 +29,7 @@ public:
   using EEID            = EndeffectorID;
 
   using RobotCartTraj   = std::vector<RobotStateCartesian>;
-  using FctPtr          = const std::function<Eigen::Vector2d(const StateLin3d&)>;
+  using FctPtr          = const std::function<Vector2d(const StateLin3d&)>;
 
 
 public:
