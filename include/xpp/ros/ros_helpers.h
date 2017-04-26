@@ -65,17 +65,17 @@ static StateLin3d
 RosToXpp(const StateLin3dMsg& ros)
 {
   StateLin3d point;
-  point.p.x() = ros.pos.x;
-  point.p.y() = ros.pos.y;
-  point.p.z() = ros.pos.z;
+  point.p_.x() = ros.pos.x;
+  point.p_.y() = ros.pos.y;
+  point.p_.z() = ros.pos.z;
 
-  point.v.x() = ros.vel.x;
-  point.v.y() = ros.vel.y;
-  point.v.z() = ros.vel.z;
+  point.v_.x() = ros.vel.x;
+  point.v_.y() = ros.vel.y;
+  point.v_.z() = ros.vel.z;
 
-  point.a.x() = ros.acc.x;
-  point.a.y() = ros.acc.y;
-  point.a.z() = ros.acc.z;
+  point.a_.x() = ros.acc.x;
+  point.a_.y() = ros.acc.y;
+  point.a_.z() = ros.acc.z;
 
   return point;
 }
@@ -84,17 +84,17 @@ static StateLin3dMsg
 XppToRos(const StateLin3d& xpp)
 {
   StateLin3dMsg ros;
-  ros.pos.x = xpp.p.x();
-  ros.pos.y = xpp.p.y();
-  ros.pos.z = xpp.p.z();
+  ros.pos.x = xpp.p_.x();
+  ros.pos.y = xpp.p_.y();
+  ros.pos.z = xpp.p_.z();
 
-  ros.vel.x = xpp.v.x();
-  ros.vel.y = xpp.v.y();
-  ros.vel.z = xpp.v.z();
+  ros.vel.x = xpp.v_.x();
+  ros.vel.y = xpp.v_.y();
+  ros.vel.z = xpp.v_.z();
 
-  ros.acc.x = xpp.a.x();
-  ros.acc.y = xpp.a.y();
-  ros.acc.z = xpp.a.z();
+  ros.acc.x = xpp.a_.x();
+  ros.acc.y = xpp.a_.y();
+  ros.acc.z = xpp.a_.z();
 
   return ros;
 }
@@ -151,9 +151,9 @@ XppToRos(const State3d& xpp)
 {
   BaseStateMsg msg;
 
-  msg.pose.position = XppToRos<geometry_msgs::Point>(xpp.lin.p);
-  msg.twist.linear  = XppToRos<geometry_msgs::Vector3>(xpp.lin.v);
-  msg.accel.linear  = XppToRos<geometry_msgs::Vector3>(xpp.lin.a);
+  msg.pose.position = XppToRos<geometry_msgs::Point>(xpp.lin.p_);
+  msg.twist.linear  = XppToRos<geometry_msgs::Vector3>(xpp.lin.v_);
+  msg.accel.linear  = XppToRos<geometry_msgs::Vector3>(xpp.lin.a_);
 
   msg.pose.orientation = XppToRos(xpp.ang.q);
   msg.twist.angular    = XppToRos<geometry_msgs::Vector3>(xpp.ang.v);
@@ -167,9 +167,9 @@ RosToXpp(const BaseStateMsg& ros)
 {
   State3d xpp;
 
-  xpp.lin.p = RosToXpp(ros.pose.position);
-  xpp.lin.v = RosToXpp(ros.twist.linear);
-  xpp.lin.a = RosToXpp(ros.accel.linear);
+  xpp.lin.p_ = RosToXpp(ros.pose.position);
+  xpp.lin.v_ = RosToXpp(ros.twist.linear);
+  xpp.lin.a_ = RosToXpp(ros.accel.linear);
 
   xpp.ang.q = RosToXpp(ros.pose.orientation);
   xpp.ang.v = RosToXpp(ros.twist.angular);
@@ -240,7 +240,7 @@ RosToXpp(const RobotStateCartesianMsg& ros)
   int i=0;
   for (auto state : ros.feet)
     feet.At(static_cast<EEID>(i++)) = RosToXpp(state);
-  xpp.SetEEState(feet);
+  xpp.SetEEStateInWorld(feet);
 
   return xpp;
 }
