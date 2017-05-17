@@ -25,11 +25,16 @@ public:
   using ContactVec      = std::vector<Contact>;
   using Vector2d        = Eigen::Vector2d;
   using Marker          = visualization_msgs::Marker;
+  using MarkerVec       = std::vector<Marker>;
   using MarkerArray     = visualization_msgs::MarkerArray;
   using EEID            = EndeffectorID;
 
   using RobotCartTraj   = std::vector<RobotStateCartesian>;
   using FctPtr          = const std::function<Vector2d(const StateLin3d&)>;
+
+  using ContactState    = RobotStateCartesian::ContactState;
+  using EEPos           = RobotStateCartesian::EEPos;
+  using EEForces        = RobotStateCartesian::EEForces;
 
 
 public:
@@ -39,7 +44,11 @@ public:
 public:
   RobotCartTraj robot_traj_;
 
-  void VisualizeState(const RobotStateCartesian& state, MarkerArray& msg) const;
+  // next level in the hierarchy
+  MarkerArray VisualizeState(const RobotStateCartesian& state) const;
+  MarkerArray VisualizeTrajectory(const RobotCartTraj& traj) const;
+
+
 
   void AddStart(MarkerArray& msg) const;
   void AddStartStance(MarkerArray& msg) const;
@@ -84,6 +93,19 @@ private:
   void BuildSupportPolygon(MarkerArray& msg,
                            const ContactVec& stance_legs,
                            EEID leg_id) const;
+
+
+
+
+  // next level in the hierarchy (add color and namespace)
+  MarkerVec CreateEEPositions(const EEPos& ee_pos) const;
+  MarkerVec CreateEEForces(const EEForces& ee_forces, const EEPos& ee_pos) const;
+  Marker    CreateBasePos(const Vector3d& pos, const ContactState& contact_state) const;
+
+  // new and improved functions
+  Marker CreateForceArrow(const Vector3d& force, const Vector3d& ee_pos) const;
+  Marker CreateSupportArea(const ContactState& contact_state, const EEPos& ee_pos) const;
+  Marker CreateSphere(const Vector3d& pos, double diameter) const;
 
 //  void AddPendulum(MarkerArray& msg,
 //                   const ComMotion&,

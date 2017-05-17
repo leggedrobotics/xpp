@@ -21,48 +21,185 @@ MarkerArrayBuilder::MarkerArrayBuilder()
 {
 }
 
-void
-MarkerArrayBuilder::VisualizeState (const RobotStateCartesian& state,
-                                    MarkerArray& msg) const
+MarkerArrayBuilder::MarkerArray
+MarkerArrayBuilder::VisualizeTrajectory (const RobotCartTraj& traj) const
 {
-  // start only with the endeffector forces
-  int id = (msg.markers.size() == 0)? 0 : msg.markers.back().id + 1;
+  MarkerArray msg;
+  int id = 100; // to not interfere with state
+  int i=0;
+  for (const auto& state : robot_traj_) {
 
-  for (Vector3d f : state.GetEEForces().ToImpl()) {
-    visualization_msgs::Marker marker;
-    marker.id = id++;
-    marker.type            = visualization_msgs::Marker::ARROW;
-    marker.action          = visualization_msgs::Marker::MODIFY;
-    marker.header.frame_id = frame_id_;
-    marker.header.stamp    = ::ros::Time();
-    marker.ns              = "ee_force";
-    marker.color           = GetLegColor(E0);
-    marker.color.a         = 1.0;
-    // this is the norm of the force vector
-    marker.scale.x = 0.02; // shaft diameter
-    marker.scale.y = 0.05; // arrow-head diameter
-    marker.scale.z = 0.05; // arrow-head length
+    // only plot every tenth state
+    if (i++%3 != 0)
+      continue;
 
-    // this should come from the endeffector positions
-    Vector3d ee_pos(0.1, 0.2, 0.2);
 
-    // this should come from the x,y,z force values
-    Vector3d force(200.0, -200.0, 400.0);
+    MarkerArray msg_state = VisualizeState(state);
 
-    geometry_msgs::Point start, end;
-    start.x = ee_pos.x();
-    start.y = ee_pos.y();
-    start.z = ee_pos.z();
-    marker.points.push_back(start);
+    for (Marker m : msg_state.markers) {
+      m.id = id++;
+      msg.markers.push_back(m);
+    }
 
-    double force_scale = 1000;
-    end.x = ee_pos.x() + force.x()/force_scale;
-    end.y = ee_pos.y() + force.y()/force_scale;
-    end.z = ee_pos.z() + force.z()/force_scale;
-    marker.points.push_back(end);
+//    msg.markers.insert(msg.markers.begin(), msg_state.markers.begin(),
+//                                            msg_state.markers.end());
 
-    msg.markers.push_back(marker);
   }
+
+  return msg;
+}
+
+MarkerArrayBuilder::MarkerArray
+MarkerArrayBuilder::VisualizeState (const RobotStateCartesian& state) const
+{
+  MarkerArray msg;
+
+  Marker base = CreateBasePos(state.GetBase().lin.p_, state.GetContactState());
+  msg.markers.push_back(base);
+
+  MarkerVec ee_pos = CreateEEPositions(state.GetEEPos());
+  msg.markers.insert(msg.markers.begin(), ee_pos.begin(), ee_pos.end());
+
+  MarkerVec ee_forces = CreateEEForces(state.GetEEForces(),state.GetEEPos());
+  msg.markers.insert(msg.markers.begin(), ee_forces.begin(), ee_forces.end());
+
+
+  int id = 0;
+  for (Marker& m : msg.markers) {
+    m.header.frame_id = "world";
+    m.id = id++;
+    //  m.header.stamp = ::ros::Time();
+    //  m.action = visualization_msgs::Marker::MODIFY;
+  }
+
+  return msg;
+}
+
+MarkerArrayBuilder::MarkerVec
+MarkerArrayBuilder::CreateEEPositions (const EEPos& ee_pos) const
+{
+  MarkerVec vec;
+
+  for (auto ee : ee_pos.GetEEsOrdered()) {
+    Marker m = CreateSphere(ee_pos.At(ee), 0.01);
+    m.color  = GetLegColor(ee);
+    m.ns     = "endeffector_pos";
+
+    vec.push_back(m);
+  }
+
+  return vec;
+}
+
+MarkerArrayBuilder::MarkerVec
+MarkerArrayBuilder::CreateEEForces (const EEForces& ee_forces,
+                                    const EEPos& ee_pos) const
+{
+  MarkerVec vec;
+
+  for (auto ee : ee_forces.GetEEsOrdered()) {
+    Marker m = CreateForceArrow(ee_forces.At(ee), ee_pos.At(ee));
+    m.color  = GetLegColor(ee);
+    m.ns     = "ee_force";
+    vec.push_back(m);
+  }
+
+  return vec;
+}
+
+MarkerArrayBuilder::Marker
+MarkerArrayBuilder::CreateBasePos (const Vector3d& pos,
+                                   const ContactState& contact_state) const
+{
+  Marker m = CreateSphere(pos, 0.01);
+
+  // color base like last leg in contact or black if flight phase
+  m.color.r = m.color.g = m.color.b = 0.0;
+  m.color.a = 1.0;
+  for (auto ee : contact_state.GetEEsOrdered())
+    if (contact_state.At(ee))
+      m.color = GetLegColor(ee);
+
+  m.ns = "base_pos";
+
+  return m;
+}
+
+MarkerArrayBuilder::Marker
+MarkerArrayBuilder::CreateSphere (const Vector3d& pos, double diameter) const
+{
+  Marker m;
+
+  m.type = Marker::SPHERE;
+  m.pose.position = ros::RosHelpers::XppToRos<geometry_msgs::Point>(pos);
+  m.scale.x = diameter;
+  m.scale.y = diameter;
+  m.scale.z = diameter;
+
+  return m;
+}
+
+MarkerArrayBuilder::Marker
+MarkerArrayBuilder::CreateForceArrow (const Vector3d& force,
+                                      const Vector3d& ee_pos) const
+{
+  Marker m;
+  m.type = Marker::ARROW;
+  m.scale.x = 0.005; // shaft diameter
+  m.scale.y = 0.01; // arrow-head diameter
+  m.scale.z = 0.01; // arrow-head length
+
+  geometry_msgs::Point start, end;
+  start.x = ee_pos.x();
+  start.y = ee_pos.y();
+  start.z = ee_pos.z();
+  m.points.push_back(start);
+
+  double force_scale = 1000;
+  end.x = ee_pos.x() + force.x()/force_scale;
+  end.y = ee_pos.y() + force.y()/force_scale;
+  end.z = ee_pos.z() + force.z()/force_scale;
+  m.points.push_back(end);
+
+  return m;
+}
+
+MarkerArrayBuilder::Marker
+MarkerArrayBuilder::CreateSupportArea (const ContactState& contact_state,
+                                       const EEPos& ee_pos) const
+{
+  Marker m;
+
+  m.scale.x = m.scale.y = m.scale.z = 1.0;
+  m.ns = supp_tr_topic;
+
+  for (auto ee : contact_state.GetEEsOrdered()) {
+    if (contact_state.At(ee)) { // endeffector in contact
+      geometry_msgs::Point p;
+      p.x = ee_pos.At(ee).x();
+      p.y = ee_pos.At(ee).y();
+      p.z = ee_pos.At(ee).z();
+      m.points.push_back(p);
+    }
+  }
+
+  switch (m.points.size()) {
+    case 3:
+      m.type = Marker::TRIANGLE_LIST;
+      break;
+    case 2:
+      m.type = Marker::LINE_STRIP;
+      m.scale.x = 0.02;
+      break;
+    case 1:
+      /* point not visualized */
+      break;
+    default:
+      /* no nothing also for zero contact or all 4*/
+      break;
+  }
+
+  return m;
 }
 
 void
@@ -141,45 +278,45 @@ MarkerArrayBuilder::BuildSupportPolygon(
 
   int i = (msg.markers.size() == 0)? 0 : msg.markers.back().id + 1;
 
-  visualization_msgs::Marker marker;
-  marker.id = i;
-  marker.header.frame_id = frame_id_;
-  marker.header.stamp = ::ros::Time();
-  marker.ns = supp_tr_topic; //"leg " + std::to_string(leg_id);
-  marker.action = visualization_msgs::Marker::MODIFY;
+  visualization_msgs::Marker m;
+  m.id = i;
+  m.header.frame_id = frame_id_;
+  m.header.stamp = ::ros::Time();
+  m.ns = supp_tr_topic; //"leg " + std::to_string(leg_id);
+  m.action = visualization_msgs::Marker::MODIFY;
  //    marker.lifetime = ros::Duration(10);
-  marker.scale.x = marker.scale.y = marker.scale.z = 1.0;
-  marker.color = GetLegColor(leg_id);
-  marker.color.a = 0.15;
+  m.scale.x = m.scale.y = m.scale.z = 1.0;
+  m.color = GetLegColor(leg_id);
+  m.color.a = 0.15;
 
   static const int points_per_triangle =3;
   if (stance.size() == points_per_triangle) {
-    marker.type = visualization_msgs::Marker::TRIANGLE_LIST;
+    m.type = visualization_msgs::Marker::TRIANGLE_LIST;
     for (size_t i=0; i<points_per_triangle; ++i) {
       geometry_msgs::Point point;
       point.x = stance.at(i).p.x();
       point.y = stance.at(i).p.y();
       point.z = stance.at(i).p.z();
-      marker.points.push_back(point);
+      m.points.push_back(point);
     }
-    msg.markers.push_back(marker);
+    msg.markers.push_back(m);
   }
 
   // if only two contact points exist, draw line
   static const int points_per_line = 2;
   if (stance.size() == points_per_line) {
-    marker.type = visualization_msgs::Marker::LINE_STRIP;
-    marker.scale.x = 0.02;
+    m.type = visualization_msgs::Marker::LINE_STRIP;
+    m.scale.x = 0.02;
 
     for (size_t i=0; i<points_per_line; ++i) {
       geometry_msgs::Point point;
       point.x = stance.at(i).p.x();
       point.y = stance.at(i).p.y();
       point.z = stance.at(i).p.z();
-      marker.points.push_back(point);
+      m.points.push_back(point);
     }
-    marker.color.a = 0.5;
-    msg.markers.push_back(marker);
+    m.color.a = 0.5;
+    msg.markers.push_back(m);
   }
 }
 

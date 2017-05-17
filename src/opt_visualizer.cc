@@ -37,12 +37,16 @@ OptVisualizer::TrajectoryCallback (const TrajMsg::ConstPtr& traj_msg)
 {
   ROS_INFO_STREAM("Received new robot trajectory");
   MarkerArrayBuilder msg_builder;
-  msg_builder.robot_traj_ = ros::RosHelpers::RosToXppCart(*traj_msg);
+
+  auto traj = ros::RosHelpers::RosToXppCart(*traj_msg);
+  msg_builder.robot_traj_ = traj;
 
 
-  MarkerArrayMsg msg;
-  auto first_state = ros::RosHelpers::RosToXpp(traj_msg->states.at(0));
-  msg_builder.VisualizeState(first_state, msg);
+//  MarkerArrayMsg msg;
+//  auto first_state = ros::RosHelpers::RosToXpp(traj_msg->states.at(500));
+//  MarkerArrayMsg msg = msg_builder.VisualizeState(first_state);
+
+  MarkerArrayMsg msg = msg_builder.VisualizeTrajectory(traj);
 
 //  msg_builder.AddStart(msg);
 //  msg_builder.AddBodyTrajectory(msg);
