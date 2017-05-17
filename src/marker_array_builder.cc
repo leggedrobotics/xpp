@@ -17,33 +17,53 @@ static const int max_supp_polygons = 60;
 static const int max_footholds = 160;
 static const double max_time = 30;//s
 
+
 MarkerArrayBuilder::MarkerArrayBuilder()
 {
+  // define a few colors
+  red.a = green.a = blue.a = white.a = brown.a = yellow.a = purple.a = black.a = 1.0;
+
+  black.r  =           black.g  =           black.b  = 0.0;
+  red.r    = 1.0;      red.g    = 0.0;      red.b    = 0.0;
+  green.r  = 0.0;      green.g  = 150./255; green.b  = 76./255;
+  blue.r   = 0.0;      blue.g   = 102./255; blue.b   = 204./255;
+  brown.r  = 122./255; brown.g  = 61./255;  brown.b  = 0.0;
+  white.b  =           white.g  =           white.r  = 1.0;
+  yellow.r = 204./255; yellow.g = 204./255; yellow.b = 0.0;
+  purple.r = 72./255;  purple.g = 61./255;  purple.b = 139./255;
 }
 
 MarkerArrayBuilder::MarkerArray
 MarkerArrayBuilder::VisualizeTrajectory (const RobotCartTraj& traj) const
 {
   MarkerArray msg;
-  int id = 100; // to not interfere with state
+  int id = VisualizeState(robot_traj_.front()).markers.size(); // to not interfere with state
   int i=0;
   for (const auto& state : robot_traj_) {
 
     // only plot every tenth state
-    if (i++%3 != 0)
+    if (i++%2 != 0)
       continue;
-
 
     MarkerArray msg_state = VisualizeState(state);
 
+    // adapt some parameters
     for (Marker m : msg_state.markers) {
+
+      m.color.a = 0.2; // make slightly transparent
+
+      if (m.ns == "support_polygons")
+        m.color.a = 0.02;
+
+      if (m.type == Marker::SPHERE)
+        m.scale.x = m.scale.y = m.scale.z = 0.01;
+
+      if (m.ns == "ee_force")
+        continue; // don't plot endeffector forces in trajectory
+
       m.id = id++;
       msg.markers.push_back(m);
     }
-
-//    msg.markers.insert(msg.markers.begin(), msg_state.markers.begin(),
-//                                            msg_state.markers.end());
-
   }
 
   return msg;
@@ -57,12 +77,17 @@ MarkerArrayBuilder::VisualizeState (const RobotStateCartesian& state) const
   Marker base = CreateBasePos(state.GetBase().lin.p_, state.GetContactState());
   msg.markers.push_back(base);
 
+  Marker cop = CreateCopPos(state.GetEEForces(),state.GetEEPos());
+  msg.markers.push_back(cop);
+
   MarkerVec ee_pos = CreateEEPositions(state.GetEEPos());
   msg.markers.insert(msg.markers.begin(), ee_pos.begin(), ee_pos.end());
 
+  Marker support = CreateSupportArea(state.GetContactState(),state.GetEEPos());
+  msg.markers.push_back(support);
+
   MarkerVec ee_forces = CreateEEForces(state.GetEEForces(),state.GetEEPos());
   msg.markers.insert(msg.markers.begin(), ee_forces.begin(), ee_forces.end());
-
 
   int id = 0;
   for (Marker& m : msg.markers) {
@@ -81,7 +106,7 @@ MarkerArrayBuilder::CreateEEPositions (const EEPos& ee_pos) const
   MarkerVec vec;
 
   for (auto ee : ee_pos.GetEEsOrdered()) {
-    Marker m = CreateSphere(ee_pos.At(ee), 0.01);
+    Marker m = CreateSphere(ee_pos.At(ee));
     m.color  = GetLegColor(ee);
     m.ns     = "endeffector_pos";
 
@@ -99,7 +124,7 @@ MarkerArrayBuilder::CreateEEForces (const EEForces& ee_forces,
 
   for (auto ee : ee_forces.GetEEsOrdered()) {
     Marker m = CreateForceArrow(ee_forces.At(ee), ee_pos.At(ee));
-    m.color  = GetLegColor(ee);
+    m.color  = red;//GetLegColor(ee);
     m.ns     = "ee_force";
     vec.push_back(m);
   }
@@ -111,16 +136,39 @@ MarkerArrayBuilder::Marker
 MarkerArrayBuilder::CreateBasePos (const Vector3d& pos,
                                    const ContactState& contact_state) const
 {
-  Marker m = CreateSphere(pos, 0.01);
+  Marker m = CreateSphere(pos);
 
   // color base like last leg in contact or black if flight phase
-  m.color.r = m.color.g = m.color.b = 0.0;
-  m.color.a = 1.0;
+  m.color = black;
   for (auto ee : contact_state.GetEEsOrdered())
     if (contact_state.At(ee))
       m.color = GetLegColor(ee);
 
   m.ns = "base_pos";
+
+  return m;
+}
+
+MarkerArrayBuilder::Marker
+MarkerArrayBuilder::CreateCopPos (const EEForces& ee_forces,
+                                  const EEPos& ee_pos) const
+{
+  double z_sum = 0.0;
+  for (Vector3d ee : ee_forces.ToImpl())
+    z_sum += ee.z();
+
+  // only then can the Center of Pressure be calculated
+  Vector3d cop = Vector3d::Zero();
+  if (z_sum > 0.0) {
+    for (auto ee : ee_forces.GetEEsOrdered()) {
+      double p = ee_forces.At(ee).z()/z_sum;
+      cop.topRows<kDim2d>() += p*ee_pos.At(ee).topRows<kDim2d>();
+    }
+  }
+
+  Marker m = CreateSphere(cop);
+  m.color = red;
+  m.ns = "cop";
 
   return m;
 }
@@ -147,7 +195,7 @@ MarkerArrayBuilder::CreateForceArrow (const Vector3d& force,
   m.type = Marker::ARROW;
   m.scale.x = 0.005; // shaft diameter
   m.scale.y = 0.01; // arrow-head diameter
-  m.scale.z = 0.01; // arrow-head length
+  m.scale.z = 0.02; // arrow-head length
 
   geometry_msgs::Point start, end;
   start.x = ee_pos.x();
@@ -155,7 +203,7 @@ MarkerArrayBuilder::CreateForceArrow (const Vector3d& force,
   start.z = ee_pos.z();
   m.points.push_back(start);
 
-  double force_scale = 1000;
+  double force_scale = 4000;
   end.x = ee_pos.x() + force.x()/force_scale;
   end.y = ee_pos.y() + force.y()/force_scale;
   end.z = ee_pos.z() + force.z()/force_scale;
@@ -169,9 +217,8 @@ MarkerArrayBuilder::CreateSupportArea (const ContactState& contact_state,
                                        const EEPos& ee_pos) const
 {
   Marker m;
-
+  m.ns = "support_polygons";
   m.scale.x = m.scale.y = m.scale.z = 1.0;
-  m.ns = supp_tr_topic;
 
   for (auto ee : contact_state.GetEEsOrdered()) {
     if (contact_state.At(ee)) { // endeffector in contact
@@ -180,6 +227,7 @@ MarkerArrayBuilder::CreateSupportArea (const ContactState& contact_state,
       p.y = ee_pos.At(ee).y();
       p.z = ee_pos.At(ee).z();
       m.points.push_back(p);
+      m.color = GetLegColor(ee);
     }
   }
 
@@ -189,13 +237,14 @@ MarkerArrayBuilder::CreateSupportArea (const ContactState& contact_state,
       break;
     case 2:
       m.type = Marker::LINE_STRIP;
-      m.scale.x = 0.02;
+      m.scale.x = 0.01;
       break;
     case 1:
-      /* point not visualized */
+      /* just make so small that random marker can't be seen */
+      m.scale.x = m.scale.y = m.scale.z = 0.0001;
       break;
     default:
-      /* no nothing also for zero contact or all 4*/
+      m.scale.x = m.scale.y = m.scale.z = 0.0001;
       break;
   }
 
@@ -550,20 +599,6 @@ void MarkerArrayBuilder::AddFootholds(
 
 std_msgs::ColorRGBA MarkerArrayBuilder::GetLegColor(EEID ee) const
 {
-  // define a few colors
-  std_msgs::ColorRGBA red, green, blue, white, brown, yellow, purple;
-  red.a = green.a = blue.a = white.a = brown.a = yellow.a = purple.a = 1.0;
-
-  red.r = 1.0; red.g = 0.0; red.b = 0.0;
-  green.r = 0.0; green.g = 150./255; green.b = 76./255;
-  blue.r = 0.0; blue.g = 102./255; blue.b = 204./255;
-  brown.r = 122./255; brown.g = 61./255; brown.b = 0.0;
-  white.b = white.g = white.r = 1.0;
-  yellow.r = 204./255; yellow.g = 204./255; yellow.b = 0.0;
-//  purple.r = 123./255; purple.g = 104./255; purple.b = 238./255;
-  purple.r = 72./255; purple.g = 61./255; purple.b = 139./255;
-
-
   std_msgs::ColorRGBA color_leg;
   switch (ee) {
     case EEID::E1:

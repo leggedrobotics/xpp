@@ -95,17 +95,18 @@ private:
                            EEID leg_id) const;
 
 
-
-
   // next level in the hierarchy (add color and namespace)
   MarkerVec CreateEEPositions(const EEPos& ee_pos) const;
   MarkerVec CreateEEForces(const EEForces& ee_forces, const EEPos& ee_pos) const;
   Marker    CreateBasePos(const Vector3d& pos, const ContactState& contact_state) const;
+  Marker    CreateCopPos(const EEForces& ee_forces, const EEPos& ee_pos) const;
 
   // new and improved functions
   Marker CreateForceArrow(const Vector3d& force, const Vector3d& ee_pos) const;
   Marker CreateSupportArea(const ContactState& contact_state, const EEPos& ee_pos) const;
-  Marker CreateSphere(const Vector3d& pos, double diameter) const;
+  Marker CreateSphere(const Vector3d& pos, double diameter = 0.03) const;
+
+  std_msgs::ColorRGBA red, green, blue, white, brown, yellow, purple, black;
 
 //  void AddPendulum(MarkerArray& msg,
 //                   const ComMotion&,
@@ -113,6 +114,7 @@ private:
 //                   double walking_height,
 //                   const std::string& rviz_namespace,
 //                   double alpha = 1.0) const;
+
 };
 
 } /* namespace xpp */

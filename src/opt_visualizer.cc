@@ -41,12 +41,27 @@ OptVisualizer::TrajectoryCallback (const TrajMsg::ConstPtr& traj_msg)
   auto traj = ros::RosHelpers::RosToXppCart(*traj_msg);
   msg_builder.robot_traj_ = traj;
 
+  MarkerArrayMsg msg = msg_builder.VisualizeTrajectory(traj);
+  rviz_pub_.publish(msg);
+
+
+  // zmp_ ugly make sure this is synched with robot visualizer
+  double playbackSpeed_ = 1.0;
+  double dt = 0.004; //[s]
+  ::ros::Rate loop_rate(1.0/dt*playbackSpeed_);
+
+  for (auto state : traj)
+  {
+    MarkerArrayMsg msg = msg_builder.VisualizeState(state);
+    rviz_pub_.publish(msg);
+    loop_rate.sleep();
+  }
 
 //  MarkerArrayMsg msg;
 //  auto first_state = ros::RosHelpers::RosToXpp(traj_msg->states.at(500));
 //  MarkerArrayMsg msg = msg_builder.VisualizeState(first_state);
 
-  MarkerArrayMsg msg = msg_builder.VisualizeTrajectory(traj);
+//  MarkerArrayMsg msg = msg_builder.VisualizeTrajectory(traj);
 
 //  msg_builder.AddStart(msg);
 //  msg_builder.AddBodyTrajectory(msg);
@@ -56,7 +71,7 @@ OptVisualizer::TrajectoryCallback (const TrajMsg::ConstPtr& traj_msg)
 //  msg_builder.AddStartStance(msg);
 
 
-  rviz_pub_.publish(msg);
+//  rviz_pub_.publish(msg);
 }
 
 void
