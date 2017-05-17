@@ -15,7 +15,7 @@ namespace xpp {
 
 HyqRvizVisualizer::HyqRvizVisualizer() :RobotRvizVisualizer("hyq")
 {
-  playbackSpeed_ = 1.0;//0.25;
+  playbackSpeed_     = 1.00;
   get_curr_from_vis_ = false;
 };
 

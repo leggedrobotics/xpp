@@ -13,8 +13,56 @@ namespace xpp {
 static const std::string supp_tr_topic = "support_polygons";
 static const std::string frame_id_ = "world";
 
+static const int max_supp_polygons = 60;
+static const int max_footholds = 160;
+static const double max_time = 30;//s
+
 MarkerArrayBuilder::MarkerArrayBuilder()
 {
+}
+
+void
+MarkerArrayBuilder::VisualizeState (const RobotStateCartesian& state,
+                                    MarkerArray& msg) const
+{
+  // start only with the endeffector forces
+  int id = (msg.markers.size() == 0)? 0 : msg.markers.back().id + 1;
+
+  for (Vector3d f : state.GetEEForces().ToImpl()) {
+    visualization_msgs::Marker marker;
+    marker.id = id++;
+    marker.type            = visualization_msgs::Marker::ARROW;
+    marker.action          = visualization_msgs::Marker::MODIFY;
+    marker.header.frame_id = frame_id_;
+    marker.header.stamp    = ::ros::Time();
+    marker.ns              = "ee_force";
+    marker.color           = GetLegColor(E0);
+    marker.color.a         = 1.0;
+    // this is the norm of the force vector
+    marker.scale.x = 0.02; // shaft diameter
+    marker.scale.y = 0.05; // arrow-head diameter
+    marker.scale.z = 0.05; // arrow-head length
+
+    // this should come from the endeffector positions
+    Vector3d ee_pos(0.1, 0.2, 0.2);
+
+    // this should come from the x,y,z force values
+    Vector3d force(200.0, -200.0, 400.0);
+
+    geometry_msgs::Point start, end;
+    start.x = ee_pos.x();
+    start.y = ee_pos.y();
+    start.z = ee_pos.z();
+    marker.points.push_back(start);
+
+    double force_scale = 1000;
+    end.x = ee_pos.x() + force.x()/force_scale;
+    end.y = ee_pos.y() + force.y()/force_scale;
+    end.z = ee_pos.z() + force.z()/force_scale;
+    marker.points.push_back(end);
+
+    msg.markers.push_back(marker);
+  }
 }
 
 void
@@ -55,7 +103,7 @@ MarkerArrayBuilder::AddSupportPolygons (MarkerArray& msg) const
 
   // delete the other markers, maximum of 30 support polygons.
   int i = (msg.markers.size() == 0)? 0 : msg.markers.back().id + 1;
-  for (uint j=n_markers_inserted; j<30; ++j) {
+  for (uint j=n_markers_inserted; j<max_supp_polygons; ++j) {
     visualization_msgs::Marker marker;
     marker.id = i++;
     marker.ns = supp_tr_topic;
@@ -76,7 +124,8 @@ MarkerArrayBuilder::AddFootholds (MarkerArray& msg) const
       prev_contact_state = state.GetContactState();
     }
 
-  AddFootholds(msg, contacts, "footholds", visualization_msgs::Marker::SPHERE, 1.0);
+  AddFootholds(msg, contacts, "footholds", visualization_msgs::Marker::SPHERE,
+               1.0);
 }
 
 void
@@ -129,6 +178,7 @@ MarkerArrayBuilder::BuildSupportPolygon(
       point.z = stance.at(i).p.z();
       marker.points.push_back(point);
     }
+    marker.color.a = 0.5;
     msg.markers.push_back(marker);
   }
 }
@@ -237,9 +287,9 @@ MarkerArrayBuilder::AddEllipse(visualization_msgs::MarkerArray& msg,
 void
 MarkerArrayBuilder::AddBodyTrajectory (MarkerArray& msg) const
 {
-  double dt = 0.01;
+  double dt = 0.005;   // 0.01
   double marker_size = 0.011;
-  AddTrajectory(msg, "body", dt, marker_size,
+  AddTrajectory(msg, "body", dt, marker_size, false,
                 [](const StateLin3d& base)
                 {
     return base.Get2D().p_;
@@ -250,9 +300,9 @@ MarkerArrayBuilder::AddBodyTrajectory (MarkerArray& msg) const
 void
 MarkerArrayBuilder::AddZmpTrajectory (MarkerArray& msg) const
 {
-  double dt = 0.01;
-  double marker_size = 0.008;
-  AddTrajectory(msg, "zmp", dt, marker_size,
+  double dt = 0.025;  //0.01
+  double marker_size = 0.012; // 0.008
+  AddTrajectory(msg, "zmp", dt, marker_size, true,
                 [](const StateLin3d& base)
                 {
     // calculate zero moment point
@@ -271,6 +321,7 @@ MarkerArrayBuilder::AddTrajectory(visualization_msgs::MarkerArray& msg,
                                   const std::string& rviz_namespace,
                                   double dt,
                                   double marker_size,
+                                  bool is_zmp,
                                   const FctPtr& Get2dValue) const
 {
   int i = (msg.markers.size() == 0)? 0 : msg.markers.back().id + 1;
@@ -292,15 +343,23 @@ MarkerArrayBuilder::AddTrajectory(visualization_msgs::MarkerArray& msg,
     // plot in color of last swingleg
     marker.color.r = marker.color.g = marker.color.b = 0.5; // no swingleg
     marker.color.a = 1.0;
-    for (auto ee : state.GetEndeffectors())
-      if (!state.GetContactState().At(ee))
-        marker.color = GetLegColor(ee);
+
+    for (auto ee : state.GetEndeffectors()) {
+      if (state.GetContactState().At(ee)) {
+        if (is_zmp) {
+          marker.color.r = 1.0;
+          marker.color.g = marker.color.b = 0.0;
+        } else
+          marker.color = GetLegColor(ee);
+      }
+    }
+
 
     msg.markers.push_back(marker);
   }
 
   // delete the other markers
-  for (double t=T; t < 10.0; t+= dt)
+  for (double t=T; t < max_time; t+= dt)
   {
     visualization_msgs::Marker marker;
 
@@ -341,7 +400,7 @@ void MarkerArrayBuilder::AddFootholds(
   }
 
   // maximum of 30 steps
-  for (int k=contacts.size(); k < 80; k++)
+  for (int k=contacts.size(); k < max_footholds; k++)
   {
     visualization_msgs::Marker marker;
 

@@ -41,12 +41,16 @@ OptVisualizer::TrajectoryCallback (const TrajMsg::ConstPtr& traj_msg)
 
 
   MarkerArrayMsg msg;
-  msg_builder.AddStart(msg);
-  msg_builder.AddBodyTrajectory(msg);
-  msg_builder.AddZmpTrajectory(msg);
-  msg_builder.AddFootholds(msg);
-  msg_builder.AddSupportPolygons(msg);
-  msg_builder.AddStartStance(msg);
+  auto first_state = ros::RosHelpers::RosToXpp(traj_msg->states.at(0));
+  msg_builder.VisualizeState(first_state, msg);
+
+//  msg_builder.AddStart(msg);
+//  msg_builder.AddBodyTrajectory(msg);
+//  msg_builder.AddZmpTrajectory(msg);
+//  msg_builder.AddFootholds(msg);
+//  msg_builder.AddSupportPolygons(msg);
+//  msg_builder.AddStartStance(msg);
+
 
   rviz_pub_.publish(msg);
 }

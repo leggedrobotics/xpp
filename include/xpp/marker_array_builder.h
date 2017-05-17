@@ -39,6 +39,8 @@ public:
 public:
   RobotCartTraj robot_traj_;
 
+  void VisualizeState(const RobotStateCartesian& state, MarkerArray& msg) const;
+
   void AddStart(MarkerArray& msg) const;
   void AddStartStance(MarkerArray& msg) const;
   void AddSupportPolygons(MarkerArray& msg) const;
@@ -70,6 +72,7 @@ private:
                      const std::string& rviz_namespace,
                      double dt,
                      double marker_size,
+                     bool is_zmp,
                      const FctPtr& Get2dValue) const;
 
   void AddFootholds(MarkerArray& msg,
