@@ -9,7 +9,6 @@
 #define XPP_VIS_OPT_VISUALIZER
 
 #include <xpp_msgs/RobotStateCartesianTrajectory.h>
-#include <xpp_msgs/ContactVector.h>
 
 #include <ros/publisher.h>
 #include <ros/subscriber.h>
@@ -25,19 +24,16 @@ namespace xpp {
   */
 class OptVisualizer  {
 public:
-  using TrajMsg         = xpp_msgs::RobotStateCartesianTrajectory;
-  using ContactVecMsg   = xpp_msgs::ContactVector;
+  using TrajMsg = xpp_msgs::RobotStateCartesianTrajectory;
 
   OptVisualizer();
   virtual ~OptVisualizer ();
 
 private:
   ::ros::Subscriber traj_sub_;
-  ::ros::Subscriber contacts_sub_;
   ::ros::Publisher rviz_pub_;
 
   void TrajectoryCallback (const TrajMsg::ConstPtr& traj_msg);
-  void ContactsCallback (const ContactVecMsg& msg);
 };
 
 } /* namespace xpp */
