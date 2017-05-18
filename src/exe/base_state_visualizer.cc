@@ -7,11 +7,11 @@
 
 #include <ros/ros.h>
 #include <geometry_msgs/PoseStamped.h>
-#include <xpp_msgs/CurrentInfo.h>
+#include <xpp_msgs/RobotStateCartesian.h>
 #include <xpp/ros/topic_names.h>
 
-using CurrentInfoMsg = xpp_msgs::CurrentInfo;
-using PoseMsg        = geometry_msgs::PoseStamped;
+using CurrentStateMsg = xpp_msgs::RobotStateCartesian;
+using PoseMsg         = geometry_msgs::PoseStamped;
 
 class BaseStateConverter {
 public:
@@ -23,11 +23,11 @@ public:
   }
 
 private:
-  void CurrentStateCallback (const CurrentInfoMsg::ConstPtr& msg)
+  void CurrentStateCallback (const CurrentStateMsg& msg)
   {
     // receiving complete body state
     hyq_pose_msg_.header.stamp = ::ros::Time::now();
-    hyq_pose_msg_.pose = msg->state.common.base.pose;
+    hyq_pose_msg_.pose = msg.common.base.pose;
     ROS_DEBUG_STREAM("received current hyq state");
 
     // publishing only the pose part

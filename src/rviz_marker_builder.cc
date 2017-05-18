@@ -47,13 +47,16 @@ RvizMarkerBuilder::VisualizeTrajectory (const RobotCartTraj& traj) const
       if (m.ns == "support_polygons")
         m.color.a = 0.41/(20*m.points.size()+1); // more transparent for support triangles
 
-      if (m.type == Marker::SPHERE)
+      if (m.type == Marker::SPHERE) {
         m.scale.x = m.scale.y = m.scale.z = 0.01;
+      }
 
       if (m.ns == "ee_force" || m.ns == "inverted_pendulum")
         continue; // don't plot endeffector forces in trajectory
 
       m.id = id++;
+//      m.lifetime = ::ros::Duration(100);
+      m.ns = "traj_" + m.ns;
       msg.markers.push_back(m);
     }
   }
@@ -224,14 +227,14 @@ RvizMarkerBuilder::CreateForceArrow (const Vector3d& force,
   Marker m;
   m.type = Marker::ARROW;
   m.scale.x = 0.008; // shaft diameter
-  m.scale.y = 0.01; // arrow-head diameter
+  m.scale.y = 0.015; // arrow-head diameter
   m.scale.z = 0.03; // arrow-head length
 
-  auto start = ros::RosHelpers::XppToRos<geometry_msgs::Point>(ee_pos);
+  double force_scale = 3500;
+  auto start = ros::RosHelpers::XppToRos<geometry_msgs::Point>(ee_pos - force/force_scale);
   m.points.push_back(start);
 
-  double force_scale = 3500;
-  auto end = ros::RosHelpers::XppToRos<geometry_msgs::Point>(ee_pos + force/force_scale);
+  auto end = ros::RosHelpers::XppToRos<geometry_msgs::Point>(ee_pos);
   m.points.push_back(end);
 
   return m;

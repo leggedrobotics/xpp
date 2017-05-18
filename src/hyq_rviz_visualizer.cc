@@ -2,7 +2,6 @@
 @file    hyq_rviz_visualizer.cc
 @author  Alexander W. Winkler (winklera@ethz.ch)
 @date    Mar 11, 2017
-@brief   Brief description
  */
 
 #include <xpp/hyq_rviz_visualizer.h>
@@ -13,18 +12,8 @@
 
 namespace xpp {
 
-HyqRvizVisualizer::HyqRvizVisualizer() :RobotRvizVisualizer("hyq")
-{
-  playbackSpeed_     = 1.00;
-  get_curr_from_vis_ = false;
-};
-
-HyqRvizVisualizer::~HyqRvizVisualizer()
-{
-};
-
 void
-HyqRvizVisualizer::setRobotJointsFromMessage(const sensor_msgs::JointState &msg,
+HyqRvizVisualizer::SetJointsFromRos(const sensor_msgs::JointState &msg,
                                              NameJointAngleMap& q)
 {
   using namespace hyq;
@@ -53,15 +42,15 @@ HyqRvizVisualizer::setRobotJointsFromMessage(const sensor_msgs::JointState &msg,
 }
 
 void
-HyqRvizVisualizer::VisualizeCartesian(const xpp_msgs::RobotStateCartesian& msg)
+HyqRvizVisualizer::StateCallback(const StateMsg& msg)
 {
   auto hyq_ik = std::make_shared<hyq::HyqInverseKinematics>();
   auto cart   = xpp::ros::RosHelpers::RosToXpp(msg);
   auto joints = RobotStateJoints::FromCartesian(cart, hyq_ik);
 
   auto joints_msg = xpp::RosHelpersJoints::XppToRos(joints);
-  visualizeState(::ros::Time::now(), joints_msg.common.base.pose,
-                                     joints_msg.joints);
+  VisualizeJoints(::ros::Time::now(), joints_msg.common.base.pose,
+                                      joints_msg.joints);
 }
 
 

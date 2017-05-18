@@ -25,47 +25,38 @@
 #include <kdl_parser/kdl_parser.hpp>
 
 #include <xpp_msgs/RobotStateCartesianTrajectory.h>
-#include <xpp_msgs/CurrentInfo.h>
 
 namespace xpp {
 
 class RobotRvizVisualizer {
 public:
   using TrajectoryMsg     = xpp_msgs::RobotStateCartesianTrajectory;
-  using CurrentInfoMsg    = xpp_msgs::CurrentInfo;
+  using StateMsg          = xpp_msgs::RobotStateCartesian;
   using NameJointAngleMap = std::map<std::string, double>;
 
-  RobotRvizVisualizer(std::string my_robot_name);
+  RobotRvizVisualizer();
   virtual ~RobotRvizVisualizer();
 
-  void init();
+protected:
+  void VisualizeJoints(const ros::Time& stamp, const geometry_msgs::Pose& baseState,
+                      const sensor_msgs::JointState& jointState);
 
 private:
-  // this has to be built for publishing in rviz with the correct name of each joint
-  NameJointAngleMap model_joint_positions_;
-
   ros::Subscriber state_sub_; /// gets joint states, floating base and stance estimation
-  ros::Subscriber traj_sub_; /// gets joint states, floating base and stance estimation
-
   ros::Publisher curr_state_pub_; ///< publishes the current state, so can be used as simulator
-
   tf::TransformBroadcaster broadcaster;
   std::shared_ptr<robot_state_publisher::RobotStatePublisher> robot_state_publisher;
 
-  void stateCallback(const CurrentInfoMsg::ConstPtr& msg);
-  void trajectoryCallback(const TrajectoryMsg::ConstPtr& msg);
+  // this has to be built for publishing in rviz with the correct name of each joint
+  NameJointAngleMap model_joint_positions_;
 
-  virtual void VisualizeCartesian(const xpp_msgs::RobotStateCartesian&) = 0;
+  virtual void StateCallback(const StateMsg& msg) = 0;
 
-  virtual void setRobotJointsFromMessage(const sensor_msgs::JointState &msg, NameJointAngleMap& model_joint_positions) = 0;
-  void setRobotBaseStateFromMessage(const geometry_msgs::Pose &msg, geometry_msgs::TransformStamped& W_X_B_message);
+  virtual void SetJointsFromRos(const sensor_msgs::JointState &msg,
+                                NameJointAngleMap& model_joint_positions) = 0;
+  void SetBaseFromRos(const geometry_msgs::Pose &msg,
+                      geometry_msgs::TransformStamped& W_X_B_message);
 
-protected:
-  double playbackSpeed_;
-  bool get_curr_from_vis_ = false; /// default is that simulator should send out current state
-
-  void visualizeState(const ros::Time& stamp, const geometry_msgs::Pose& baseState,
-                      const sensor_msgs::JointState& jointState);
 };
 
 } // namespace xpp
