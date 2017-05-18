@@ -27,11 +27,11 @@ static const std::string curr_base_pose("current_base_pose");
 // initial velocity (force vector)
 static const std::string init_velocity("initial_velocity");
 
-// sequence of full body hyq states as reference for a walking controller
-static const std::string robot_trajectory_joints("hyq_joint_state_trajectory");
-
 // sequence of cartesian robot states
 static const std::string robot_trajectory_cart("hyq_cart_state_trajectory");
+
+// sequence of full body hyq states as reference for a walking controller
+static const std::string robot_trajectory_joints("hyq_joint_state_trajectory");
 
 // sequence of full body hyq states as reference for a walking controller
 static const std::string contact_vector("contact_vector");

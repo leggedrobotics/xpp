@@ -18,7 +18,7 @@
 #include <xpp_msgs/ContactVector.h>
 
 #include <xpp/state.h>
-
+#include <xpp/contact.h>
 #include <xpp/robot_state_cartesian.h>
 
 namespace xpp {
@@ -225,6 +225,9 @@ XppToRos(const RobotStateCartesian& xpp)
   for (auto ee : xpp.GetEEState().ToImpl())
     ros.feet.push_back(XppToRos(ee));
 
+  for (auto ee : xpp.GetEEForces().ToImpl())
+    ros.ee_forces.push_back(XppToRos<geometry_msgs::Vector3>(ee));
+
   return ros;
 }
 
@@ -241,6 +244,12 @@ RosToXpp(const RobotStateCartesianMsg& ros)
   for (auto state : ros.feet)
     feet.At(static_cast<EEID>(i++)) = RosToXpp(state);
   xpp.SetEEStateInWorld(feet);
+
+  i=0;
+  RobotStateCartesian::EEForces ee_forces(n_ee);
+  for (auto forces : ros.ee_forces)
+    ee_forces.At(static_cast<EEID>(i++)) = RosToXpp(forces);
+  xpp.SetEEForcesInWorld(ee_forces);
 
   return xpp;
 }

@@ -62,7 +62,6 @@ add_message_files(
   RobotStateCartesian.msg
   RobotStateCartesianTrajectory.msg
   PDGainsHyq.msg
-  CurrentInfo.msg
   UserCommand.msg
 )
 
