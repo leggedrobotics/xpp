@@ -1,19 +1,24 @@
 <launch>
-   <!-- visualizes the robot in rviz through the URDF -->
+
+   <!-- converts the state trajectory into bag file and sends out states with timestamp -->
+   <node name="trajectory_to_rosbag_converter" pkg="xpp_vis" type="trajectory_to_rosbag_converter" output="screen">
+   </node>
+   
+   <!-- visualizes cartesian base state, endeffector positions and forces -->
+   <node name="optimization_state_visualizer" pkg="xpp_vis" type="optimization_state_visualizer" output="screen">
+   </node>
+
+   <!-- visualizes the joint robot in rviz through the URDF -->
    <node name="robot_rviz_visualizer" pkg="xpp_vis" type="robot_rviz_visualizer" output="screen">
    </node>
    <param name="hyq_rviz_urdf_robot_description" command="$(find xacro)/xacro.py '$(find hyqb_description)/urdf/robots/hyqb.urdf.xacro'"/>
    
-      <!-- visualizes the current state of hyq with xyz-axis -->
+   <!-- visualizes the current state of hyq with xyz-axis -->
    <node name="base_state_visualizer" pkg="xpp_vis" type="base_state_visualizer" output="screen">
    </node>
    
-      <!-- visualizes the initial velocity as an arrow -->
+   <!-- visualizes the initial velocity as an arrow -->
    <node name="initial_state_visualizer" pkg="xpp_vis" type="initial_state_visualizer" output="screen">
-   </node>
-   
-   <!-- visualizes the solution of the optimization -->
-   <node name="optimization_visualizer" pkg="xpp_vis" type="optimization_visualizer" output="screen">
    </node>
    
    <node name="goal_visualizer"     pkg="xpp_vis" type="goal_visualizer_node" output="screen" cwd="node" >  

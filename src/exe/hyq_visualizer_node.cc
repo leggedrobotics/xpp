@@ -10,11 +10,9 @@
 
 int main(int argc, char *argv[])
 {
-	ros::init(argc, argv, "hyqb_vis");
+	ros::init(argc, argv, "hyq_rviz_visualizer");
 
 	xpp::HyqRvizVisualizer node;
-	node.init();
-
 	std::cout<<"Created hyqb_visualizer node"<<std::endl;
 
 	ros::spin();

@@ -7,6 +7,7 @@ project(xpp_vis)
 find_package(catkin REQUIRED COMPONENTS
   tf
   kdl_parser
+  rosbag
   robot_state_publisher
   hyqb_description        # urdf file for rviz
   xpp_hyq                 # for inverse kinematics
@@ -105,8 +106,8 @@ include_directories(
 # Declare a C++ library
 add_library(xpp_vis
   src/robot_rviz_visualizer.cc
-  src/marker_array_builder.cc
-  src/opt_visualizer.cc
+  src/rviz_marker_builder.cc
+  src/trajectory_to_rosbag_converter.cc
   src/hyq_rviz_visualizer.cc
 )
 target_link_libraries(xpp_vis
@@ -132,8 +133,14 @@ target_link_libraries(initial_state_visualizer
   ${catkin_LIBRARIES}
 )
 
-add_executable(optimization_visualizer src/exe/opt_visualizer_node.cc)
-target_link_libraries(optimization_visualizer
+add_executable(trajectory_to_rosbag_converter src/trajectory_to_rosbag_converter.cc)
+target_link_libraries(trajectory_to_rosbag_converter
+  xpp_vis
+  ${catkin_LIBRARIES}
+)
+
+add_executable(optimization_state_visualizer src/exe/opt_state_visualizer_node.cc)
+target_link_libraries(optimization_state_visualizer
   xpp_vis
   ${catkin_LIBRARIES}
 )
