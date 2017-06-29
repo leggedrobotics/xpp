@@ -34,7 +34,7 @@ TrajectoryToRosbagConverter::~TrajectoryToRosbagConverter ()
 void
 TrajectoryToRosbagConverter::TrajectoryCallback (const TrajMsg& traj_msg)
 {
-  ROS_INFO_STREAM("Received new robot trajectory");
+  ROS_INFO_STREAM("Saving trajectory in " << filename);
   auto traj = ros::RosHelpers::RosToXppCart(traj_msg);
 
   // one overall view of the entire trajecetory

@@ -64,16 +64,16 @@ RobotRvizVisualizer::VisualizeJoints(const ros::Time& stamp,
 
 void
 RobotRvizVisualizer::SetBaseFromRos(const geometry_msgs::Pose &msg,
-                                                  geometry_msgs::TransformStamped& W_X_B_message)
+                                    geometry_msgs::TransformStamped& W_X_B_message)
 {
 	W_X_B_message.transform.translation.x =  msg.position.x;
 	W_X_B_message.transform.translation.y =  msg.position.y;
 	W_X_B_message.transform.translation.z =  msg.position.z;
 
+	W_X_B_message.transform.rotation.w = msg.orientation.w;
 	W_X_B_message.transform.rotation.x = msg.orientation.x;
 	W_X_B_message.transform.rotation.y = msg.orientation.y;
 	W_X_B_message.transform.rotation.z = msg.orientation.z;
-	W_X_B_message.transform.rotation.w = msg.orientation.w;
 }
 
 } // namespace xpp

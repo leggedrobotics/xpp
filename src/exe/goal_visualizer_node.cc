@@ -5,25 +5,39 @@
 @brief   Visualizes a goal state in rviz that is subscribes to.
  */
 
-#include <xpp/ros/ros_helpers.h>
-#include <xpp/ros/topic_names.h>
-#include <xpp_msgs/UserCommand.h>   // listen to goal state
-#include <ros/ros.h>
-#include <xpp/rviz_marker_builder.h>
+#include <geometry_msgs/Pose.h>
+#include <geometry_msgs/PoseStamped.h>
+#include <ros/init.h>
+#include <ros/node_handle.h>
+#include <ros/publisher.h>
+#include <ros/subscriber.h>
 
+#include <kindr/Core>
+
+#include <xpp_msgs/StateLin3d.h>
+#include <xpp_msgs/UserCommand.h>   // listen to goal state
+
+#include <xpp/ros/topic_names.h>
+#include <xpp/ros/ros_helpers.h>
+
+
+using PoseMsg = geometry_msgs::PoseStamped;
 
 static ros::Publisher rviz_pub;
 static ros::Subscriber goal_sub;
 
-void CallbackGoal(const xpp_msgs::UserCommand& msg)
+void CallbackGoal(const xpp_msgs::UserCommand& msg_in)
 {
-  auto goal = xpp::ros::RosHelpers::RosToXpp(msg.goal);
-  xpp::RvizMarkerBuilder marker_builder;
-  auto m = marker_builder.VisualizeGoal(goal.p_);
+  PoseMsg msg_out;
+  msg_out.header.frame_id = "world";
+  msg_out.pose.position = msg_in.goal_lin.pos;
 
-  visualization_msgs::MarkerArray array;
-  array.markers.push_back(m);
-  rviz_pub.publish(array);
+  auto goal_ang = xpp::ros::RosHelpers::RosToXpp(msg_in.goal_ang);
+  kindr::EulerAnglesZyxD euler(goal_ang.p_.reverse());
+  kindr::RotationQuaternionD quat(euler);
+  msg_out.pose.orientation = xpp::ros::RosHelpers::XppToRos(quat.toImplementation());
+
+  rviz_pub.publish(msg_out);
 }
 
 int main(int argc, char *argv[])
@@ -31,7 +45,7 @@ int main(int argc, char *argv[])
 	ros::init(argc, argv, "goal_visualizer");
 	ros::NodeHandle n;
 
-	rviz_pub = n.advertise<visualization_msgs::MarkerArray>(xpp_msgs::rviz_fixed, 1);
+	rviz_pub = n.advertise<PoseMsg>(xpp_msgs::goal_axis_rviz, 1);
 	goal_sub = n.subscribe(xpp_msgs::goal_state_topic, 1, CallbackGoal);
 
 	ros::spin();

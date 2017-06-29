@@ -36,7 +36,7 @@ public:
 public:
   MarkerArray VisualizeState(const RobotStateCartesian& state) const;
   MarkerArray VisualizeTrajectory(const RobotCartTraj& traj) const;
-  Marker VisualizeGoal(const Vector3d& pos) const;
+//  Marker VisualizeGoal(const Vector3d& pos) const;
 
 private:
   // next level in the hierarchy (add color and namespace)

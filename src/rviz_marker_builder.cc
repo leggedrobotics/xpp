@@ -100,17 +100,17 @@ RvizMarkerBuilder::VisualizeState (const RobotStateCartesian& state) const
   return msg;
 }
 
-RvizMarkerBuilder::Marker
-RvizMarkerBuilder::VisualizeGoal (const Vector3d& pos) const
-{
-  Marker m = CreateSphere(pos, 0.035);
-  m.color           = black;
-  m.ns              = "goal";
-  m.header.frame_id = "world";
-  m.id = 0;
-
-  return m;
-}
+//RvizMarkerBuilder::Marker
+//RvizMarkerBuilder::VisualizeGoal (const Vector3d& pos) const
+//{
+//  Marker m = CreateSphere(pos, 0.035);
+//  m.color           = black;
+//  m.ns              = "goal";
+//  m.header.frame_id = "world";
+//  m.id = 0;
+//
+//  return m;
+//}
 
 RvizMarkerBuilder::MarkerVec
 RvizMarkerBuilder::CreateEEPositions (const EEPos& ee_pos) const
