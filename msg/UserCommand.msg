@@ -1,6 +1,7 @@
 # The command for the robot specified by the user
 
-StateLin3d             goal               # the goal state to reach (geom not com)
+StateLin3d             goal_lin           # the linear state to reach (x,y,z and derivatives)
+StateLin3d             goal_ang           # the angular state to reach (roll, pitch, yaw and derivatives)
 int32                  motion_type        # Type of Motion (Walk, Trott, Bound, Camel)
 bool                   replay_trajectory  # Replay the already optimized trajectory in RVIZ
 bool                   use_solver_snopt   # otherwise Ipopt.

@@ -18,6 +18,9 @@ static const std::string start_walking_topic("xpp/start_walking");
 // position of the desired goal to reach
 static const std::string goal_state_topic("xpp/goal_state");
 
+// the robot state sent from actual robot/simulation(SL).
+static const std::string curr_robot_state_real("current_robot_state_real");
+
 // the complete robot state including base, joints, time, ...
 static const std::string curr_robot_state("current_robot_state");
 
@@ -42,8 +45,8 @@ static const std::string rviz_optimized("/optimization_variables");
 // rviz marker topic for NLP's optimized variables (spline coefficients, footholds,...)
 static const std::string rviz_optimized_single("/optimization_variables_single");
 
-// rviz marker topic for fixed variables of NLP optimization (e.g. start stance)
-static const std::string rviz_fixed("/optimization_fixed");
+// rviz marker for displaying the desired goal state
+static const std::string goal_axis_rviz("/goal_axis_rviz");
 
 // gains for hyq
 static const std::string controller_pd_gains("hyq_pd_gains");
