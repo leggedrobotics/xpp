@@ -15,7 +15,7 @@ RvizMarkerBuilder::RvizMarkerBuilder()
   // define a few colors
   red.a = green.a = blue.a = white.a = brown.a = yellow.a = purple.a = black.a = 1.0;
 
-  black.r  =           black.g  =           black.b  = 0.0;
+  black.r  =           black.g  =           black.b  = 0.3;
   red.r    = 1.0;      red.g    = 0.0;      red.b    = 0.0;
   green.r  = 0.0;      green.g  = 150./255; green.b  = 76./255;
   blue.r   = 0.0;      blue.g   = 102./255; blue.b   = 204./255;
@@ -25,11 +25,17 @@ RvizMarkerBuilder::RvizMarkerBuilder()
   purple.r = 72./255;  purple.g = 61./255;  purple.b = 139./255;
 }
 
+void
+RvizMarkerBuilder::SetOptimizationParameters (const ParamsMsg& msg)
+{
+  params_ = msg;
+}
+
 RvizMarkerBuilder::MarkerArray
-RvizMarkerBuilder::VisualizeTrajectory (const RobotCartTraj& traj) const
+RvizMarkerBuilder::BuildTrajectoryMarkers (const RobotCartTraj& traj) const
 {
   MarkerArray msg;
-  int id = VisualizeState(traj.front()).markers.back().id+1; // to not interfere with state
+  int id = BuildStateMarkers(traj.front()).markers.back().id+1; // to not interfere with state
   int i=0;
   for (const auto& state : traj) {
 
@@ -37,7 +43,7 @@ RvizMarkerBuilder::VisualizeTrajectory (const RobotCartTraj& traj) const
     if (i++%2 != 0)
       continue;
 
-    MarkerArray msg_state = VisualizeState(state);
+    MarkerArray msg_state = BuildStateMarkers(state);
 
     // adapt some parameters
     for (Marker m : msg_state.markers) {
@@ -47,12 +53,14 @@ RvizMarkerBuilder::VisualizeTrajectory (const RobotCartTraj& traj) const
       if (m.ns == "support_polygons")
         m.color.a = 0.41/(20*m.points.size()+1); // more transparent for support triangles
 
-      if (m.type == Marker::SPHERE) {
+      if (m.type == Marker::SPHERE)
         m.scale.x = m.scale.y = m.scale.z = 0.01;
-      }
 
       if (m.ns == "ee_force" || m.ns == "inverted_pendulum")
         continue; // don't plot endeffector forces in trajectory
+
+      if (m.ns == "base_pose")
+        m.scale.x = m.scale.y = m.scale.z = 0.01;
 
       m.id = id++;
 //      m.lifetime = ::ros::Duration(100);
@@ -65,11 +73,13 @@ RvizMarkerBuilder::VisualizeTrajectory (const RobotCartTraj& traj) const
 }
 
 RvizMarkerBuilder::MarkerArray
-RvizMarkerBuilder::VisualizeState (const RobotStateCartesian& state) const
+RvizMarkerBuilder::BuildStateMarkers (const RobotStateCartesian& state) const
 {
   MarkerArray msg;
 
-  Marker base = CreateBasePos(state.GetBase().lin.p_, state.GetContactState());
+  Marker base = CreateBasePose(state.GetBase().lin.p_,
+                               state.GetBase().ang.q,
+                               state.GetContactState());
   msg.markers.push_back(base);
 
   Marker cop = CreateCopPos(state.GetEEForces(),state.GetEEPos());
@@ -80,6 +90,9 @@ RvizMarkerBuilder::VisualizeState (const RobotStateCartesian& state) const
 
   MarkerVec ee_forces = CreateEEForces(state.GetEEForces(),state.GetEEPos());
   msg.markers.insert(msg.markers.begin(), ee_forces.begin(), ee_forces.end());
+
+  MarkerVec rom = CreateRangeOfMotion(state.GetBase());
+  msg.markers.insert(msg.markers.begin(), rom.begin(), rom.end());
 
   Marker support = CreateSupportArea(state.GetContactState(),state.GetEEPos());
   msg.markers.push_back(support);
@@ -99,18 +112,6 @@ RvizMarkerBuilder::VisualizeState (const RobotStateCartesian& state) const
 
   return msg;
 }
-
-//RvizMarkerBuilder::Marker
-//RvizMarkerBuilder::VisualizeGoal (const Vector3d& pos) const
-//{
-//  Marker m = CreateSphere(pos, 0.035);
-//  m.color           = black;
-//  m.ns              = "goal";
-//  m.header.frame_id = "world";
-//  m.id = 0;
-//
-//  return m;
-//}
 
 RvizMarkerBuilder::MarkerVec
 RvizMarkerBuilder::CreateEEPositions (const EEPos& ee_pos) const
@@ -145,18 +146,20 @@ RvizMarkerBuilder::CreateEEForces (const EEForces& ee_forces,
 }
 
 RvizMarkerBuilder::Marker
-RvizMarkerBuilder::CreateBasePos (const Vector3d& pos,
-                                   const ContactState& contact_state) const
+RvizMarkerBuilder::CreateBasePose (const Vector3d& pos,
+                                  Eigen::Quaterniond ori,
+                                  const ContactState& contact_state) const
 {
-  Marker m = CreateSphere(pos);
+  Vector3d edge_length(0.1, 0.05, 0.02);
+//  Vector3d edge_length(0.7, 0.3, 0.15);
+  Marker m = CreateBox(pos, ori, 3*edge_length);
 
-  // color base like last leg in contact or black if flight phase
-  m.color = black;
+  m.color = red;
   for (auto ee : contact_state.GetEEsOrdered())
     if (contact_state.At(ee))
-      m.color = GetLegColor(ee);
+      m.color = black;
 
-  m.ns = "base_pos";
+  m.ns = "base_pose";
 
   return m;
 }
@@ -206,6 +209,41 @@ RvizMarkerBuilder::CreatePendulum (const Vector3d& pos,
   return m;
 }
 
+RvizMarkerBuilder::MarkerVec
+RvizMarkerBuilder::CreateRangeOfMotion (const State3d& base) const
+{
+  MarkerVec vec;
+
+  auto w_R_b = base.ang.q.toRotationMatrix();
+
+  int ee = E0;
+  for (const auto& pos_B : params_.nominal_ee_pos) {
+    Vector3d pos_W = base.lin.p_ + w_R_b*ros::RosHelpers::RosToXpp(pos_B);
+
+    Marker m  = CreateBox(pos_W, base.ang.q, 2*ros::RosHelpers::RosToXpp(params_.ee_max_dev));
+    m.color   = GetLegColor(ee++);
+    m.color.a = 0.2;
+    m.ns      = "range_of_motion";
+    vec.push_back(m);
+  }
+
+  return vec;
+}
+
+RvizMarkerBuilder::Marker
+RvizMarkerBuilder::CreateBox (const Vector3d& pos, Eigen::Quaterniond ori,
+                              const Vector3d& edge_length) const
+{
+  Marker m;
+
+  m.type = Marker::CUBE;
+  m.pose.position    = ros::RosHelpers::XppToRos<geometry_msgs::Point>(pos);
+  m.pose.orientation = ros::RosHelpers::XppToRos(ori);
+  m.scale            = ros::RosHelpers::XppToRos<geometry_msgs::Vector3>(edge_length);
+
+  return m;
+}
+
 RvizMarkerBuilder::Marker
 RvizMarkerBuilder::CreateSphere (const Vector3d& pos, double diameter) const
 {
@@ -226,11 +264,11 @@ RvizMarkerBuilder::CreateForceArrow (const Vector3d& force,
 {
   Marker m;
   m.type = Marker::ARROW;
-  m.scale.x = 0.008; // shaft diameter
-  m.scale.y = 0.015; // arrow-head diameter
-  m.scale.z = 0.03; // arrow-head length
+  m.scale.x = 0.01; // shaft diameter
+  m.scale.y = 0.02; // arrow-head diameter
+  m.scale.z = 0.06; // arrow-head length
 
-  double force_scale = 3500;
+  double force_scale = 1500;
   auto start = ros::RosHelpers::XppToRos<geometry_msgs::Point>(ee_pos - force/force_scale);
   m.points.push_back(start);
 
@@ -277,7 +315,7 @@ RvizMarkerBuilder::CreateSupportArea (const ContactState& contact_state,
 }
 
 std_msgs::ColorRGBA
-RvizMarkerBuilder::GetLegColor(EndeffectorID ee) const
+RvizMarkerBuilder::GetLegColor(int ee) const
 {
   std_msgs::ColorRGBA color_leg;
   switch (ee) {
@@ -299,6 +337,18 @@ RvizMarkerBuilder::GetLegColor(EndeffectorID ee) const
 
   return color_leg;
 }
+
+//RvizMarkerBuilder::Marker
+//RvizMarkerBuilder::VisualizeGoal (const Vector3d& pos) const
+//{
+//  Marker m = CreateSphere(pos, 0.035);
+//  m.color           = black;
+//  m.ns              = "goal";
+//  m.header.frame_id = "world";
+//  m.id = 0;
+//
+//  return m;
+//}
 
 //void
 //MarkerArrayBuilder::AddEllipse(visualization_msgs::MarkerArray& msg,

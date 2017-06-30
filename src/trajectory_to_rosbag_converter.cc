@@ -39,7 +39,7 @@ TrajectoryToRosbagConverter::TrajectoryCallback (const TrajMsg& traj_msg)
 
   // one overall view of the entire trajecetory
   RvizMarkerBuilder msg_builder;
-  MarkerArrayMsg rviz_traj_msg = msg_builder.VisualizeTrajectory(traj);
+  MarkerArrayMsg rviz_traj_msg = msg_builder.BuildTrajectoryMarkers(traj);
   rviz_pub_.publish(rviz_traj_msg);
 
   // record this to be able to pause and playback later

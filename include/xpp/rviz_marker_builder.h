@@ -10,6 +10,7 @@
 
 #include <xpp/robot_state_cartesian.h>
 #include <visualization_msgs/MarkerArray.h>
+#include <xpp_msgs/OptParameters.h>
 
 namespace xpp {
 
@@ -29,20 +30,25 @@ public:
   using EEForces        = RobotStateCartesian::EEForces;
   using RobotCartTraj   = std::vector<RobotStateCartesian>;
 
+  using ParamsMsg       = xpp_msgs::OptParameters;
+
 public:
   RvizMarkerBuilder();
   virtual ~RvizMarkerBuilder () {};
 
+  void SetOptimizationParameters(const ParamsMsg& msg);
+
 public:
-  MarkerArray VisualizeState(const RobotStateCartesian& state) const;
-  MarkerArray VisualizeTrajectory(const RobotCartTraj& traj) const;
-//  Marker VisualizeGoal(const Vector3d& pos) const;
+  MarkerArray BuildStateMarkers(const RobotStateCartesian& state) const;
+  MarkerArray BuildTrajectoryMarkers(const RobotCartTraj& traj) const;
 
 private:
   // next level in the hierarchy (add color and namespace)
   MarkerVec CreateEEPositions(const EEPos& ee_pos) const;
   MarkerVec CreateEEForces(const EEForces& ee_forces, const EEPos& ee_pos) const;
-  Marker    CreateBasePos(const Vector3d& pos, const ContactState& contact_state) const;
+  MarkerVec CreateRangeOfMotion(const State3d& base) const;
+  Marker    CreateBasePose(const Vector3d& pos, Eigen::Quaterniond ori,
+                           const ContactState& contact_state) const;
   Marker    CreateCopPos(const EEForces& ee_forces, const EEPos& ee_pos) const;
   Marker    CreatePendulum(const Vector3d& pos, const EEForces& ee_forces, const EEPos& ee_pos) const;
 
@@ -50,9 +56,13 @@ private:
   Marker CreateForceArrow(const Vector3d& force, const Vector3d& ee_pos) const;
   Marker CreateSupportArea(const ContactState& contact_state, const EEPos& ee_pos) const;
   Marker CreateSphere(const Vector3d& pos, double diameter = 0.03) const;
+  Marker CreateBox(const Vector3d& pos, Eigen::Quaterniond ori,
+                   const Vector3d& edge_length) const;
 
   std_msgs::ColorRGBA red, green, blue, white, brown, yellow, purple, black;
-  std_msgs::ColorRGBA GetLegColor(EndeffectorID leg) const;
+  std_msgs::ColorRGBA GetLegColor(int leg) const;
+
+  ParamsMsg params_;
 };
 
 } /* namespace xpp */
