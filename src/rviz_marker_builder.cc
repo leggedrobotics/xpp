@@ -96,8 +96,8 @@ RvizMarkerBuilder::BuildStateMarkers (const RobotStateCartesian& state) const
   MarkerVec rom = CreateRangeOfMotion(state.GetBase());
   msg.markers.insert(msg.markers.begin(), rom.begin(), rom.end());
 
-  Marker support = CreateSupportArea(state.GetContactState(),state.GetEEPos());
-  msg.markers.push_back(support);
+  MarkerVec support = CreateSupportArea(state.GetContactState(),state.GetEEPos());
+  msg.markers.insert(msg.markers.begin(), support.begin(), support.end());
 
   Marker ip = CreatePendulum(state.GetBase().lin.p_, state.GetEEForces(),state.GetEEPos());
   msg.markers.push_back(ip);
@@ -294,10 +294,12 @@ RvizMarkerBuilder::CreateForceArrow (const Vector3d& force,
   return m;
 }
 
-RvizMarkerBuilder::Marker
+RvizMarkerBuilder::MarkerVec
 RvizMarkerBuilder::CreateSupportArea (const ContactState& contact_state,
                                        const EEPos& ee_pos) const
 {
+  MarkerVec vec;
+
   Marker m;
   m.ns = "support_polygons";
   m.scale.x = m.scale.y = m.scale.z = 1.0;
@@ -311,23 +313,48 @@ RvizMarkerBuilder::CreateSupportArea (const ContactState& contact_state,
   }
 
   switch (m.points.size()) {
-    case 3:
+    case 4: {
       m.type = Marker::TRIANGLE_LIST;
+      m.color = black;
+      auto temp = m.points;
+
+      // add two triangles to represent a square
+      m.points.pop_back();
+      vec.push_back(m);
+
+      m.points = temp;
+      m.points.erase(m.points.begin());
+      vec.push_back(m);
       break;
-    case 2:
+    }
+    case 3: {
+      m.type = Marker::TRIANGLE_LIST;
+      vec.push_back(m);
+      vec.push_back(m);
+      break;
+    }
+    case 2: {
       m.type = Marker::LINE_STRIP;
       m.scale.x = 0.01;
+      vec.push_back(m);
+      vec.push_back(m);
       break;
-    case 1:
+    }
+    case 1: {
       /* just make so small that random marker can't be seen */
       m.scale.x = m.scale.y = m.scale.z = 0.0001;
+      vec.push_back(m);
+      vec.push_back(m);
       break;
+    }
     default:
       m.scale.x = m.scale.y = m.scale.z = 0.0001;
+      vec.push_back(m);
+      vec.push_back(m);
       break;
   }
 
-  return m;
+  return vec;
 }
 
 std_msgs::ColorRGBA

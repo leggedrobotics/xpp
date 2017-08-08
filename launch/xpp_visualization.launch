@@ -1,8 +1,4 @@
 <launch>
-
-   <!-- converts the state trajectory into bag file and sends out states with timestamp -->
-   <node name="trajectory_to_rosbag_converter" pkg="xpp_vis" type="trajectory_to_rosbag_converter" output="screen">
-   </node>
    
    <!-- visualizes cartesian base state, endeffector positions and forces -->
    <node name="optimization_state_visualizer" pkg="xpp_vis" type="optimization_state_visualizer" output="screen">

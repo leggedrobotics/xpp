@@ -43,7 +43,6 @@
   <build_depend>tf</build_depend>
   <build_depend>hyqb_description</build_depend>
   <build_depend>kdl_parser</build_depend>
-  <build_depend>rosbag</build_depend>
   <build_depend>robot_state_publisher</build_depend>
   
   <build_depend>xpp_msgs</build_depend>
