@@ -56,7 +56,9 @@ RvizMarkerBuilder::BuildTrajectoryMarkers (const RobotCartTraj& traj) const
       if (m.type == Marker::SPHERE)
         m.scale.x = m.scale.y = m.scale.z = 0.01;
 
-      if (m.ns == "ee_force" || m.ns == "inverted_pendulum")
+      if (m.ns == "ee_force" ||
+          m.ns == "inverted_pendulum" ||
+          m.ns == "gravity_force")
         continue; // don't plot endeffector forces in trajectory
 
       if (m.ns == "base_pose")
@@ -100,6 +102,8 @@ RvizMarkerBuilder::BuildStateMarkers (const RobotStateCartesian& state) const
   Marker ip = CreatePendulum(state.GetBase().lin.p_, state.GetEEForces(),state.GetEEPos());
   msg.markers.push_back(ip);
 
+  msg.markers.push_back(CreateGravityForce(state.GetBase().lin.p_));
+
   int id = 1; // goal marker has id zero
   for (Marker& m : msg.markers) {
     m.header.frame_id = "world";
@@ -129,9 +133,21 @@ RvizMarkerBuilder::CreateEEPositions (const EEPos& ee_pos) const
   return vec;
 }
 
+RvizMarkerBuilder::Marker
+RvizMarkerBuilder::CreateGravityForce (const Vector3d& base_pos) const
+{
+  double g = 9.81;
+  double mass = params_.base_mass;
+  Marker m = CreateForceArrow(Eigen::Vector3d(0.0, 0.0, -mass*g), base_pos);
+  m.color  = red;
+  m.ns     = "gravity_force";
+
+  return m;
+}
+
 RvizMarkerBuilder::MarkerVec
 RvizMarkerBuilder::CreateEEForces (const EEForces& ee_forces,
-                                    const EEPos& ee_pos) const
+                                   const EEPos& ee_pos) const
 {
   MarkerVec vec;
 

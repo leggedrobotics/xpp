@@ -46,6 +46,7 @@ private:
   // next level in the hierarchy (add color and namespace)
   MarkerVec CreateEEPositions(const EEPos& ee_pos) const;
   MarkerVec CreateEEForces(const EEForces& ee_forces, const EEPos& ee_pos) const;
+  Marker CreateGravityForce (const Vector3d& base_pos) const;
   MarkerVec CreateRangeOfMotion(const State3d& base) const;
   Marker    CreateBasePose(const Vector3d& pos, Eigen::Quaterniond ori,
                            const ContactState& contact_state) const;

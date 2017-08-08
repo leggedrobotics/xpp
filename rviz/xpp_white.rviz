@@ -74,13 +74,14 @@ Visualization Manager:
       Marker Topic: /optimization_variables
       Name: MarkerArray
       Namespaces:
-        base_pos: true
+        base_pose: true
         cop: true
         ee_force: true
         endeffector_pos: true
         inverted_pendulum: true
+        range_of_motion: true
         support_polygons: true
-        traj_base_pos: true
+        traj_base_pose: true
         traj_cop: true
         traj_endeffector_pos: true
         traj_support_polygons: true
@@ -202,7 +203,7 @@ Visualization Manager:
       Value: true
     - Alpha: 1
       Axes Length: 0.1
-      Axes Radius: 0.008
+      Axes Radius: 0.01
       Class: rviz/Pose
       Color: 255; 25; 0
       Enabled: true
@@ -254,22 +255,22 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 2.69429
+      Distance: 4.18416
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.06
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 0.774892
-        Y: 0.0430726
-        Z: 0.396429
+        X: 0.495626
+        Y: -0.798313
+        Z: 0.0962576
       Name: Current View
       Near Clip Distance: 0.01
-      Pitch: 0.284797
+      Pitch: 0.199795
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 1.835
+      Yaw: 1.565
     Saved:
       - Angle: 3.14
         Class: rviz/TopDownOrtho
