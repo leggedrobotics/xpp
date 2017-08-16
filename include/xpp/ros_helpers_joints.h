@@ -23,6 +23,8 @@ using RobotStateJointsMsg     = xpp_msgs::RobotStateJoints;
 static RobotStateJointsMsg
 XppToRos(const RobotStateJoints& xpp)
 {
+  // zmp_ replace with standart ros message
+  // http://docs.ros.org/jade/api/trajectory_msgs/html/msg/MultiDOFJointTrajectory.html
   RobotStateJointsMsg ros;
 
   ros.common = ros::RosHelpers::XppToRos(xpp.GetCommon());

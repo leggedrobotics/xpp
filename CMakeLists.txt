@@ -104,9 +104,8 @@ include_directories(
 
 # Declare a C++ library
 add_library(xpp_vis
-  src/robot_rviz_visualizer.cc
+  src/urdf_visualizer.cc
   src/rviz_marker_builder.cc
-  src/hyq_rviz_visualizer.cc
 )
 target_link_libraries(xpp_vis
   ${catkin_LIBRARIES}
