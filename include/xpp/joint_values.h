@@ -8,6 +8,8 @@
 #ifndef XPP_XPP_COMMON_INCLUDE_XPP_UTILS_JOINT_VALUES_H_
 #define XPP_XPP_COMMON_INCLUDE_XPP_UTILS_JOINT_VALUES_H_
 
+#include <map>
+
 #include <xpp/endeffectors.h>
 #include <Eigen/Dense>
 
@@ -76,6 +78,24 @@ protected:
 private:
   int n_joints_;
 };
+
+
+template<typename T>
+std::map<T, JointID> GetMap(const std::map<EndeffectorID, std::vector<T> >& map_ee_to_joings) {
+
+  std::map<T, JointID> map;
+
+  int j = 0;
+  for (int i=0; i<map_ee_to_joings.size(); ++i) {
+    auto ee = static_cast<EndeffectorID>(i);
+    for (auto hyq_joint : map_ee_to_joings.at(ee)) {
+      auto xpp_joint = static_cast<JointID>(j++);
+      map[hyq_joint] = xpp_joint;
+    }
+  }
+
+  return map;
+}
 
 } /* namespace xpp */
 

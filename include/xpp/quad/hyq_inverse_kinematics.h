@@ -2,10 +2,10 @@
 #define INVERSEKINEMATICS_H_
 
 #include <xpp/a_inverse_kinematics.h>
-#include <xpp/endeffectors4.h>
+#include <xpp/endeffectors.h>
 
 namespace xpp {
-namespace hyq {
+namespace quad {
 
 /** @brief The SL implementation of the inverse kinematics */
 class HyqInverseKinematics : public AInverseKinematics {
@@ -27,11 +27,11 @@ public:
   Joints1EE GetLowerJointLimits(EEID ee) const;
 
 private:
-	Joints1EE GetJointAngles(const EEPosition& pos_b, LegID ee) const;
-	bool compute(LegID leg, const EEPosition& x, Eigen::Vector3d& q_bf, int &rc) const;
+	Joints1EE GetJointAngles(const EEPosition& pos_b, FootID ee) const;
+	bool compute(FootID leg, const EEPosition& x, Eigen::Vector3d& q_bf, int &rc) const;
 };
 
+} /* namespace quad */
 } /* namespace xpp */
-} /* namespace hyq */
 
 #endif /* INVERSEKINEMATICS_H_ */

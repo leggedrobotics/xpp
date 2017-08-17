@@ -8,9 +8,10 @@
 #ifndef USER_TASK_DEPENDS_XPP_OPT_INCLUDE_XPP_OPT_A_INVERSE_KINEMATICS_H_
 #define USER_TASK_DEPENDS_XPP_OPT_INCLUDE_XPP_OPT_A_INVERSE_KINEMATICS_H_
 
+#include <Eigen/Dense>
+
 #include <xpp/endeffectors.h>
 #include <xpp/joint_values.h>
-#include <Eigen/Dense>
 
 namespace xpp {
 
@@ -23,7 +24,8 @@ namespace xpp {
 class AInverseKinematics {
 public:
   using Joints1EE   = Eigen::VectorXd;
-  using EEPosition  = Eigen::Vector3d;
+  using Vector3d    = Eigen::Vector3d;
+  using EEPosition  = Vector3d;
   using EEID        = EndeffectorID;
 
   AInverseKinematics () {};

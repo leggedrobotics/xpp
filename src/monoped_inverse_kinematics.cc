@@ -10,7 +10,7 @@
 #include <cmath>
 #include <iostream>
 
-#include <xpp/endeffectors.h>
+#include <xpp/cartesian_declarations.h>
 
 namespace xpp {
 namespace mono {
@@ -23,7 +23,7 @@ MonopedInverseKinematics::MonopedInverseKinematics ()
 int
 MonopedInverseKinematics::GetJointsPerEE () const
 {
-  return kNumJointsPerLeg;
+  return kMapMonoEEToJoints.at(E0).size();
 }
 
 JointValues
@@ -99,7 +99,7 @@ MonopedInverseKinematics::GetAllJointAngles(const EndeffectorsPos& x_B) const
   EnforceLimits(q_KFE_br, KFE);
 
 
-  JointValues q_mono(kNumEE, kNumJointsPerLeg, 0.0);
+  JointValues q_mono(kMapMonoEEToJoints.size(), GetJointsPerEE(), 0.0);
   q_mono.At(E0) << q_HAA_bf, q_HFE_bf, q_KFE_bf;
 
   return q_mono;

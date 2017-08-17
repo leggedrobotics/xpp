@@ -10,22 +10,15 @@
 
 #include <map>
 
-#include <xpp/joint_values.h>
+#include <xpp/endeffectors.h>
 
 namespace xpp {
 namespace mono {
 
-static constexpr int kNumJoints = 3;
-static constexpr int kNumEE = 1;
-static constexpr int kNumJointsPerLeg = 3;
-
 enum MonopedJointID {HAA, HFE, KFE};
 
-/** @brief relationship between monoped joints and generic joints. */
-static const std::map<MonopedJointID, JointID> kMapMonoToXpp {
-  { HAA,  J0 },
-  { HFE,  J1 },
-  { KFE,  J2 },
+static const std::map<EndeffectorID, std::vector<MonopedJointID> > kMapMonoEEToJoints {
+  { E0, {HAA, HFE, KFE} },
 };
 
 } /* namespace mono */

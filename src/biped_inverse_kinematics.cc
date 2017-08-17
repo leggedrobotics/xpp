@@ -4,6 +4,7 @@
 #include <iostream>
 
 #include <xpp/endeffectors.h>
+#include <xpp/cartesian_declarations.h>
 
 namespace xpp {
 namespace biped {
@@ -16,13 +17,13 @@ BipedInverseKinematics::BipedInverseKinematics ()
 int
 BipedInverseKinematics::GetJointsPerEE () const
 {
-  return kNumJointsPerLeg;
+  return kMapBipedEEToJoints.at(E0).size();;
 }
 
 JointValues
 BipedInverseKinematics::GetAllJointAngles(const EndeffectorsPos& x_B) const
 {
-  JointValues q(kNumEE, kNumJointsPerLeg, 0.0);
+  JointValues q(kMapBipedEEToJoints.size(), GetJointsPerEE(), 0.0);
   // offset must match the one in the URDF file
   q.At(E0) = GetJointAngles(x_B.At(E0), Vector3d(0.0,  -0.1, 0.15));
   q.At(E1) = GetJointAngles(x_B.At(E1), Vector3d(0.0,   0.1, 0.15));
@@ -30,7 +31,7 @@ BipedInverseKinematics::GetAllJointAngles(const EndeffectorsPos& x_B) const
   return q;
 }
 
-Vector3d
+BipedInverseKinematics::Vector3d
 BipedInverseKinematics::GetJointAngles(const Vector3d& x_B,
                                        const Vector3d& offset_base_to_hip) const
 {

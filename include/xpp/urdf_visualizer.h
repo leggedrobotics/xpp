@@ -25,6 +25,7 @@
 #include <kdl_parser/kdl_parser.hpp>
 
 #include <xpp_msgs/RobotStateCartesianTrajectory.h>
+#include <xpp/state.h>
 #include <xpp/a_inverse_kinematics.h>
 
 namespace xpp {

@@ -24,7 +24,7 @@ public:
 
 private:
 	void EnforceLimits(double& val, BipedJointID joint) const;
-	Vector3d GetJointAngles(const Vector3d& pos_b,
+	Vector3d GetJointAngles(const EEPosition& pos_b,
 	                        const Vector3d& offset_base_to_hip) const;
 };
 

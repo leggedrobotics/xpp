@@ -17,15 +17,17 @@ int main(int argc, char *argv[])
 {
 	::ros::init(argc, argv, "biped_urdf_visualizer");
 
+	auto map = GetMap(kMapBipedEEToJoints);
+
 	// these strings must match the <joint name=...> tag in the URDF file
 	// monoped_description/urdf/monoped.urdf
 	std::map<xpp::JointID, std::string> kMapXppJointToUrdfNames {
-    { kMapBipedToXpp.at(L_HAA),  "L_haa_joint" },
-    { kMapBipedToXpp.at(L_HFE),  "L_hfe_joint" },
-    { kMapBipedToXpp.at(L_KFE),  "L_kfe_joint" },
-    { kMapBipedToXpp.at(R_HAA),  "R_haa_joint" },
-    { kMapBipedToXpp.at(R_HFE),  "R_hfe_joint" },
-    { kMapBipedToXpp.at(R_KFE),  "R_kfe_joint" },
+    { map.at(L_HAA),  "L_haa_joint" },
+    { map.at(L_HFE),  "L_hfe_joint" },
+    { map.at(L_KFE),  "L_kfe_joint" },
+    { map.at(R_HAA),  "R_haa_joint" },
+    { map.at(R_HFE),  "R_hfe_joint" },
+    { map.at(R_KFE),  "R_kfe_joint" },
 	};
 
 	auto ik = std::make_shared<BipedInverseKinematics>();

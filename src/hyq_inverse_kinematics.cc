@@ -5,12 +5,13 @@
  *      Author: Manuel Lussi <mlussi@student.ethz.ch>
  */
 
-#include <xpp/hyq/hyq_inverse_kinematics.h>
+#include <xpp/quad/hyq_inverse_kinematics.h>
+
 #include <xpp/cartesian_declarations.h>
-#include <xpp/hyq/joints_hyq.h>
+#include <xpp/quad/joints_quadruped.h>
 
 namespace xpp {
-namespace hyq {
+namespace quad {
 
 #define BASE2HAAX  0.3735  //!< center of base distance from leg hip in x direction
 #define BASE2HAAY  0.207   //!< center of base distance from leg hip in y direction
@@ -79,11 +80,11 @@ HyqInverseKinematics::~HyqInverseKinematics ()
 int
 HyqInverseKinematics::GetJointsPerEE () const
 {
-  return kNumJointsPerLeg;
+  return kMapQuadEEToJoints.at(E0).size(); // all legs have same amount
 }
 
 HyqInverseKinematics::Joints1EE
-HyqInverseKinematics::GetJointAngles(const EEPosition& pos_b, LegID leg) const
+HyqInverseKinematics::GetJointAngles(const EEPosition& pos_b, FootID leg) const
 {
   Eigen::Vector3d q;
   q.setZero();
@@ -102,11 +103,11 @@ HyqInverseKinematics::GetJointAngles(const EEPosition& pos_b, LegID leg) const
 JointValues
 HyqInverseKinematics::GetAllJointAngles(const EndeffectorsPos& pos_b) const
 {
-  JointValues q_xpp(kNumEE, kNumJointsPerLeg, 0.0);
+  JointValues q_xpp(pos_b.GetCount(), GetJointsPerEE(), 0.0);
 
   for (auto ee : pos_b.GetEEsOrdered()) {
     EEPosition pos = pos_b.At(ee);
-    LegID leg = kMapOptToQuad.at(ee);
+    FootID leg = kMapOptToQuad.at(ee);
     q_xpp.At(ee) = GetJointAngles(pos, leg);
   }
 
@@ -168,7 +169,7 @@ HyqInverseKinematics::GetLowerJointLimits (EEID ee) const
 }
 
 bool
-HyqInverseKinematics::compute(LegID leg, const EEPosition& x, Eigen::Vector3d& q, int &rc) const
+HyqInverseKinematics::compute(FootID leg, const EEPosition& x, Eigen::Vector3d& q, int &rc) const
 {
 	int i;
 	double q_HAA_bf, q_HAA_br, q_HFE_br, q_HFE_bf, q_KFE_br, q_KFE_bf, q_HAA_temp;
@@ -333,7 +334,7 @@ HyqInverseKinematics::compute(LegID leg, const EEPosition& x, Eigen::Vector3d& q
 	return true;
 }
 
+} /* namespace quad */
 } /* namespace xpp */
-} /* namespace hyq */
 
 
