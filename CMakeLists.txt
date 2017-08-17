@@ -8,9 +8,9 @@ find_package(catkin REQUIRED COMPONENTS
   tf
   kdl_parser
   robot_state_publisher
-  hyqb_description        # urdf file for rviz
-  xpp_hyq                 # for inverse kinematics
   xpp_msgs
+  hyqb_description        # urdf file for rviz
+  monoped_description     # urdf file for rviz
 )
 
 ## System dependencies are found with CMake's conventions
@@ -106,18 +106,35 @@ include_directories(
 add_library(xpp_vis
   src/urdf_visualizer.cc
   src/rviz_marker_builder.cc
+  src/joint_values.cc
+  src/joints_hyq.cc
+  src/robot_state_joints.cc
+  src/hyq_inverse_kinematics.cc
+  src/monoped_inverse_kinematics.cc
 )
 target_link_libraries(xpp_vis
   ${catkin_LIBRARIES}
 )
 
-## Declare a cpp executable
-add_executable(robot_rviz_visualizer src/exe/hyq_visualizer_node.cc)
-target_link_libraries(robot_rviz_visualizer
+## URDF visualizers
+add_executable(urdf_visualizer_hyq src/exe/urdf_visualizer_hyq.cc)
+target_link_libraries(urdf_visualizer_hyq
   xpp_vis
   ${catkin_LIBRARIES}
 )
+add_dependencies(urdf_visualizer_hyq ${catkin_EXPORTED_TARGETS})
 
+add_executable(urdf_visualizer_monoped src/exe/urdf_visualizer_monoped.cc)
+target_link_libraries(urdf_visualizer_monoped
+  xpp_vis
+  ${catkin_LIBRARIES}
+)
+add_dependencies(urdf_visualizer_monoped ${catkin_EXPORTED_TARGETS})
+
+
+
+
+## other visualizers
 add_executable(base_state_visualizer src/exe/base_state_visualizer.cc)
 target_link_libraries(base_state_visualizer
   xpp_vis
@@ -142,18 +159,19 @@ target_link_libraries(goal_visualizer_node
   ${catkin_LIBRARIES}
 )
 
-add_executable(gazebo_state_publisher src/exe/gazebo_state_publisher.cc)
-target_link_libraries(gazebo_state_publisher
-  xpp_vis
-  ${catkin_LIBRARIES}
-)
-
-add_executable(example_state_publisher src/exe/example_state_publisher.cc)
-target_link_libraries(example_state_publisher
-  xpp_vis
-  ${catkin_LIBRARIES}
-)
+#add_executable(gazebo_state_publisher src/exe/gazebo_state_publisher.cc)
+#target_link_libraries(gazebo_state_publisher
+#  xpp_vis
+#  ${catkin_LIBRARIES}
+#)
+#
+#add_executable(example_state_publisher src/exe/example_state_publisher.cc)
+#target_link_libraries(example_state_publisher
+#  xpp_vis
+#  ${catkin_LIBRARIES}
+#)
  
 ## add msg dependencies
-add_dependencies(robot_rviz_visualizer ${catkin_EXPORTED_TARGETS})
-add_dependencies(example_state_publisher ${catkin_EXPORTED_TARGETS})
+
+
+

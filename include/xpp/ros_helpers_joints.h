@@ -8,7 +8,7 @@
 #ifndef XPP_XPP_VIS_INCLUDE_XPP_VIS_ROS_HELPERS_JOINTS_H_
 #define XPP_XPP_VIS_INCLUDE_XPP_VIS_ROS_HELPERS_JOINTS_H_
 
-#include <xpp/exe/robot_state_joints.h>
+#include <xpp/robot_state_joints.h>
 #include <xpp/ros/ros_helpers.h>
 
 #include <xpp_msgs/RobotStateJoints.h>
@@ -18,7 +18,7 @@ namespace xpp {
 
 struct RosHelpersJoints {
 
-using RobotStateJointsMsg     = xpp_msgs::RobotStateJoints;
+using RobotStateJointsMsg = xpp_msgs::RobotStateJoints;
 
 static RobotStateJointsMsg
 XppToRos(const RobotStateJoints& xpp)
@@ -40,6 +40,8 @@ XppToRos(const RobotStateJoints& xpp)
 
   return ros;
 }
+
+
 
 //static RobotStateJoints
 //RosToXpp(const RobotStateJointsMsg& msg)

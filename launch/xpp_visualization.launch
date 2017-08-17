@@ -4,20 +4,19 @@
    <node name="optimization_state_visualizer" pkg="xpp_vis" type="optimization_state_visualizer" output="screen">
    </node>
 
-   <!-- visualizes the joint robot in rviz through the URDF -->
-   <node name="robot_rviz_visualizer" pkg="xpp_vis" type="robot_rviz_visualizer" output="screen">
+
+   <!-- visualizes the joint robot in rviz through the URDF --> 
+   <node name="urdf_visualizer_hyq" pkg="xpp_vis" type="urdf_visualizer_hyq" output="screen">
    </node>
    <param name="hyq_rviz_urdf_robot_description" command="$(find xacro)/xacro.py '$(find hyqb_description)/urdf/robots/hyqb.urdf.xacro'"/>
    
-   <!-- visualizes the current state of hyq with xyz-axis -->
-   <node name="base_state_visualizer" pkg="xpp_vis" type="base_state_visualizer" output="screen">
+   <!-- visualizes a monoped robot in rviz through the URDF -->
+   <node name="urdf_visualizer_monoped" pkg="xpp_vis" type="urdf_visualizer_monoped" output="screen">
    </node>
+   <param name="monoped_rviz_urdf_robot_description" command="$(find xacro)/xacro.py '$(find monoped_description)/urdf/monoped.urdf'"/>
    
-   <!-- visualizes the initial velocity as an arrow -->
-   <node name="initial_state_visualizer" pkg="xpp_vis" type="initial_state_visualizer" output="screen">
-   </node>
    
-   <node name="goal_visualizer"     pkg="xpp_vis" type="goal_visualizer_node" output="screen" cwd="node" >  
+   <node name="goal_visualizer"  pkg="xpp_vis" type="goal_visualizer_node" output="screen" cwd="node" >  
    </node>
    
   

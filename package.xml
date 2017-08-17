@@ -40,21 +40,22 @@
   <!-- Use test_depend for packages you need only for testing: -->
   <!--   <test_depend>gtest</test_depend> -->
   <buildtool_depend>catkin</buildtool_depend>
+  
   <build_depend>tf</build_depend>
   <build_depend>kdl_parser</build_depend>
   <build_depend>robot_state_publisher</build_depend>
   
   <build_depend>xpp_msgs</build_depend>
-  <build_depend>xpp_common</build_depend>
-  <build_depend>xpp_ros</build_depend>
 
    <!-- hyq robot (urdf and inverse kinematics) -->  
   <build_depend>hyqb_description</build_depend>
-  <build_depend>xpp_hyq</build_depend>
-  <run_depend>xpp_hyq</run_depend>
   <run_depend>hyqb_description</run_depend>
   
   <!-- one legged hopper visualization -->
+  <build_depend>monoped_description</build_depend>
+  <run_depend>monoped_description</run_depend>
+  <build_depend>xpp_monoped</build_depend>
+  <run_depend>xpp_monoped</run_depend>
   
   
   

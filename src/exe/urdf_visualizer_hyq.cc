@@ -15,8 +15,9 @@ using namespace xpp;
 
 int main(int argc, char *argv[])
 {
-	::ros::init(argc, argv, "hyq_rviz_visualizer");
+	::ros::init(argc, argv, "hyq_urdf_visualizer");
 
+	// this is how the joints are called in the URDF file
 	std::map<xpp::JointID, std::string> kMapXppJointToUrdfNames {
     { hyq::kMapHyqToXpp.at(hyq::LF_HAA),  "lf_haa_joint" },
     { hyq::kMapHyqToXpp.at(hyq::LF_HFE),  "lf_hfe_joint" },
@@ -36,7 +37,7 @@ int main(int argc, char *argv[])
 	std::string urdf = "hyq_rviz_urdf_robot_description";
 
 	UrdfVisualizer node(hyq_ik, kMapXppJointToUrdfNames, urdf);
-	std::cout<<"Created hyqb_visualizer node"<<std::endl;
+	std::cout<<"Created hyq_urdf_visualizer"<<std::endl;
 
 	::ros::spin();
 

@@ -7,7 +7,7 @@
   Based on code provided by Alexander Winkler
  */
 
-#include <../include/xpp/urdf_visualizer.h>
+#include <xpp/urdf_visualizer.h>
 
 #include <xpp/ros/topic_names.h>
 #include <xpp/ros_helpers_joints.h>
@@ -59,8 +59,8 @@ UrdfVisualizer::StateCallback(const StateMsg& msg)
 
 void
 UrdfVisualizer::VisualizeJoints(const ::ros::Time& stamp,
-                                    const geometry_msgs::Pose& baseState,
-                                    const sensor_msgs::JointState& jointState)
+                                const geometry_msgs::Pose& baseState,
+                                const sensor_msgs::JointState& jointState)
 {
 	auto joint_positions = GetJointsFromRos(jointState);
 	auto W_X_B_message   = GetBaseFromRos(stamp, baseState);
@@ -84,7 +84,7 @@ UrdfVisualizer::GetJointsFromRos(const sensor_msgs::JointState &msg) const
 
 geometry_msgs::TransformStamped
 UrdfVisualizer::GetBaseFromRos(const ::ros::Time& stamp,
-                                    const geometry_msgs::Pose &msg) const
+                               const geometry_msgs::Pose &msg) const
 {
   // Converting from joint messages to robot state
   geometry_msgs::TransformStamped W_X_B_message;
