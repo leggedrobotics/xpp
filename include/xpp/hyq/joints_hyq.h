@@ -50,46 +50,6 @@ static const std::map<HyqJointID, JointID> kMapHyqToXpp = []
     return map;
 }();
 
-/** @brief Holds joint values for HyQ and allow conversions from/to Eigen
-  *        in correct order.
-  */
-class JointsHyq {
-public:
-  using Vector3d = Eigen::Vector3d;
-  using JointVec = Eigen::Matrix<double,kNumJoints,1>;
-
-  explicit JointsHyq (double val = 0.0);
-  explicit JointsHyq (const JointValues& q_xpp);
-  virtual ~JointsHyq ();
-
-  /** @brief Converts joints angles to an Eigen vector sorted according to
-    * endeffector order in enum xpp::hyq::LegID.
-    */
-  JointVec ToHyqVec() const;
-
-  /** @brief Sets joint values, assuming hyq order according to
-    * @param q  Joint values interpreted as order as enum xpp::hyq::LegID.
-    */
-  void SetFromHyqVec(const JointVec& q);
-
-  /** @returns the joint value of HyQ joint \c joint.
-    */
-  double& At(HyqJointID joint);
-  double At(HyqJointID joint) const;
-
-  /** @brief Gets/Sets the joint values of Leg leg.
-    * @param leg  The leg to which the joint values apply.
-    * @param q_leg The leg's joint values ordered as in kMapHyqEEToJoints.
-    */
-  void SetLeg(LegID leg, const Vector3d& q_leg);
-  Vector3d GetLeg(LegID leg) const;
-
-  JointValues ToXpp() const;
-
-private:
-  JointValues joint_values_;
-};
-
 } /* namespace hyq */
 } /* namespace xpp */
 

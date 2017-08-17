@@ -12,7 +12,6 @@ Panels:
         - /MarkerArray2
         - /MarkerArray2/Namespaces1
         - /HyqURDF1
-        - /HyqURDF1/Links1
         - /MonopedURDF1
         - /Marker1
         - /Pose1
@@ -88,18 +87,108 @@ Visualization Manager:
     - Alpha: 0.4
       Class: rviz/RobotModel
       Collision Enabled: false
-      Enabled: false
+      Enabled: true
       Links:
-        All Links Enabled: false
+        All Links Enabled: true
         Expand Joint Details: false
         Expand Link Details: false
         Expand Tree: false
         Link Tree Style: Links in Alphabetic Order
+        base_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        lf_foot:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        lf_hipassembly:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        lf_lowerleg:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        lf_upperleg:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        lh_foot:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        lh_hipassembly:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        lh_lowerleg:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        lh_upperleg:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rf_foot:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rf_hipassembly:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rf_lowerleg:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rf_upperleg:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rh_foot:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rh_hipassembly:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rh_lowerleg:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rh_upperleg:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        trunk:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
       Name: HyqURDF
       Robot Description: /hyq_rviz_urdf_robot_description
       TF Prefix: ""
       Update Interval: 0
-      Value: false
+      Value: true
       Visual Enabled: true
     - Alpha: 0.5
       Class: rviz/RobotModel

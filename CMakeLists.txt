@@ -8,7 +8,7 @@ find_package(catkin REQUIRED COMPONENTS
   tf
   kdl_parser
   robot_state_publisher
-  xpp_msgs
+  xpp_ros
   hyqb_description        # urdf file for rviz
   monoped_description     # urdf file for rviz
 )
@@ -107,8 +107,6 @@ add_library(xpp_vis
   src/urdf_visualizer.cc
   src/rviz_marker_builder.cc
   src/joint_values.cc
-  src/joints_hyq.cc
-  src/robot_state_joints.cc
   src/hyq_inverse_kinematics.cc
   src/monoped_inverse_kinematics.cc
 )

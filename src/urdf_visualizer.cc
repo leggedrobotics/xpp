@@ -8,15 +8,14 @@
  */
 
 #include <xpp/urdf_visualizer.h>
-
 #include <xpp/ros/topic_names.h>
-#include <xpp/ros_helpers_joints.h>
+#include <xpp/ros/ros_conversions.h>
 
 namespace xpp {
 
 UrdfVisualizer::UrdfVisualizer(const InverseKinematics& ik,
-                                         const UrdfJointNames& urdf_joint_names,
-                                         const std::string& urdf_name)
+                               const UrdfJointNames& urdf_joint_names,
+                               const std::string& urdf_name)
 {
   inverse_kinematics_ = ik;
   urdf_joint_names_   = urdf_joint_names;
@@ -49,12 +48,26 @@ UrdfVisualizer::UrdfVisualizer(const InverseKinematics& ik,
 void
 UrdfVisualizer::StateCallback(const StateMsg& msg)
 {
-  auto cart   = xpp::ros::RosHelpers::RosToXpp(msg);
-  auto joints = RobotStateJoints::FromCartesian(cart, inverse_kinematics_);
+  auto cart   = xpp::ros::RosConversions::RosToXpp(msg);
+  VectorXd v = GetJointAngles(cart.GetBase(),cart.GetEEPos());
 
-  auto joints_msg = xpp::RosHelpersJoints::XppToRos(joints);
-  VisualizeJoints(::ros::Time::now(), joints_msg.common.base.pose,
-                                      joints_msg.joints);
+  sensor_msgs::JointState joint_msg;
+  joint_msg.position = std::vector<double>(v.data(), v.data()+v.size());
+
+  VisualizeJoints(::ros::Time::now(), msg.common.base.pose, joint_msg);
+}
+
+VectorXd
+UrdfVisualizer::GetJointAngles (const State3d& base_W, const EndeffectorsPos& ee_W) const
+{
+  // transform world -> base frame
+  Eigen::Matrix3d B_R_W = base_W.ang.q.normalized().toRotationMatrix().inverse();
+
+  EndeffectorsPos ee_B = ee_W;
+  for (auto ee : ee_W.GetEEsOrdered())
+    ee_B.At(ee) = B_R_W * (ee_W.At(ee) - base_W.lin.p_);
+
+  return inverse_kinematics_->GetAllJointAngles(ee_B).ToVec();
 }
 
 void

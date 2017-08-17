@@ -6,7 +6,7 @@
  */
 
 #include <xpp/rviz_marker_builder.h>
-#include <xpp/ros/ros_helpers.h>
+#include <xpp/ros/ros_conversions.h>
 
 namespace xpp {
 
@@ -234,9 +234,9 @@ RvizMarkerBuilder::CreateRangeOfMotion (const State3d& base) const
 
   int ee = E0;
   for (const auto& pos_B : params_.nominal_ee_pos) {
-    Vector3d pos_W = base.lin.p_ + w_R_b*ros::RosHelpers::RosToXpp(pos_B);
+    Vector3d pos_W = base.lin.p_ + w_R_b*ros::RosConversions::RosToXpp(pos_B);
 
-    Marker m  = CreateBox(pos_W, base.ang.q, 2*ros::RosHelpers::RosToXpp(params_.ee_max_dev));
+    Marker m  = CreateBox(pos_W, base.ang.q, 2*ros::RosConversions::RosToXpp(params_.ee_max_dev));
     m.color   = GetLegColor(ee++);
     m.color.a = 0.2;
     m.ns      = "range_of_motion";
@@ -253,9 +253,9 @@ RvizMarkerBuilder::CreateBox (const Vector3d& pos, Eigen::Quaterniond ori,
   Marker m;
 
   m.type = Marker::CUBE;
-  m.pose.position    = ros::RosHelpers::XppToRos<geometry_msgs::Point>(pos);
-  m.pose.orientation = ros::RosHelpers::XppToRos(ori);
-  m.scale            = ros::RosHelpers::XppToRos<geometry_msgs::Vector3>(edge_length);
+  m.pose.position    = ros::RosConversions::XppToRos<geometry_msgs::Point>(pos);
+  m.pose.orientation = ros::RosConversions::XppToRos(ori);
+  m.scale            = ros::RosConversions::XppToRos<geometry_msgs::Vector3>(edge_length);
 
   return m;
 }
@@ -266,7 +266,7 @@ RvizMarkerBuilder::CreateSphere (const Vector3d& pos, double diameter) const
   Marker m;
 
   m.type = Marker::SPHERE;
-  m.pose.position = ros::RosHelpers::XppToRos<geometry_msgs::Point>(pos);
+  m.pose.position = ros::RosConversions::XppToRos<geometry_msgs::Point>(pos);
   m.scale.x = diameter;
   m.scale.y = diameter;
   m.scale.z = diameter;
@@ -285,10 +285,10 @@ RvizMarkerBuilder::CreateForceArrow (const Vector3d& force,
   m.scale.z = 0.06; // arrow-head length
 
   double force_scale = 1500;
-  auto start = ros::RosHelpers::XppToRos<geometry_msgs::Point>(ee_pos - force/force_scale);
+  auto start = ros::RosConversions::XppToRos<geometry_msgs::Point>(ee_pos - force/force_scale);
   m.points.push_back(start);
 
-  auto end = ros::RosHelpers::XppToRos<geometry_msgs::Point>(ee_pos);
+  auto end = ros::RosConversions::XppToRos<geometry_msgs::Point>(ee_pos);
   m.points.push_back(end);
 
   return m;
@@ -306,7 +306,7 @@ RvizMarkerBuilder::CreateSupportArea (const ContactState& contact_state,
 
   for (auto ee : contact_state.GetEEsOrdered()) {
     if (contact_state.At(ee)) { // endeffector in contact
-      auto p = ros::RosHelpers::XppToRos<geometry_msgs::Point>(ee_pos.At(ee));
+      auto p = ros::RosConversions::XppToRos<geometry_msgs::Point>(ee_pos.At(ee));
       m.points.push_back(p);
       m.color = GetLegColor(ee);
     }

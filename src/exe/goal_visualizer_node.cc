@@ -18,7 +18,7 @@
 #include <xpp_msgs/UserCommand.h>   // listen to goal state
 
 #include <xpp/ros/topic_names.h>
-#include <xpp/ros/ros_helpers.h>
+#include <xpp/ros/ros_conversions.h>
 
 
 using PoseMsg = geometry_msgs::PoseStamped;
@@ -32,10 +32,10 @@ void CallbackGoal(const xpp_msgs::UserCommand& msg_in)
   msg_out.header.frame_id = "world";
   msg_out.pose.position = msg_in.goal_lin.pos;
 
-  auto goal_ang = xpp::ros::RosHelpers::RosToXpp(msg_in.goal_ang);
+  auto goal_ang = xpp::ros::RosConversions::RosToXpp(msg_in.goal_ang);
   kindr::EulerAnglesZyxD euler(goal_ang.p_.reverse());
   kindr::RotationQuaternionD quat(euler);
-  msg_out.pose.orientation = xpp::ros::RosHelpers::XppToRos(quat.toImplementation());
+  msg_out.pose.orientation = xpp::ros::RosConversions::XppToRos(quat.toImplementation());
 
   rviz_pub.publish(msg_out);
 }

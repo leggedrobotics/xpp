@@ -55,6 +55,8 @@ private:
   UrdfnameToJointAngle GetJointsFromRos(const sensor_msgs::JointState &msg) const;
   geometry_msgs::TransformStamped GetBaseFromRos(const ::ros::Time& stamp, const geometry_msgs::Pose &msg) const;
 
+  VectorXd GetJointAngles (const State3d& base_W, const EndeffectorsPos& ee_W) const;
+
   InverseKinematics inverse_kinematics_;
   UrdfJointNames urdf_joint_names_;
 };

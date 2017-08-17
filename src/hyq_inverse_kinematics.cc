@@ -102,16 +102,15 @@ HyqInverseKinematics::GetJointAngles(const EEPosition& pos_b, LegID leg) const
 JointValues
 HyqInverseKinematics::GetAllJointAngles(const EndeffectorsPos& pos_b) const
 {
-  JointsHyq q_hyq;
+  JointValues q_xpp(kNumEE, kNumJointsPerLeg, 0.0);
 
   for (auto ee : pos_b.GetEEsOrdered()) {
     EEPosition pos = pos_b.At(ee);
     LegID leg = kMapOptToQuad.at(ee);
-    Joints1EE q_leg = GetJointAngles(pos, leg);
-    q_hyq.SetLeg(leg, q_leg);
+    q_xpp.At(ee) = GetJointAngles(pos, leg);
   }
 
-  return q_hyq.ToXpp();
+  return q_xpp;
 }
 
 HyqInverseKinematics::Joints1EE
