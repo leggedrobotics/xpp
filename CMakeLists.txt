@@ -10,7 +10,6 @@ find_package(catkin REQUIRED COMPONENTS
   geometry_msgs
   sensor_msgs
   message_generation
-  xpp_states
 )
 
 ## System dependencies are found with CMake's conventions
@@ -63,6 +62,7 @@ add_message_files(
   RobotStateCartesianTrajectory.msg
   PDGainsHyq.msg
   UserCommand.msg
+  OptParameters.msg
 )
 
 ## Generate services in the 'srv' folder
@@ -116,9 +116,9 @@ generate_messages(
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-   INCLUDE_DIRS include
+   INCLUDE_DIRS
    LIBRARIES
-   CATKIN_DEPENDS message_runtime sensor_msgs xpp_states
+   CATKIN_DEPENDS message_runtime sensor_msgs
 #  DEPENDS system_lib
 )
 
