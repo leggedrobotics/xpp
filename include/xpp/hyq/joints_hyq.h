@@ -34,6 +34,7 @@ static const std::map<LegID, std::vector<HyqJointID> > kMapHyqEEToJoints {
   *
   * The joints are ordered according to the the enum xpp::hyq::LegID.
   */
+// zmp_ only used in URDF visualizer, so maybe make function and reuse for biped
 static const std::map<HyqJointID, JointID> kMapHyqToXpp = []
 {
     std::map<HyqJointID, JointID> map;
