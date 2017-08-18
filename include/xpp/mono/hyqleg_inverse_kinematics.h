@@ -26,9 +26,14 @@ public:
    * @param ee_pos_B the foot position xyz expressed in the frame attached
    *        at the hipaa.
    */
-  static Vector3d GetJointAngles(const Vector3d& ee_pos_B, KneeBend bend=Forward);
+  Vector3d GetJointAngles(const Vector3d& ee_pos_B, KneeBend bend=Forward) const;
 
-  static void EnforceLimits(double& val, MonopedJointID joint);
+  void EnforceLimits(double& val, MonopedJointID joint) const;
+
+private:
+  Vector3d hfe_to_haa_z = Vector3d(0.0, 0.0, 0.08); //distance of HFE to HAA in z direction
+  double length_thigh = 0.35; // length of upper leg
+  double length_shank = 0.33; // length of lower leg
 };
 
 } /* namespace mono */

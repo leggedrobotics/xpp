@@ -16,8 +16,10 @@ MonopedInverseKinematics::MonopedInverseKinematics ()
 Joints
 MonopedInverseKinematics::GetAllJointAngles(const EndeffectorsPos& x_B) const
 {
+  HyqlegInverseKinematics leg;
+
   Eigen::Vector3d offset_base_to_hip(0.0, 0.0, 0.15);
-  Eigen::VectorXd q0 = HyqlegInverseKinematics::GetJointAngles(x_B.At(E0) + offset_base_to_hip);
+  Eigen::VectorXd q0 = leg.GetJointAngles(x_B.At(E0) + offset_base_to_hip);
 
   return Joints({q0});
 }

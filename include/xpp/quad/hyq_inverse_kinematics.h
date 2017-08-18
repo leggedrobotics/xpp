@@ -21,14 +21,8 @@ public:
 	  */
 	Joints GetAllJointAngles(const EndeffectorsPos& pos_b) const override;
 
-//  virtual int GetJointsPerEE() const override;
-//
-//  Joints1EE GetUpperJointLimits(EEID ee) const;
-//  Joints1EE GetLowerJointLimits(EEID ee) const;
-
-//private:
-//	Joints1EE GetJointAngles(const EEPosition& pos_b, FootID ee) const;
-//	bool compute(FootID leg, const EEPosition& x, Eigen::Vector3d& q_bf, int &rc) const;
+private:
+	Vector3d base2hip_LF_ = Vector3d(0.3735,0.207, 0.0);
 };
 
 } /* namespace quad */

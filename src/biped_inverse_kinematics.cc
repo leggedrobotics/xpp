@@ -18,8 +18,10 @@ BipedInverseKinematics::BipedInverseKinematics ()
 Joints
 BipedInverseKinematics::GetAllJointAngles(const EndeffectorsPos& x_B) const
 {
-  Eigen::VectorXd q0 = mono::HyqlegInverseKinematics::GetJointAngles(x_B.At(E0) + Vector3d(0.0, -0.1, 0.15));
-  Eigen::VectorXd q1 = mono::HyqlegInverseKinematics::GetJointAngles(x_B.At(E1) + Vector3d(0.0,  0.1, 0.15));
+  mono::HyqlegInverseKinematics leg;
+
+  Eigen::VectorXd q0 = leg.GetJointAngles(x_B.At(E0) + Vector3d(0.0, -0.1, 0.15));
+  Eigen::VectorXd q1 = leg.GetJointAngles(x_B.At(E1) + Vector3d(0.0,  0.1, 0.15));
 
   return Joints({q0,q1});
 }

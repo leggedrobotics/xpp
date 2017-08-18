@@ -14,16 +14,16 @@ HyqInverseKinematics::HyqInverseKinematics ()
 Joints
 HyqInverseKinematics::GetAllJointAngles(const EndeffectorsPos& pos_B) const
 {
-  Vector3d offset_base2hip_LF = Eigen::Vector3d(-0.3735,-0.207, 0.0);
   Vector3d ee_pos_H; // foothold expressed in hip frame
   std::vector<Eigen::VectorXd> q_vec;
+  mono::HyqlegInverseKinematics leg;
 
   for (auto ee : pos_B.GetEEsOrdered()) {
 
-    FootID leg = kMapOptToQuad.at(ee);
+    FootID foot = kMapOptToQuad.at(ee);
     mono::HyqlegInverseKinematics::KneeBend bend = mono::HyqlegInverseKinematics::Forward;
 
-    switch (leg) {
+    switch (foot) {
       case LF:
         ee_pos_H = pos_B.At(ee);
         break;
@@ -42,8 +42,8 @@ HyqInverseKinematics::GetAllJointAngles(const EndeffectorsPos& pos_B) const
         break;
     }
 
-    ee_pos_H += offset_base2hip_LF;
-    q_vec.push_back(mono::HyqlegInverseKinematics::GetJointAngles(ee_pos_H, bend));
+    ee_pos_H -= base2hip_LF_;
+    q_vec.push_back(leg.GetJointAngles(ee_pos_H, bend));
   }
 
   return Joints(q_vec);

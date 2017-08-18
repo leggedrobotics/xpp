@@ -21,7 +21,7 @@ HyqlegInverseKinematics::HyqlegInverseKinematics ()
 }
 
 HyqlegInverseKinematics::Vector3d
-HyqlegInverseKinematics::GetJointAngles (const Vector3d& ee_pos_B, KneeBend bend)
+HyqlegInverseKinematics::GetJointAngles (const Vector3d& ee_pos_B, KneeBend bend) const
 {
   double q_HAA_bf, q_HAA_br, q_HFE_br; // rear bend of knees
   double q_HFE_bf, q_KFE_br, q_KFE_bf; // forward bend of knees
@@ -43,15 +43,15 @@ HyqlegInverseKinematics::GetJointAngles (const Vector3d& ee_pos_B, KneeBend bend
   xr = (R * xr).eval();
 
   // translate into the HFE coordinate system (along Z axis)
-  xr[Z] += 0.08;  //distance of HFE to HAA in z direction
+  xr += hfe_to_haa_z;  //distance of HFE to HAA in z direction
 
   // compute square of length from HFE to foot
   double tmp1 = pow(xr[X],2)+pow(xr[Z],2);
 
 
   // compute temporary angles (with reachability check)
-  double lu = 0.35;  // length of upper leg
-  double ll = 0.33;  // length of lower leg
+  double lu = length_thigh;  // length of upper leg
+  double ll = length_shank;  // length of lower leg
   double alpha = atan2(-xr[Z],xr[X]) - 0.5*M_PI;  //  flip and rotate to match HyQ joint definition
 
 
@@ -98,7 +98,7 @@ HyqlegInverseKinematics::GetJointAngles (const Vector3d& ee_pos_B, KneeBend bend
 }
 
 void
-HyqlegInverseKinematics::EnforceLimits (double& val, MonopedJointID joint)
+HyqlegInverseKinematics::EnforceLimits (double& val, MonopedJointID joint) const
 {
   // real joint angle limits
   const static double haa_min = -90;
