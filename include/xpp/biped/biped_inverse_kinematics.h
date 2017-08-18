@@ -19,13 +19,6 @@ public:
 	  * @return the joints angles of the robot
 	  */
 	Joints GetAllJointAngles(const EndeffectorsPos& pos_b) const override;
-
-//  virtual int GetJointsPerEE() const override;
-
-private:
-//	void EnforceLimits(double& val, BipedJointID joint) const;
-//	Vector3d GetJointAngles(const EEPosition& pos_b,
-//	                        const Vector3d& offset_base_to_hip) const;
 };
 
 } /* namespace biped */

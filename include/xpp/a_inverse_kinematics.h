@@ -11,7 +11,6 @@
 #include <Eigen/Dense>
 
 #include <xpp/endeffectors.h>
-
 #include "joints.h"
 
 namespace xpp {
@@ -39,8 +38,6 @@ public:
     * @return the joints angles of the robot.
     */
   virtual Joints GetAllJointAngles(const EndeffectorsPos& pos_b) const = 0;
-
-//  virtual int GetJointsPerEE() const = 0;
 };
 
 } /* namespace xpp */
