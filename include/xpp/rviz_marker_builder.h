@@ -38,9 +38,15 @@ public:
 
   void SetOptimizationParameters(const ParamsMsg& msg);
 
+
+
+
 public:
   MarkerArray BuildStateMarkers(const RobotStateCartesian& state) const;
   MarkerArray BuildTrajectoryMarkers(const RobotCartTraj& traj) const;
+  MarkerArray BuildTerrainBlock(const Vector3d& pos, const Vector3d& edge_length) const;
+
+
 
 private:
   // next level in the hierarchy (add color and namespace)
@@ -57,11 +63,12 @@ private:
   Marker CreateForceArrow(const Vector3d& force, const Vector3d& ee_pos) const;
   MarkerVec CreateSupportArea(const ContactState& contact_state, const EEPos& ee_pos) const;
   Marker CreateSphere(const Vector3d& pos, double diameter = 0.03) const;
-  Marker CreateBox(const Vector3d& pos, Eigen::Quaterniond ori,
-                   const Vector3d& edge_length) const;
+  Marker CreateBox(const Vector3d& pos, Eigen::Quaterniond ori, const Vector3d& edge_length) const;
 
-  std_msgs::ColorRGBA red, green, blue, white, brown, yellow, purple, black;
   std_msgs::ColorRGBA GetLegColor(int leg) const;
+
+
+  std_msgs::ColorRGBA red, green, blue, white, brown, yellow, purple, black, gray;
 
   ParamsMsg params_;
 };

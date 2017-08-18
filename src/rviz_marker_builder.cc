@@ -16,6 +16,7 @@ RvizMarkerBuilder::RvizMarkerBuilder()
   red.a = green.a = blue.a = white.a = brown.a = yellow.a = purple.a = black.a = 1.0;
 
   black.r  =           black.g  =           black.b  = 0.3;
+  gray.r  =            gray.g  =            gray.b  = 0.6;
   red.r    = 1.0;      red.g    = 0.0;      red.b    = 0.0;
   green.r  = 0.0;      green.g  = 150./255; green.b  = 76./255;
   blue.r   = 0.0;      blue.g   = 102./255; blue.b   = 204./255;
@@ -113,6 +114,26 @@ RvizMarkerBuilder::BuildStateMarkers (const RobotStateCartesian& state) const
     //  m.action = visualization_msgs::Marker::DELETE;
     //  msg.markers.push_back(m);
   }
+
+  return msg;
+}
+
+RvizMarkerBuilder::MarkerArray
+RvizMarkerBuilder::BuildTerrainBlock (const Vector3d& pos,
+                                      const Vector3d& edge_length) const
+{
+
+  Eigen::Quaterniond ori; ori.setIdentity();
+  Marker m = CreateBox(pos, ori, edge_length);
+
+  m.ns = "terrain";
+  m.id = 9999;
+  m.header.frame_id = "world";
+  m.color = gray;
+  m.color.a = 0.8;
+
+  MarkerArray msg;
+  msg.markers.push_back(m);
 
   return msg;
 }
@@ -424,3 +445,5 @@ RvizMarkerBuilder::GetLegColor(int ee) const
 //}
 
 } /* namespace xpp */
+
+

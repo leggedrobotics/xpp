@@ -23,10 +23,10 @@ public:
   virtual ~HyqlegInverseKinematics ();
 
   /**
-   * @param ee_pos_B the foot position xyz expressed in the frame attached
-   *        at the hipaa.
+   * @param ee_pos_H the foot position xyz expressed in the frame attached
+   *                  at the hip-aa.
    */
-  Vector3d GetJointAngles(const Vector3d& ee_pos_B, KneeBend bend=Forward) const;
+  Vector3d GetJointAngles(const Vector3d& ee_pos_H, KneeBend bend=Forward) const;
 
   void EnforceLimits(double& val, MonopedJointID joint) const;
 

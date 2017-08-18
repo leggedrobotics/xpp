@@ -40,11 +40,17 @@ static void ParamsCallback (const ParamsMsg& params_msg)
 {
   ROS_INFO_STREAM("received current optimization parameters");
   marker_builder.SetOptimizationParameters(params_msg);
+
+  // add some obstacles
+  Eigen::Vector3d pos(1.25, 0.0, 0.2);
+  Eigen::Vector3d size(1,1,0.4);
+  MarkerArrayMsg msg = marker_builder.BuildTerrainBlock(pos, size);
+  rviz_pub.publish(msg);
 }
 
 int main(int argc, char *argv[])
 {
-	init(argc, argv, "optimization_state_visualizer");
+	init(argc, argv, "rviz_marker_visualizer");
 
 	NodeHandle n;
 	rviz_pub = n.advertise<MarkerArrayMsg>(xpp_msgs::rviz_optimized, 1);
@@ -57,6 +63,8 @@ int main(int argc, char *argv[])
 
 	Subscriber traj_sub;
 	traj_sub = n.subscribe(xpp_msgs::robot_trajectory_cart, 1, TrajectoryCallback);
+
+	std::cout<<"Created rviz marker visualizer"<<std::endl;
 
 	spin();
 
