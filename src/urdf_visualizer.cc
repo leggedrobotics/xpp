@@ -103,7 +103,8 @@ UrdfVisualizer::GetBaseFromRos(const ::ros::Time& stamp,
   geometry_msgs::TransformStamped W_X_B_message;
   W_X_B_message.header.stamp    = stamp;
   W_X_B_message.header.frame_id = "world";
-  W_X_B_message.child_frame_id  = "base_link";
+  // this must be the same name as the base_link in the URDF file
+  W_X_B_message.child_frame_id  = "base";
 
 	W_X_B_message.transform.translation.x =  msg.position.x;
 	W_X_B_message.transform.translation.y =  msg.position.y;

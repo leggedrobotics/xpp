@@ -9,9 +9,10 @@
 #define XPP_XPP_COMMON_INCLUDE_XPP_UTILS_JOINT_VALUES_H_
 
 #include <map>
+#include <vector>
+#include <Eigen/Dense>
 
 #include <xpp/endeffectors.h>
-#include <Eigen/Dense>
 
 namespace xpp {
 
@@ -19,7 +20,7 @@ enum JointID { J0=0, J1, J2, J3, J4, J5, J6, J7, J8, J9, J10, J11, J12, J13, J14
 
 /** @brief Container to access values associated to joints of endeffectors.
   */
-class JointValues : public Endeffectors<Eigen::VectorXd> {
+class Joints : public Endeffectors<Eigen::VectorXd> {
 public:
   using VectorXd = Eigen::VectorXd;
   using Base = Endeffectors<VectorXd>;
@@ -31,8 +32,9 @@ public:
     * @param n_joints_per_ee  number of joints for each endeffector.
     * @param value            default joint value
     */
-  explicit JointValues (int n_ee, int n_joints_per_ee, double value = 0.0);
-  virtual ~JointValues ();
+  explicit Joints (int n_ee, int n_joints_per_ee, double value = 0.0);
+  explicit Joints (const std::vector<VectorXd>& joints);
+  virtual ~Joints ();
 
   /** @brief Converts joint values to Eigen vector.
    *
@@ -67,8 +69,8 @@ public:
 
   int GetNumJoints() const;
 
-  const JointValues operator + (const JointValues& rhs) const;
-  const JointValues operator * (double scalar) const;
+  const Joints operator + (const Joints& rhs) const;
+  const Joints operator * (double scalar) const;
 
   int GetNumJointsPerEE() const;
 

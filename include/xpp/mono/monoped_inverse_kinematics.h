@@ -18,12 +18,12 @@ public:
 	  * @param pos_b the 3d position of the endeffector expressed in the base frame
 	  * @return the joints angles of the robot
 	  */
-	JointValues GetAllJointAngles(const EndeffectorsPos& pos_b) const override;
+	Joints GetAllJointAngles(const EndeffectorsPos& pos_b) const override;
 
-  virtual int GetJointsPerEE() const override;
+//  virtual int GetJointsPerEE() const override;
 
 private:
-	void EnforceLimits(double& val, MonopedJointID joint) const;
+//	void EnforceLimits(double& val, MonopedJointID joint) const;
 };
 
 } /* namespace mono */

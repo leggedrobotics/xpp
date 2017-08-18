@@ -18,14 +18,14 @@ public:
 	  * @param pos_b the 3d position of the endeffector expressed in the base frame
 	  * @return the joints angles of the robot
 	  */
-	JointValues GetAllJointAngles(const EndeffectorsPos& pos_b) const override;
+	Joints GetAllJointAngles(const EndeffectorsPos& pos_b) const override;
 
-  virtual int GetJointsPerEE() const override;
+//  virtual int GetJointsPerEE() const override;
 
 private:
-	void EnforceLimits(double& val, BipedJointID joint) const;
-	Vector3d GetJointAngles(const EEPosition& pos_b,
-	                        const Vector3d& offset_base_to_hip) const;
+//	void EnforceLimits(double& val, BipedJointID joint) const;
+//	Vector3d GetJointAngles(const EEPosition& pos_b,
+//	                        const Vector3d& offset_base_to_hip) const;
 };
 
 } /* namespace biped */

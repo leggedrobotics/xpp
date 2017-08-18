@@ -19,16 +19,16 @@ public:
 	  * @param ee the number of endeffector that the above position is referring to.
 	  * @return the joints angles of the robot
 	  */
-	JointValues GetAllJointAngles(const EndeffectorsPos& pos_b) const override;
+	Joints GetAllJointAngles(const EndeffectorsPos& pos_b) const override;
 
-  virtual int GetJointsPerEE() const override;
+//  virtual int GetJointsPerEE() const override;
+//
+//  Joints1EE GetUpperJointLimits(EEID ee) const;
+//  Joints1EE GetLowerJointLimits(EEID ee) const;
 
-  Joints1EE GetUpperJointLimits(EEID ee) const;
-  Joints1EE GetLowerJointLimits(EEID ee) const;
-
-private:
-	Joints1EE GetJointAngles(const EEPosition& pos_b, FootID ee) const;
-	bool compute(FootID leg, const EEPosition& x, Eigen::Vector3d& q_bf, int &rc) const;
+//private:
+//	Joints1EE GetJointAngles(const EEPosition& pos_b, FootID ee) const;
+//	bool compute(FootID leg, const EEPosition& x, Eigen::Vector3d& q_bf, int &rc) const;
 };
 
 } /* namespace quad */

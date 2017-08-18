@@ -5,13 +5,13 @@
  @brief   Brief description
  */
 
-#include <xpp/joint_values.h>
+#include <../include/xpp/joints.h>
 
 namespace xpp {
 
 using EEID = EndeffectorID;
 
-JointValues::JointValues (int n_ee, int n_joints_per_leg, double value)
+Joints::Joints (int n_ee, int n_joints_per_leg, double value)
     : Base(n_ee)
 {
   n_joints_per_leg_ = n_joints_per_leg;
@@ -20,18 +20,28 @@ JointValues::JointValues (int n_ee, int n_joints_per_leg, double value)
   SetAll(VectorXd::Constant(n_joints_per_leg, value));
 }
 
-JointValues::~JointValues ()
+Joints::Joints (const std::vector<VectorXd>& q_vec)
+    : Base(q_vec.size())
+{
+  n_joints_per_leg_ = q_vec.front().rows(); // assume all are the same
+  n_joints_ = GetCount()*n_joints_per_leg_;
+
+  for (auto ee : GetEEsOrdered())
+    At(ee) = q_vec.at(ee);
+}
+
+Joints::~Joints ()
 {
 }
 
 int
-JointValues::GetNumJoints () const
+Joints::GetNumJoints () const
 {
   return n_joints_;
 }
 
-JointValues::VectorXd
-JointValues::ToVec (const EEOrder& ee_order) const
+Joints::VectorXd
+Joints::ToVec (const EEOrder& ee_order) const
 {
   VectorXd q_combined(n_joints_);
   int j = 0;
@@ -45,7 +55,7 @@ JointValues::ToVec (const EEOrder& ee_order) const
 }
 
 void
-JointValues::SetFromVec (const VectorXd& xpp, const EEOrder& ee_order)
+Joints::SetFromVec (const VectorXd& xpp, const EEOrder& ee_order)
 {
   int j = 0;
 
@@ -55,20 +65,20 @@ JointValues::SetFromVec (const VectorXd& xpp, const EEOrder& ee_order)
   }
 }
 
-JointValues::VectorXd
-JointValues::ToVec () const
+Joints::VectorXd
+Joints::ToVec () const
 {
   return ToVec(GetEEsOrdered());
 }
 
 void
-JointValues::SetFromVec (const VectorXd& q)
+Joints::SetFromVec (const VectorXd& q)
 {
   SetFromVec(q, GetEEsOrdered());
 }
 
 double&
-JointValues::At (JointID joint)
+Joints::At (JointID joint)
 {
   div_t result = std::div(joint, n_joints_per_leg_);
   EEID ee = static_cast<EEID>(result.quot);
@@ -76,31 +86,31 @@ JointValues::At (JointID joint)
 }
 
 double
-JointValues::At (JointID joint) const
+Joints::At (JointID joint) const
 {
   return ToVec()[joint];
 }
 
-const JointValues
-JointValues::operator + (const JointValues& rhs) const
+const Joints
+Joints::operator + (const Joints& rhs) const
 {
   VectorXd result = ToVec() + rhs.ToVec();
-  JointValues xpp(GetCount(), n_joints_per_leg_);
+  Joints xpp(GetCount(), n_joints_per_leg_);
   xpp.SetFromVec(result);
   return xpp;
 }
 
-const JointValues
-JointValues::operator * (double scalar) const
+const Joints
+Joints::operator * (double scalar) const
 {
   VectorXd result = scalar*ToVec();
-  JointValues xpp(GetCount(), n_joints_per_leg_);
+  Joints xpp(GetCount(), n_joints_per_leg_);
   xpp.SetFromVec(result);
   return xpp;
 }
 
 int
-JointValues::GetNumJointsPerEE () const
+Joints::GetNumJointsPerEE () const
 {
   return n_joints_per_leg_;
 }

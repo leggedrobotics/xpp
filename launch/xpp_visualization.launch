@@ -21,7 +21,20 @@
    </node>
    <param name="hyq_rviz_urdf_robot_description" command="$(find xacro)/xacro.py '$(find hyqb_description)/urdf/robots/hyqb.urdf.xacro'"/>
    
-   <node name="goal_visualizer"  pkg="xpp_vis" type="goal_visualizer_node" output="screen" cwd="node" >  
+   <!-- visualizes anymal in rviz through the URDF --> 
+   <node name="urdf_visualizer_anymal" pkg="xpp_vis" type="urdf_visualizer_anymal" output="screen">
+   </node>
+   <include file="$(find anymal_description)/launch/load.launch"></include>
+   
+   <!-- visualizes a drone in rviz through the URDF -->
+   <!-- no IK needed, just need base state, so use one of the above -->
+   <param name="quadrotor_rviz_urdf_robot_description" command="$(find xacro)/xacro.py '$(find quadrotor_description)/urdf/quadrotor.urdf'"/>
+   
+   
+   
+   
+   
+   <node name="goal_visualizer"  pkg="xpp_vis" type="goal_visualizer_node" output="screen" cwd="node" >
    </node>
    
   

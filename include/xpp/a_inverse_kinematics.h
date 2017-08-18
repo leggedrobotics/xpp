@@ -11,7 +11,8 @@
 #include <Eigen/Dense>
 
 #include <xpp/endeffectors.h>
-#include <xpp/joint_values.h>
+
+#include "joints.h"
 
 namespace xpp {
 
@@ -37,9 +38,9 @@ public:
     * @param ee the number of endeffector that the above position is referring to.
     * @return the joints angles of the robot.
     */
-  virtual JointValues GetAllJointAngles(const EndeffectorsPos& pos_b) const = 0;
+  virtual Joints GetAllJointAngles(const EndeffectorsPos& pos_b) const = 0;
 
-  virtual int GetJointsPerEE() const = 0;
+//  virtual int GetJointsPerEE() const = 0;
 };
 
 } /* namespace xpp */

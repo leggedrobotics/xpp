@@ -106,7 +106,8 @@ include_directories(
 add_library(xpp_vis
   src/urdf_visualizer.cc
   src/rviz_marker_builder.cc
-  src/joint_values.cc
+  src/joints.cc
+  src/hyqleg_inverse_kinematics.cc
   src/hyq_inverse_kinematics.cc
   src/biped_inverse_kinematics.cc
   src/monoped_inverse_kinematics.cc
@@ -130,6 +131,12 @@ target_link_libraries(urdf_visualizer_biped
 
 add_executable(urdf_visualizer_hyq src/exe/urdf_visualizer_hyq.cc)
 target_link_libraries(urdf_visualizer_hyq
+  xpp_vis
+  ${catkin_LIBRARIES}
+)
+
+add_executable(urdf_visualizer_anymal src/exe/urdf_visualizer_anymal.cc)
+target_link_libraries(urdf_visualizer_anymal
   xpp_vis
   ${catkin_LIBRARIES}
 )
