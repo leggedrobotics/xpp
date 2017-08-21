@@ -6,30 +6,24 @@
 
 
    
-   <!-- visualizes a monoped robot in rviz through the URDF -->
+   <!-- MONOPED -->
    <node name="urdf_visualizer_monoped" pkg="xpp_vis" type="urdf_visualizer_monoped" output="screen">
    </node>
    <param name="monoped_rviz_urdf_robot_description" command="$(find xacro)/xacro.py '$(find monoped_description)/urdf/monoped.urdf'"/>
    
-      <!-- visualizes a biped robot in rviz through the URDF -->
+   <!-- BIPED -->
    <node name="urdf_visualizer_biped" pkg="xpp_vis" type="urdf_visualizer_biped" output="screen">
    </node>
    <param name="biped_rviz_urdf_robot_description" command="$(find xacro)/xacro.py '$(find biped_description)/urdf/biped.urdf'"/>
    
-   <!-- visualizes hyq in rviz through the URDF --> 
+   <!-- HYQ --> 
    <node name="urdf_visualizer_hyq" pkg="xpp_vis" type="urdf_visualizer_hyq" output="screen">
    </node>
    <param name="hyq_rviz_urdf_robot_description" command="$(find xacro)/xacro.py '$(find hyqb_description)/urdf/robots/hyqb.urdf.xacro'"/>
    
-   <!-- visualizes anymal in rviz through the URDF --> 
-   <node name="urdf_visualizer_anymal" pkg="xpp_vis" type="urdf_visualizer_anymal" output="screen">
-   </node>
-   <include file="$(find anymal_description)/launch/load.launch"></include>
-   
-   <!-- visualizes a drone in rviz through the URDF -->
+   <!-- DRONE -->
    <!-- no IK needed, just need base state, so use one of the above -->
    <param name="quadrotor_rviz_urdf_robot_description" command="$(find xacro)/xacro.py '$(find quadrotor_description)/urdf/quadrotor.urdf'"/>
-   
    
    
    

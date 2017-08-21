@@ -85,8 +85,8 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11" )
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
    INCLUDE_DIRS include
-   #LIBRARIES ${PROJECT_NAME}
-   #CATKIN_DEPENDS
+   LIBRARIES ${PROJECT_NAME}
+   CATKIN_DEPENDS xpp_ros
    #DEPENDS eigen
 )
 
@@ -103,7 +103,7 @@ include_directories(
 )
 
 # Declare a C++ library
-add_library(xpp_vis
+add_library(${PROJECT_NAME}
   src/urdf_visualizer.cc
   src/rviz_marker_builder.cc
   src/joints.cc
