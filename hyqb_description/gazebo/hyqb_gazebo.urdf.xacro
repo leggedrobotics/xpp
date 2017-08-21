@@ -1,0 +1,108 @@
+<?xml version="1.0"?> 
+
+<robot name="hyqb" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+<gazebo>
+    <plugin name="GazeboImuPlugin" filename="libhyqb_imu_plugin.so">
+	  <robotNamespace>/hyqb</robotNamespace>
+	  <linkName>base_link</linkName>
+	</plugin>
+	
+	<plugin name="GazeboDisturbancePlugin" filename="libhyqb_disturbance_plugin.so">
+	  <linkName>base_link</linkName>
+	  <forceGain>300</forceGain>
+	  <torqueGain>300</torqueGain>
+	</plugin>
+	
+	<plugin name="GazeboLowlevelPlugin" filename="libhyqb_lowlevel_plugin.so">
+	  <robotNamespace>/hyqb</robotNamespace>
+	  <trunkName>base_link</trunkName>
+	  <freezePose>
+	  	<x>0.0</x>
+	  	<y>0.0</y>
+	  	<z>2.0</z>
+	  	<roll>0.0</roll>
+	  	<pitch>0.0</pitch>
+	  	<yaw>0.0</yaw>
+	  </freezePose>
+	  <initialState>
+	  	<LF_HAA>-0.2</LF_HAA>
+	  	<LF_HFE>0.7</LF_HFE>
+	  	<LF_KFE>-1.4</LF_KFE>
+      
+	  	<RF_HAA>-0.2</RF_HAA>
+	  	<RF_HFE>0.7</RF_HFE>
+	  	<RF_KFE>-1.4</RF_KFE>
+      
+	  	<LH_HAA>-0.2</LH_HAA>
+	  	<LH_HFE>-0.7</LH_HFE>
+	  	<LH_KFE>1.4</LH_KFE>
+      
+	  	<RH_HAA>-0.2</RH_HAA>
+	  	<RH_HFE>-0.7</RH_HFE>
+	  	<RH_KFE>1.4</RH_KFE>
+	  </initialState>
+	  <ioFrequencyHz>1000</ioFrequencyHz>
+	  <useTCPNoDelay>true</useTCPNoDelay>
+	  
+	  <!-- computes joint velocities using finite differences. This is usually noisier. However, the engines velocity
+	  	   often has a weird bias, messing up the state estimation -->
+	  <useFiniteDifferencesJointVelocity>true</useFiniteDifferencesJointVelocity> 
+	  
+	  <noise>
+	   	<jointPositionMean>0.0</jointPositionMean>
+	   	<jointPositionQuantizationInterval>0.000157</jointPositionQuantizationInterval> <!-- = 2 ticks = 2*3.14 / 80.000 * 2 -->
+	   	<jointVelocityMean>0.0</jointVelocityMean>
+	   	<jointVelocityQuantizationInterval>0.062</jointVelocityQuantizationInterval> <!-- 1 tick / cycle: ioFreq*2*pi/encTicks = 800*2*3.14/80000 = 0.062 -->
+	   	<loadCellMean>5.0</loadCellMean>
+	   	<loadCellStdDeviation>70.0</loadCellStdDeviation>
+	   	<controlEffortMean>0.0</controlEffortMean>
+	   	<controlEffortStdDeviation>1.0</controlEffortStdDeviation>
+	   </noise>
+	   <delays>
+	   	<setpointCommunicationDelayMs>1.0</setpointCommunicationDelayMs>
+	   	<gainCommunicationDelayMs>1.0</gainCommunicationDelayMs>
+	   	<encoderMeasurementDelayMs>1.0</encoderMeasurementDelayMs>
+	   	<loadCellMeasurementDelayMs>1.0</loadCellMeasurementDelayMs>
+	   	<controlEffortDelayMs>1.0</controlEffortDelayMs>
+	   </delays>
+	   <actuatorDynamics>
+	      <!-- tuned according to figure 7.3 in Thiago Boaventura's PhD thesis -->
+	      <model>secondOrderModel</model>
+	      <frequencyHz>700</frequencyHz>
+	      <damping>0.5</damping>
+	   </actuatorDynamics>
+	   <gains>
+	   	<P>600.0</P>
+	   	<I>0.0</I>
+	   	<D>6.0</D>
+	   </gains>
+	</plugin>
+</gazebo>
+
+<gazebo reference="lf_lowerleg">
+    <kp>60000</kp>
+    <kd>400.0</kd>
+    <mu1>1.0</mu1>
+    <mu2>1.0</mu2>
+</gazebo>
+<gazebo reference="lh_lowerleg">
+    <kp>60000</kp>
+    <kd>400.0</kd>
+    <mu1>1.0</mu1>
+    <mu2>1.0</mu2>
+</gazebo>
+<gazebo reference="rf_lowerleg">
+    <kp>60000</kp>
+    <kd>400.0</kd>
+    <mu1>1.0</mu1>
+    <mu2>1.0</mu2>
+</gazebo>
+<gazebo reference="rh_lowerleg">
+    <kp>60000</kp>
+    <kd>400.0</kd>
+    <mu1>1.0</mu1>
+    <mu2>1.0</mu2>
+</gazebo>
+
+</robot>

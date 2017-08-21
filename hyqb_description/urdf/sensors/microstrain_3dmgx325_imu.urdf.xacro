@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+	<xacro:include filename="$(find hyqb_description)/urdf/sensors/microstrain_3dmgx325_imu.gazebo.xacro"/>
+
+
+	<!-- ============================ IMU microstrain ============================== -->
+	<!-- The xacro macro xacro:microstrain_3dmgx325_imu: imu frame -->
+	<xacro:macro name="microstrain_3dmgx325_imu" params="parent *origin imu_name imu_topic update_rate stdev">
+
+		<!-- Joint -->
+		<joint name="${imu_name}_joint" type="fixed">
+			<insert_block name="origin"/>
+			<parent link="${parent}" />
+			<child link="${imu_name}"/>
+		</joint>
+
+		<!-- Link -->
+		<link name="${imu_name}">
+			<inertial>
+				<origin xyz="-0.00020  0.00010  0.00110"/>
+				<mass value="0.018"/>
+				<inertia ixx="0.0" iyy="0.0" izz="0.0" ixy="0.0" ixz="0.0" iyz="0.0"/>
+			</inertial>
+			<visual>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<geometry>
+					<box size="0.02 0.02 0.02" />
+				</geometry>
+			</visual>
+		</link>
+
+		<!-- IMU definition -->
+		<xacro:microstrain_3dmgx325_imu_sensor imu_name="${imu_name}" imu_topic="${imu_topic}" update_rate="${update_rate}" stdev="${stdev}"/>
+
+	</xacro:macro>
+
+</robot>
