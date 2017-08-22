@@ -27,11 +27,11 @@
    
    
    
-   
    <node name="goal_visualizer"  pkg="xpp_vis" type="goal_visualizer_node" output="screen" cwd="node" >
    </node>
    
-  
-<!--   <node name="rviz" pkg="rviz" type="rviz"  args="-d $(find xpp_vis)/rviz/xpp.rviz"> -->
-<!--   </node> -->
+   <!-- Launch rviz with specific configuration -->
+   <node name="rviz" pkg="rviz" type="rviz"  args="-d $(find xpp_vis)/rviz/xpp.rviz">
+   </node>
+   
 </launch>

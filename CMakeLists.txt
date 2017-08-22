@@ -8,6 +8,7 @@ find_package(catkin REQUIRED COMPONENTS
   tf
   kdl_parser
   robot_state_publisher
+  rosbag
   xpp_ros
   hyqb_description        # urdf file for rviz
   monoped_description     # urdf file for rviz
@@ -144,18 +145,6 @@ target_link_libraries(urdf_visualizer_anymal
 
 
 ## other visualizers
-add_executable(base_state_visualizer src/exe/base_state_visualizer.cc)
-target_link_libraries(base_state_visualizer
-  xpp_vis
-  ${catkin_LIBRARIES}
-)
-
-add_executable(initial_state_visualizer src/exe/initial_state_visualizer.cc)
-target_link_libraries(initial_state_visualizer
-  xpp_vis
-  ${catkin_LIBRARIES}
-)
-
 add_executable(optimization_state_visualizer src/exe/opt_state_visualizer_node.cc)
 target_link_libraries(optimization_state_visualizer
   xpp_vis
@@ -167,6 +156,27 @@ target_link_libraries(goal_visualizer_node
   xpp_vis
   ${catkin_LIBRARIES}
 )
+
+
+## misc
+add_executable(rosbag_traj_combiner src/exe/rosbag_traj_combiner.cc)
+target_link_libraries(rosbag_traj_combiner
+  ${catkin_LIBRARIES}
+)
+
+
+#add_executable(base_state_visualizer src/exe/base_state_visualizer.cc)
+#target_link_libraries(base_state_visualizer
+#  xpp_vis
+#  ${catkin_LIBRARIES}
+#)
+
+#add_executable(initial_state_visualizer src/exe/initial_state_visualizer.cc)
+#target_link_libraries(initial_state_visualizer
+#  xpp_vis
+#  ${catkin_LIBRARIES}
+#)
+
 
 #add_executable(gazebo_state_publisher src/exe/gazebo_state_publisher.cc)
 #target_link_libraries(gazebo_state_publisher

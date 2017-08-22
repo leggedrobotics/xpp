@@ -41,11 +41,11 @@ static void ParamsCallback (const ParamsMsg& params_msg)
   ROS_INFO_STREAM("received current optimization parameters");
   marker_builder.SetOptimizationParameters(params_msg);
 
-  // add some obstacles
-  Eigen::Vector3d pos(1.25, 0.0, 0.2);
-  Eigen::Vector3d size(1,1,0.4);
-  MarkerArrayMsg msg = marker_builder.BuildTerrainBlock(pos, size);
-  rviz_pub.publish(msg);
+  // add some terrain
+//  Eigen::Vector3d pos(1.25, 0.0, 0.2);
+//  Eigen::Vector3d size(1,1,0.4);
+//  MarkerArrayMsg msg = marker_builder.BuildTerrainBlock(pos, size);
+//  rviz_pub.publish(msg);
 }
 
 int main(int argc, char *argv[])

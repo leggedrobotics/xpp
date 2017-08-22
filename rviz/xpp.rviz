@@ -7,16 +7,14 @@ Panels:
         - /Global Options1
         - /Status1
         - /Grid1
-        - /MarkerArray1
-        - /MarkerArray1/Namespaces1
+        - /Desired Goal1
+        - /Optimization Result1
+        - /Optimization Result1/Namespaces1
         - /MonopedURDF1
         - /BipedURDF1
         - /HyqURDF1
         - /ANYmalURDF1
         - /QuadrotorURDF1
-        - /Marker1
-        - /Pose1
-        - /Pose2
       Splitter Ratio: 0.429856
     Tree Height: 929
   - Class: rviz/Selection
@@ -63,24 +61,34 @@ Visualization Manager:
       Plane Cell Count: 100
       Reference Frame: <Fixed Frame>
       Value: true
+    - Alpha: 1
+      Axes Length: 0.1
+      Axes Radius: 0.01
+      Class: rviz/Pose
+      Color: 255; 25; 0
+      Enabled: true
+      Head Length: 0.1
+      Head Radius: 0.05
+      Name: Desired Goal
+      Shaft Length: 0.3
+      Shaft Radius: 0.02
+      Shape: Axes
+      Topic: /xpp/goal
+      Unreliable: false
+      Value: true
     - Class: rviz/MarkerArray
       Enabled: true
-      Marker Topic: /optimization_variables
-      Name: MarkerArray
+      Marker Topic: /xpp/rviz_markers
+      Name: Optimization Result
       Namespaces:
-        base_pose: false
-        cop: false
+        base_pose: true
+        cop: true
         ee_force: true
         endeffector_pos: true
         gravity_force: true
-        inverted_pendulum: false
+        inverted_pendulum: true
         range_of_motion: true
         support_polygons: true
-        terrain: true
-        traj_base_pose: true
-        traj_cop: true
-        traj_endeffector_pos: true
-        traj_support_polygons: true
       Queue Size: 100
       Value: true
     - Alpha: 0.5
@@ -253,44 +261,6 @@ Visualization Manager:
       Update Interval: 0
       Value: false
       Visual Enabled: true
-    - Class: rviz/Marker
-      Enabled: true
-      Marker Topic: /optimization_variables_single
-      Name: Marker
-      Namespaces:
-        {}
-      Queue Size: 100
-      Value: true
-    - Alpha: 1
-      Axes Length: 0.1
-      Axes Radius: 0.01
-      Class: rviz/Pose
-      Color: 255; 25; 0
-      Enabled: true
-      Head Length: 0.1
-      Head Radius: 0.05
-      Name: Pose
-      Shaft Length: 0.3
-      Shaft Radius: 0.02
-      Shape: Axes
-      Topic: /goal_axis_rviz
-      Unreliable: false
-      Value: true
-    - Alpha: 1
-      Axes Length: 1
-      Axes Radius: 0.1
-      Class: rviz/Pose
-      Color: 255; 25; 0
-      Enabled: false
-      Head Length: 0.3
-      Head Radius: 0.1
-      Name: Pose
-      Shaft Length: 1
-      Shaft Radius: 0.05
-      Shape: Arrow
-      Topic: /current_base_pose
-      Unreliable: false
-      Value: false
   Enabled: true
   Global Options:
     Background Color: 255; 255; 255
@@ -315,22 +285,22 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 2.29112
+      Distance: 2.67292
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.06
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 0.483849
-        Y: -0.0164806
-        Z: 0.464233
+        X: 0.699503
+        Y: -0.110793
+        Z: 0.168577
       Name: Current View
       Near Clip Distance: 0.01
-      Pitch: 0.2148
+      Pitch: 0.174799
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 1.52497
+      Yaw: 1.37496
     Saved:
       - Angle: 3.14
         Class: rviz/TopDownOrtho

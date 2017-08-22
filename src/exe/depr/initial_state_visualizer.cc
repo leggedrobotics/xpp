@@ -9,12 +9,12 @@
 #include <xpp/ros/topic_names.h>
 
 #include <geometry_msgs/PoseStamped.h>
-#include <xpp_msgs/RobotStateJointsTrajectory.h>
+#include <xpp_msgs/RobotStateCartesianTrajectory.h>
 
 namespace xpp {
 
 using PoseMsg        = geometry_msgs::PoseStamped;
-using TrajectoryMsg  = xpp_msgs::RobotStateJointsTrajectory;
+using TrajectoryMsg  = xpp_msgs::RobotStateCartesianTrajectory;
 
 /** Draws an arrow in RVIZ to visualize push that generates initial velocity
   */
@@ -22,7 +22,7 @@ class InitialStateVisualizer {
 public:
   InitialStateVisualizer() {
     ros::NodeHandle n;
-    sub_  = n.subscribe(xpp_msgs::robot_trajectory_joints, 1, &InitialStateVisualizer::TrajectoryCallback, this);
+    sub_  = n.subscribe(xpp_msgs::robot_trajectory_cart, 1, &InitialStateVisualizer::TrajectoryCallback, this);
 
     rviz_pub_  = n.advertise<PoseMsg>(xpp_msgs::init_velocity, 1);
     pose_arrow_msg_.header.frame_id = "world";
