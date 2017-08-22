@@ -88,7 +88,7 @@ RvizMarkerBuilder::BuildStateMarkers (const RobotStateCartesian& state) const
   Marker cop = CreateCopPos(state.GetEEForces(),state.GetEEPos());
   msg.markers.push_back(cop);
 
-  MarkerVec ee_pos = CreateEEPositions(state.GetEEPos());
+  MarkerVec ee_pos = CreateEEPositions(state.GetEEPos(), state.GetContactState());
   msg.markers.insert(msg.markers.begin(), ee_pos.begin(), ee_pos.end());
 
   MarkerVec ee_forces = CreateEEForces(state.GetEEForces(),state.GetEEPos());
@@ -139,14 +139,18 @@ RvizMarkerBuilder::BuildTerrainBlock (const Vector3d& pos,
 }
 
 RvizMarkerBuilder::MarkerVec
-RvizMarkerBuilder::CreateEEPositions (const EEPos& ee_pos) const
+RvizMarkerBuilder::CreateEEPositions (const EEPos& ee_pos, const ContactState& in_contact) const
 {
   MarkerVec vec;
 
   for (auto ee : ee_pos.GetEEsOrdered()) {
-    Marker m = CreateSphere(ee_pos.At(ee));
-    m.color  = GetLegColor(ee);
+    Marker m = CreateSphere(ee_pos.At(ee), 0.04);
     m.ns     = "endeffector_pos";
+
+    if (in_contact.At(ee))
+      m.color  = red;
+    else
+      m.color  = GetLegColor(ee);
 
     vec.push_back(m);
   }
@@ -191,10 +195,10 @@ RvizMarkerBuilder::CreateBasePose (const Vector3d& pos,
 //  Vector3d edge_length(0.7, 0.3, 0.15);
   Marker m = CreateBox(pos, ori, 3*edge_length);
 
-  m.color = red;
+  m.color = black;
   for (auto ee : contact_state.GetEEsOrdered())
     if (contact_state.At(ee))
-      m.color = black;
+      m.color = red;
 
   m.ns = "base_pose";
 
@@ -305,7 +309,7 @@ RvizMarkerBuilder::CreateForceArrow (const Vector3d& force,
   m.scale.y = 0.02; // arrow-head diameter
   m.scale.z = 0.06; // arrow-head length
 
-  double force_scale = 1500;
+  double force_scale = params_.base_mass*20; // scaled by base weight
   auto start = ros::RosConversions::XppToRos<geometry_msgs::Point>(ee_pos - force/force_scale);
   m.points.push_back(start);
 

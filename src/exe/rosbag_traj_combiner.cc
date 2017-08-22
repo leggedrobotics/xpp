@@ -42,10 +42,11 @@ int main(int argc, char *argv[])
 
   // select which iterations (message topics) to be included in bag file
   std::vector<std::string> topics;
-  int frequency = 4;           // don't publish every iteration
   ROS_INFO_STREAM("Detected " + std::to_string(n_opt_iterations) + " iterations");
+  int n_visualizations = 5; // total number of visualizations is fixed
+  int frequency = std::floor(n_opt_iterations/n_visualizations);
 
-  for (int i=0; i<std::floor(n_opt_iterations/frequency); ++i)
+  for (int i=0; i<n_visualizations; ++i)
     topics.push_back(xpp_msgs::nlp_iterations_name + std::to_string(frequency*i));
   topics.push_back(xpp_msgs::nlp_iterations_name + std::to_string(n_opt_iterations-1)); // for sure add final trajectory
   rosbag::View view(bag_r, rosbag::TopicQuery(topics));
