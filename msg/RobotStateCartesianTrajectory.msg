@@ -1,4 +1,7 @@
-# Defines the discretized states of Hyq with joint angles
+# The state of a robot expressed in the cartesian frame
 
-RobotStateCartesian[]  states          # trajectory of states
-float64                t_start         # the global time of the first state
+# The header is used to specify the coordinate frame and the reference time for the trajectory durations
+std_msgs/Header header
+
+# A representation of a Cartesian trajectory
+RobotStateCartesian[] points

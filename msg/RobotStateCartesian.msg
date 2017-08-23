@@ -1,5 +1,7 @@
-# The state of a robot expressed in the cartesian frame
+# The state of a robot expressed in the Cartesian frame
 
-RobotStateCommon        common
-StateLin3d[]            feet           # endeffector pos/vel/acc in world
-geometry_msgs/Vector3[] ee_forces      # endeffector forces expressed in world
+State6d                 base              # base pos/vel/acc in world
+StateLin3d[]            ee_motion         # endeffector pos/vel/acc in world
+geometry_msgs/Vector3[] ee_forces         # endeffector forces expressed in world
+bool[]                  ee_contact        # True if the foot is touching the environment
+duration                time_from_start   # global time along trajectory
