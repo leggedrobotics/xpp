@@ -25,10 +25,11 @@ public:
   using MarkerArray     = visualization_msgs::MarkerArray;
   using MarkerVec       = std::vector<Marker>;
 
-  using ContactState    = RobotStateCartesian::ContactState;
-  using EEPos           = RobotStateCartesian::EEPos;
-  using EEForces        = RobotStateCartesian::EEForces;
-  using RobotCartTraj   = std::vector<RobotStateCartesian>;
+  using ContactState    = EndeffectorsBool;
+  using EEPos           = EndeffectorsPos;
+  using EEForces        = Endeffectors<Vector3d>;
+  using RobotState      = RobotStateCartesian;
+  using RobotCartTraj   = std::vector<RobotState>;
 
   using ParamsMsg       = xpp_msgs::OptParameters;
 
@@ -42,9 +43,13 @@ public:
 
 
 public:
-  MarkerArray BuildStateMarkers(const RobotStateCartesian& state) const;
+  MarkerArray BuildStateMarkers(const RobotState& state) const;
   MarkerArray BuildTrajectoryMarkers(const RobotCartTraj& traj) const;
-  MarkerArray BuildTerrainBlock(const Vector3d& pos, const Vector3d& edge_length) const;
+
+  MarkerArray BuildTerrain(int terrain_id) const;
+  MarkerArray BuildTerrainStairs() const;
+
+  Marker BuildTerrainBlock(const Vector3d& pos, const Vector3d& edge_length) const;
 
 
 

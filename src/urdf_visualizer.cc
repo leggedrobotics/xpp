@@ -22,11 +22,11 @@ UrdfVisualizer::UrdfVisualizer(const InverseKinematics& ik,
 
 
   ::ros::NodeHandle nh;
-  state_sub_ = nh.subscribe(xpp_msgs::curr_robot_state, 1,
+  state_sub_ = nh.subscribe(xpp_msgs::robot_state, 1,
                             &UrdfVisualizer::StateCallback, this);
   ROS_INFO("Subscribed to: %s", state_sub_.getTopic().c_str());
 
-  curr_state_pub_ = nh.advertise<StateMsg>(xpp_msgs::curr_robot_state, 1);
+  curr_state_pub_ = nh.advertise<StateMsg>(xpp_msgs::robot_state, 1);
 
   // Load model from file
   KDL::Tree my_kdl_tree;
@@ -49,12 +49,12 @@ void
 UrdfVisualizer::StateCallback(const StateMsg& msg)
 {
   auto cart   = xpp::ros::RosConversions::RosToXpp(msg);
-  VectorXd v = GetJointAngles(cart.GetBase(),cart.GetEEPos());
+  VectorXd v = GetJointAngles(cart.base_,cart.GetEEPos());
 
   sensor_msgs::JointState joint_msg;
   joint_msg.position = std::vector<double>(v.data(), v.data()+v.size());
 
-  VisualizeJoints(::ros::Time::now(), msg.common.base.pose, joint_msg);
+  VisualizeJoints(::ros::Time::now(), msg.base.pose, joint_msg);
 }
 
 VectorXd

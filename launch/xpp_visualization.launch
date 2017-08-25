@@ -1,11 +1,10 @@
 <launch>
    
-   <!-- visualizes cartesian base state, endeffector positions and forces -->
-   <node name="optimization_state_visualizer" pkg="xpp_vis" type="optimization_state_visualizer" output="screen">
+   <!-- visualizes goal, opt. parameters and cartesian base state, endeffector positions and forces -->
+   <node name="rviz_marker_node" pkg="xpp_vis" type="rviz_marker_node" output="screen">
    </node>
 
 
-   
    <!-- MONOPED -->
    <node name="urdf_visualizer_monoped" pkg="xpp_vis" type="urdf_visualizer_monoped" output="screen">
    </node>
@@ -25,10 +24,7 @@
    <!-- no IK needed, just need base state, so use one of the above -->
    <param name="quadrotor_rviz_urdf_robot_description" command="$(find xacro)/xacro.py '$(find quadrotor_description)/urdf/quadrotor.urdf'"/>
    
-   
-   
-   <node name="goal_visualizer"  pkg="xpp_vis" type="goal_visualizer_node" output="screen" cwd="node" >
-   </node>
+     
    
    <!-- Launch rviz with specific configuration -->
    <node name="rviz" pkg="rviz" type="rviz"  args="-d $(find xpp_vis)/rviz/xpp.rviz">

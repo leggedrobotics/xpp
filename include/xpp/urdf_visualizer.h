@@ -24,7 +24,8 @@
 #include <robot_state_publisher/robot_state_publisher.h>
 #include <kdl_parser/kdl_parser.hpp>
 
-#include <xpp_msgs/RobotStateCartesianTrajectory.h>
+#include <xpp_msgs/RobotStateCartesian.h>
+
 #include <xpp/state.h>
 #include <xpp/a_inverse_kinematics.h>
 
@@ -32,7 +33,6 @@ namespace xpp {
 
 class UrdfVisualizer {
 public:
-  using TrajectoryMsg        = xpp_msgs::RobotStateCartesianTrajectory;
   using StateMsg             = xpp_msgs::RobotStateCartesian;
   using UrdfnameToJointAngle = std::map<std::string, double>;
   using UrdfJointNames       = std::map<JointID, std::string>;

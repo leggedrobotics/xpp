@@ -17,7 +17,7 @@ find_package(catkin REQUIRED COMPONENTS
 ## System dependencies are found with CMake's conventions
 find_package(Eigen3 REQUIRED)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11" )
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wfatal-errors -std=c++11" )
 
 ## Uncomment this if the package has a setup.py. This macro ensures
 ## modules and global scripts declared therein get installed
@@ -145,14 +145,8 @@ target_link_libraries(urdf_visualizer_anymal
 
 
 ## other visualizers
-add_executable(optimization_state_visualizer src/exe/opt_state_visualizer_node.cc)
-target_link_libraries(optimization_state_visualizer
-  xpp_vis
-  ${catkin_LIBRARIES}
-)
-
-add_executable(goal_visualizer_node src/exe/goal_visualizer_node.cc)
-target_link_libraries(goal_visualizer_node 
+add_executable(rviz_marker_node src/exe/rviz_marker_node.cc)
+target_link_libraries(rviz_marker_node
   xpp_vis
   ${catkin_LIBRARIES}
 )

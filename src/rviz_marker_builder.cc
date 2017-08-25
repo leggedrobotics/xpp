@@ -7,6 +7,7 @@
 
 #include <xpp/rviz_marker_builder.h>
 #include <xpp/ros/ros_conversions.h>
+#include <xpp/height_map.h>
 
 namespace xpp {
 
@@ -76,34 +77,34 @@ RvizMarkerBuilder::BuildTrajectoryMarkers (const RobotCartTraj& traj) const
 }
 
 RvizMarkerBuilder::MarkerArray
-RvizMarkerBuilder::BuildStateMarkers (const RobotStateCartesian& state) const
+RvizMarkerBuilder::BuildStateMarkers (const RobotState& state) const
 {
   MarkerArray msg;
 
-  Marker base = CreateBasePose(state.GetBase().lin.p_,
-                               state.GetBase().ang.q,
-                               state.GetContactState());
+  Marker base = CreateBasePose(state.base_.lin.p_,
+                               state.base_.ang.q,
+                               state.ee_contact_);
   msg.markers.push_back(base);
 
-  Marker cop = CreateCopPos(state.GetEEForces(),state.GetEEPos());
+  Marker cop = CreateCopPos(state.ee_forces_,state.GetEEPos());
   msg.markers.push_back(cop);
 
-  MarkerVec ee_pos = CreateEEPositions(state.GetEEPos(), state.GetContactState());
+  MarkerVec ee_pos = CreateEEPositions(state.GetEEPos(), state.ee_contact_);
   msg.markers.insert(msg.markers.begin(), ee_pos.begin(), ee_pos.end());
 
-  MarkerVec ee_forces = CreateEEForces(state.GetEEForces(),state.GetEEPos());
+  MarkerVec ee_forces = CreateEEForces(state.ee_forces_,state.GetEEPos());
   msg.markers.insert(msg.markers.begin(), ee_forces.begin(), ee_forces.end());
 
-  MarkerVec rom = CreateRangeOfMotion(state.GetBase());
+  MarkerVec rom = CreateRangeOfMotion(state.base_);
   msg.markers.insert(msg.markers.begin(), rom.begin(), rom.end());
 
-  MarkerVec support = CreateSupportArea(state.GetContactState(),state.GetEEPos());
+  MarkerVec support = CreateSupportArea(state.ee_contact_,state.GetEEPos());
   msg.markers.insert(msg.markers.begin(), support.begin(), support.end());
 
-  Marker ip = CreatePendulum(state.GetBase().lin.p_, state.GetEEForces(),state.GetEEPos());
+  Marker ip = CreatePendulum(state.base_.lin.p_, state.ee_forces_,state.GetEEPos());
   msg.markers.push_back(ip);
 
-  msg.markers.push_back(CreateGravityForce(state.GetBase().lin.p_));
+  msg.markers.push_back(CreateGravityForce(state.base_.lin.p_));
 
   int id = 1; // goal marker has id zero
   for (Marker& m : msg.markers) {
@@ -119,23 +120,46 @@ RvizMarkerBuilder::BuildStateMarkers (const RobotStateCartesian& state) const
 }
 
 RvizMarkerBuilder::MarkerArray
+RvizMarkerBuilder::BuildTerrain (int terrain) const
+{
+  switch (terrain) {
+    case opt::HeightMap::Flat:   return MarkerArray(); break;
+    case opt::HeightMap::Stairs: return BuildTerrainStairs(); break;
+    default: assert(false); break;
+  }
+}
+
+RvizMarkerBuilder::MarkerArray
+RvizMarkerBuilder::BuildTerrainStairs() const
+{
+  MarkerArray msg;
+  Eigen::Vector3d size(2,1,0.3);
+  Eigen::Vector3d pos(size.x()/2 + 0.4, 0.0, size.z()/2);
+  msg.markers.push_back(BuildTerrainBlock(pos, size));
+  msg.markers.back().id = 1;
+
+  // add some terrain
+  Eigen::Vector3d size2(2,1,0.3);
+  Eigen::Vector3d pos2(size2.x()/2 + 0.4 + 0.4, 0.0, size2.z()/2+0.3);
+  msg.markers.push_back(BuildTerrainBlock(pos2, size2));
+  msg.markers.back().id = 2;
+
+  return msg;
+}
+
+RvizMarkerBuilder::Marker
 RvizMarkerBuilder::BuildTerrainBlock (const Vector3d& pos,
                                       const Vector3d& edge_length) const
 {
-
   Eigen::Quaterniond ori; ori.setIdentity();
   Marker m = CreateBox(pos, ori, edge_length);
 
   m.ns = "terrain";
-  m.id = 9999;
   m.header.frame_id = "world";
   m.color = gray;
-  m.color.a = 0.8;
+  m.color.a = 1.0;
 
-  MarkerArray msg;
-  msg.markers.push_back(m);
-
-  return msg;
+  return m;
 }
 
 RvizMarkerBuilder::MarkerVec

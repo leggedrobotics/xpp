@@ -17,7 +17,7 @@ class BaseStateConverter {
 public:
   BaseStateConverter() {
     ros::NodeHandle n;
-    sub_ = n.subscribe(xpp_msgs::curr_robot_state, 1, &BaseStateConverter::CurrentStateCallback, this);
+    sub_ = n.subscribe(xpp_msgs::robot_state, 1, &BaseStateConverter::CurrentStateCallback, this);
     pub_ = n.advertise<PoseMsg>(xpp_msgs::curr_base_pose, 1);
     hyq_pose_msg_.header.frame_id = "world";
   }

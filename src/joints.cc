@@ -5,7 +5,7 @@
  @brief   Brief description
  */
 
-#include <../include/xpp/joints.h>
+#include <xpp/joints.h>
 
 namespace xpp {
 
