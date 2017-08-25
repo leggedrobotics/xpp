@@ -53,7 +53,6 @@ void CallbackUserCommand(const xpp_msgs::UserCommand& msg_in)
 
   rviz_pose_pub.publish(msg_out);
 
-
   // add some terrain
   MarkerArrayMsg msg = marker_builder.BuildTerrain(msg_in.terrain_id);
   rviz_marker_pub.publish(msg);

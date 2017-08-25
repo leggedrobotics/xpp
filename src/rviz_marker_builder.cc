@@ -17,7 +17,7 @@ RvizMarkerBuilder::RvizMarkerBuilder()
   red.a = green.a = blue.a = white.a = brown.a = yellow.a = purple.a = black.a = 1.0;
 
   black.r  =           black.g  =           black.b  = 0.3;
-  gray.r  =            gray.g  =            gray.b  = 0.6;
+  gray.r  =            gray.g  =            gray.b  = 0.8;
   red.r    = 1.0;      red.g    = 0.0;      red.b    = 0.0;
   green.r  = 0.0;      green.g  = 150./255; green.b  = 76./255;
   blue.r   = 0.0;      blue.g   = 102./255; blue.b   = 204./255;
@@ -123,35 +123,112 @@ RvizMarkerBuilder::MarkerArray
 RvizMarkerBuilder::BuildTerrain (int terrain) const
 {
   switch (terrain) {
-    case opt::HeightMap::Flat:   return MarkerArray(); break;
-    case opt::HeightMap::Stairs: return BuildTerrainStairs(); break;
-    default: assert(false); break;
+    case opt::HeightMap::FlatID:   return BuildTerrainFlat(); break;
+    case opt::HeightMap::StairsID: return BuildTerrainStairs(); break;
+    case opt::HeightMap::GapID:    return BuildTerrainGap(); break;
+    case opt::HeightMap::SlopeID:  return BuildTerrainSlope(); break;
+    default: return MarkerArray(); // terrain visualization not implemented
   }
+}
+
+RvizMarkerBuilder::MarkerArray
+RvizMarkerBuilder::BuildTerrainFlat() const
+{
+  MarkerArray msg = BuildTerrainGap();
+
+  for (auto& m : msg.markers)
+    m.color.a = 0.0; //hide
+
+  return msg;
 }
 
 RvizMarkerBuilder::MarkerArray
 RvizMarkerBuilder::BuildTerrainStairs() const
 {
   MarkerArray msg;
-  Eigen::Vector3d size(2,1,0.3);
-  Eigen::Vector3d pos(size.x()/2 + 0.4, 0.0, size.z()/2);
-  msg.markers.push_back(BuildTerrainBlock(pos, size));
+  double height_first_step = 0.2;
+  double first_step_start = 0.7;
+  Eigen::Vector3d size(2,1,height_first_step);
+  Eigen::Vector3d center1(size.x()/2 + first_step_start, 0.0, size.z()/2);
+  msg.markers.push_back(BuildTerrainBlock(center1, size));
+  msg.markers.back().id = 0;
+
+  double first_step_width = 0.4;
+  double height_second_step = 0.4;
+  Eigen::Vector3d size2(2,1,height_second_step);
+  Eigen::Vector3d pos2(first_step_start+first_step_width+size2.x()/2, 0.0, size2.z()/2);
+  msg.markers.push_back(BuildTerrainBlock(pos2, size2));
   msg.markers.back().id = 1;
 
+  return msg;
+}
+
+RvizMarkerBuilder::MarkerArray
+RvizMarkerBuilder::BuildTerrainGap() const
+{
+  double lx = 1.0;
+  double ly = 1.0;
+  double lz = 0.5;
+
+  double x_start = 0.5;
+  double l_gap   = 0.5;
+
+  MarkerArray msg;
+  Vector3d size(lx,ly,lz);
+  Vector3d center1(0.0, 0.0, -lz/2);
+  msg.markers.push_back(BuildTerrainBlock(center1, size));
+  msg.markers.back().id = 0;
+
   // add some terrain
-  Eigen::Vector3d size2(2,1,0.3);
-  Eigen::Vector3d pos2(size2.x()/2 + 0.4 + 0.4, 0.0, size2.z()/2+0.3);
-  msg.markers.push_back(BuildTerrainBlock(pos2, size2));
-  msg.markers.back().id = 2;
+  Vector3d pos2(l_gap + lx, 0.0, -lz/2);
+  msg.markers.push_back(BuildTerrainBlock(pos2, size));
+  msg.markers.back().id = 1;
+
+  return msg;
+}
+
+RvizMarkerBuilder::MarkerArray
+RvizMarkerBuilder::BuildTerrainSlope() const
+{
+  MarkerArray msg;
+
+  double slope_start = 0.5;
+  double slope = 0.3;
+  double roll = 0.0;
+  double pitch = -atan(slope);
+  double yaw = 0.0;
+  Eigen::AngleAxisd rollAngle(roll,   Vector3d::UnitX());
+  Eigen::AngleAxisd pitchAngle(pitch, Vector3d::UnitY());
+  Eigen::AngleAxisd yawAngle(yaw,     Vector3d::UnitZ());
+
+  Eigen::Quaterniond ori = rollAngle*pitchAngle*yawAngle;
+
+
+
+
+  double lx = 1.5;
+  double ly = 1.5;
+  double lz = 0.02;
+  Vector3d size(lx,ly,lz);
+
+
+  // distance of plane each direction
+  double dx = cos(pitch)*lx;
+  double dz = -sin(pitch)*lx;
+
+
+  Vector3d center1(slope_start+dx/2, 0.0, dz/2);
+  msg.markers.push_back(BuildTerrainBlock(center1, size, ori));
+  msg.markers.back().id = 0;
 
   return msg;
 }
 
 RvizMarkerBuilder::Marker
 RvizMarkerBuilder::BuildTerrainBlock (const Vector3d& pos,
-                                      const Vector3d& edge_length) const
+                                      const Vector3d& edge_length,
+                                      Eigen::Quaterniond ori) const
 {
-  Eigen::Quaterniond ori; ori.setIdentity();
   Marker m = CreateBox(pos, ori, edge_length);
 
   m.ns = "terrain";

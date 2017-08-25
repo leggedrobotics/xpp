@@ -46,10 +46,16 @@ public:
   MarkerArray BuildStateMarkers(const RobotState& state) const;
   MarkerArray BuildTrajectoryMarkers(const RobotCartTraj& traj) const;
 
+  // visualizes the terrains found in xpp/height_map.h
   MarkerArray BuildTerrain(int terrain_id) const;
+  MarkerArray BuildTerrainFlat() const;
   MarkerArray BuildTerrainStairs() const;
+  MarkerArray BuildTerrainGap() const;
+  MarkerArray BuildTerrainSlope() const;
 
-  Marker BuildTerrainBlock(const Vector3d& pos, const Vector3d& edge_length) const;
+  Marker BuildTerrainBlock(const Vector3d& pos,
+                           const Vector3d& edge_length,
+                           Eigen::Quaterniond ori = Eigen::Quaterniond::Identity()) const;
 
 
 
