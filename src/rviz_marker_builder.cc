@@ -148,14 +148,16 @@ RvizMarkerBuilder::BuildTerrainStairs() const
   MarkerArray msg;
   double height_first_step = 0.2;
   double first_step_start = 0.7;
-  Eigen::Vector3d size(2,1,height_first_step);
+  double first_step_width = 0.4;
+  double width_top = 1.0;
+
+  Eigen::Vector3d size(first_step_width+width_top,1,height_first_step);
   Eigen::Vector3d center1(size.x()/2 + first_step_start, 0.0, size.z()/2);
   msg.markers.push_back(BuildTerrainBlock(center1, size));
   msg.markers.back().id = 0;
 
-  double first_step_width = 0.4;
   double height_second_step = 0.4;
-  Eigen::Vector3d size2(2,1,height_second_step);
+  Eigen::Vector3d size2(width_top,1,height_second_step);
   Eigen::Vector3d pos2(first_step_start+first_step_width+size2.x()/2, 0.0, size2.z()/2);
   msg.markers.push_back(BuildTerrainBlock(pos2, size2));
   msg.markers.back().id = 1;
@@ -278,7 +280,7 @@ RvizMarkerBuilder::CreateEEForces (const EEForces& ee_forces,
   MarkerVec vec;
 
   for (auto ee : ee_forces.GetEEsOrdered()) {
-    Marker m = CreateForceArrow(ee_forces.At(ee), ee_pos.At(ee));
+    Marker m = CreateForceArrow(-ee_forces.At(ee), ee_pos.At(ee));
     m.color  = red;//GetLegColor(ee);
     m.ns     = "ee_force";
     vec.push_back(m);
@@ -410,7 +412,7 @@ RvizMarkerBuilder::CreateForceArrow (const Vector3d& force,
   m.scale.y = 0.02; // arrow-head diameter
   m.scale.z = 0.06; // arrow-head length
 
-  double force_scale = params_.base_mass*20; // scaled by base weight
+  double force_scale = params_.base_mass*40; // scaled by base weight
   auto start = ros::RosConversions::XppToRos<geometry_msgs::Point>(ee_pos - force/force_scale);
   m.points.push_back(start);
 
