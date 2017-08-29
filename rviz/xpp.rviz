@@ -48,7 +48,7 @@ Visualization Manager:
       Cell Size: 0.1
       Class: rviz/Grid
       Color: 160; 160; 164
-      Enabled: true
+      Enabled: false
       Line Style:
         Line Width: 0.03
         Value: Lines
@@ -61,7 +61,7 @@ Visualization Manager:
       Plane: XY
       Plane Cell Count: 100
       Reference Frame: <Fixed Frame>
-      Value: true
+      Value: false
     - Alpha: 1
       Axes Length: 0.1
       Axes Radius: 0.01
@@ -84,12 +84,10 @@ Visualization Manager:
       Namespaces:
         base_pose: true
         cop: false
-        ee_force: true
         endeffector_pos: true
-        gravity_force: true
         inverted_pendulum: false
-        range_of_motion: true
         support_polygons: true
+        terrain: true
       Queue Size: 100
       Value: true
     - Alpha: 0.5
@@ -317,22 +315,22 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 2.65849
+      Distance: 3.83452
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.06
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 0.926545
-        Y: -0.12181
-        Z: 0.317396
+        X: 1.74018
+        Y: -0.175795
+        Z: -0.0797205
       Name: Current View
       Near Clip Distance: 0.01
-      Pitch: 0.274799
+      Pitch: 0.264799
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 2.25996
+      Yaw: 1.54496
     Saved:
       - Angle: 3.14
         Class: rviz/TopDownOrtho

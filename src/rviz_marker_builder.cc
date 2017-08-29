@@ -123,10 +123,11 @@ RvizMarkerBuilder::MarkerArray
 RvizMarkerBuilder::BuildTerrain (int terrain) const
 {
   switch (terrain) {
-    case opt::HeightMap::FlatID:   return BuildTerrainFlat(); break;
-    case opt::HeightMap::StairsID: return BuildTerrainStairs(); break;
-    case opt::HeightMap::GapID:    return BuildTerrainGap(); break;
-    case opt::HeightMap::SlopeID:  return BuildTerrainSlope(); break;
+    case opt::HeightMap::FlatID:    return BuildTerrainFlat(); break;
+    case opt::HeightMap::StairsID:  return BuildTerrainStairs(); break;
+    case opt::HeightMap::GapID:     return BuildTerrainGap(); break;
+    case opt::HeightMap::SlopeID:   return BuildTerrainSlope(); break;
+    case opt::HeightMap::ChimneyID: return BuildTerrainChimney(); break;
     default: return MarkerArray(); // terrain visualization not implemented
   }
 }
@@ -134,10 +135,13 @@ RvizMarkerBuilder::BuildTerrain (int terrain) const
 RvizMarkerBuilder::MarkerArray
 RvizMarkerBuilder::BuildTerrainFlat() const
 {
-  MarkerArray msg = BuildTerrainGap();
+  MarkerArray msg;
 
-  for (auto& m : msg.markers)
-    m.color.a = 0.0; //hide
+  for (int i=0; i<5; ++i) {
+    msg.markers.push_back(BuildTerrainBlock(Vector3d(), Vector3d()));
+    msg.markers.back().color.a = 0.0;
+    msg.markers.back().id = i;
+  }
 
   return msg;
 }
@@ -146,21 +150,27 @@ RvizMarkerBuilder::MarkerArray
 RvizMarkerBuilder::BuildTerrainStairs() const
 {
   MarkerArray msg;
+
+  Vector3d size0(4.5,1,0.1);
+  Vector3d center0(1.25, 0.0, -0.05-eps_);
+  msg.markers.push_back(BuildTerrainBlock(center0, size0));
+  msg.markers.back().id = 0;
+
   double height_first_step = 0.2;
   double first_step_start = 0.7;
   double first_step_width = 0.4;
   double width_top = 1.0;
 
-  Eigen::Vector3d size(first_step_width+width_top,1,height_first_step);
-  Eigen::Vector3d center1(size.x()/2 + first_step_start, 0.0, size.z()/2);
+  Vector3d size(first_step_width+width_top,1,height_first_step);
+  Vector3d center1(size.x()/2 + first_step_start, 0.0, size.z()/2-eps_);
   msg.markers.push_back(BuildTerrainBlock(center1, size));
-  msg.markers.back().id = 0;
+  msg.markers.back().id = 1;
 
   double height_second_step = 0.4;
-  Eigen::Vector3d size2(width_top,1,height_second_step);
-  Eigen::Vector3d pos2(first_step_start+first_step_width+size2.x()/2, 0.0, size2.z()/2);
+  Vector3d size2(width_top,1,height_second_step);
+  Vector3d pos2(first_step_start+first_step_width+size2.x()/2, 0.0, size2.z()/2-eps_);
   msg.markers.push_back(BuildTerrainBlock(pos2, size2));
-  msg.markers.back().id = 1;
+  msg.markers.back().id = 2;
 
   return msg;
 }
@@ -168,23 +178,28 @@ RvizMarkerBuilder::BuildTerrainStairs() const
 RvizMarkerBuilder::MarkerArray
 RvizMarkerBuilder::BuildTerrainGap() const
 {
-  double lx = 1.0;
+  MarkerArray msg;
+
+  double lx = 2.0;
   double ly = 1.0;
   double lz = 0.5;
 
   double x_start = 0.5;
   double l_gap   = 0.5;
 
-  MarkerArray msg;
-  Vector3d size(lx,ly,lz);
-  Vector3d center1(0.0, 0.0, -lz/2);
-  msg.markers.push_back(BuildTerrainBlock(center1, size));
+  Vector3d size0(4.5,1,0.1);
+  Vector3d center0(1.25, 0.0, -lz-eps_);
+  msg.markers.push_back(BuildTerrainBlock(center0, size0));
   msg.markers.back().id = 0;
 
-  // add some terrain
-  Vector3d pos2(l_gap + lx, 0.0, -lz/2);
-  msg.markers.push_back(BuildTerrainBlock(pos2, size));
+  Vector3d size(lx,ly,lz);
+  Vector3d center1(0.0, 0.0, -lz/2-eps_);
+  msg.markers.push_back(BuildTerrainBlock(center1, size));
   msg.markers.back().id = 1;
+
+  Vector3d pos2(l_gap + lx, 0.0, -lz/2-eps_);
+  msg.markers.push_back(BuildTerrainBlock(pos2, size));
+  msg.markers.back().id = 2;
 
   return msg;
 }
@@ -194,34 +209,111 @@ RvizMarkerBuilder::BuildTerrainSlope() const
 {
   MarkerArray msg;
 
-  double slope_start = 0.5;
-  double slope = 0.3;
+  const double slope_start = 0.5;
+  const double up_length_   = 1.0;
+  const double down_length_ = 1.0;
+  const double height_center = 0.5;
+  const double x_down_start_ = slope_start+up_length_;
+  const double x_flat_start_ = x_down_start_ + down_length_;
+  const double slope = height_center/up_length_;
+
+  double length_start_end_ = 2.0; // [m]
+
+
+  Vector3d size_start_end(2,1,0.1);
+  Vector3d center0(-length_start_end_/2. + slope_start, 0.0, -0.05-eps_);
+  msg.markers.push_back(BuildTerrainBlock(center0, size_start_end));
+  msg.markers.back().id = 0;
+
+
   double roll = 0.0;
   double pitch = -atan(slope);
   double yaw = 0.0;
   Eigen::AngleAxisd rollAngle(roll,   Vector3d::UnitX());
   Eigen::AngleAxisd pitchAngle(pitch, Vector3d::UnitY());
   Eigen::AngleAxisd yawAngle(yaw,     Vector3d::UnitZ());
-
   Eigen::Quaterniond ori = rollAngle*pitchAngle*yawAngle;
 
 
-
-
-  double lx = 1.5;
-  double ly = 1.5;
-  double lz = 0.02;
+  double lx = height_center/sin(pitch);
+  double ly = 1.0;
+  double lz = 0.04;
   Vector3d size(lx,ly,lz);
 
-
-  // distance of plane each direction
-  double dx = cos(pitch)*lx;
-  double dz = -sin(pitch)*lx;
-
-
-  Vector3d center1(slope_start+dx/2, 0.0, dz/2);
+  // slope up
+  Vector3d center1(slope_start+up_length_/2, 0.0, height_center/2-lz);
   msg.markers.push_back(BuildTerrainBlock(center1, size, ori));
+  msg.markers.back().id = 1;
+
+
+  // slope_down
+  Vector3d center2(x_down_start_+down_length_/2, 0.0, height_center/2-lz);
+  msg.markers.push_back(BuildTerrainBlock(center2, size, ori.inverse()));
+  msg.markers.back().id = 2;
+
+
+  // flat end
+  Vector3d center_end(length_start_end_/2.+x_flat_start_, 0.0, -0.05-eps_);
+  msg.markers.push_back(BuildTerrainBlock(center_end, size_start_end));
+  msg.markers.back().id = 3;
+
+
+  return msg;
+}
+
+RvizMarkerBuilder::MarkerArray
+RvizMarkerBuilder::BuildTerrainChimney() const
+{
+  MarkerArray msg;
+
+  const double x_start_ = 0.5;
+  const double length_  = 1.0;
+  const double y_start_ = 0.2; // distance to start of slope from center at z=0
+  const double slope    = 2;
+
+  double length_start_end_ = 2.0; // [m]
+
+
+  double roll = atan(slope);
+  double pitch = 0.0;
+  double yaw = 0.0;
+  Eigen::AngleAxisd rollAngle(roll,   Vector3d::UnitX());
+  Eigen::AngleAxisd pitchAngle(pitch, Vector3d::UnitY());
+  Eigen::AngleAxisd yawAngle(yaw,     Vector3d::UnitZ());
+  Eigen::Quaterniond ori = rollAngle*pitchAngle*yawAngle;
+
+
+  double lx = length_;
+  double ly = 1.0;
+  double lz = 0.04;
+  Vector3d size(lx,ly,lz);
+
+  double y_length = cos(roll)*ly;
+  double z_height = sin(roll)*ly;
+
+
+  // start
+  Vector3d size_start_end(2,1,0.1);
+  Vector3d center0(-length_start_end_/2. + x_start_, 0.0, -0.05-eps_);
+  msg.markers.push_back(BuildTerrainBlock(center0, size_start_end));
   msg.markers.back().id = 0;
+
+  // slope left
+  Vector3d center1(x_start_+length_/2, y_start_+y_length/2, z_height/2);
+  msg.markers.push_back(BuildTerrainBlock(center1, size, ori));
+  msg.markers.back().id = 1;
+
+
+  // slope_right
+  Vector3d center2(x_start_+length_/2, -y_start_-y_length/2, z_height/2);
+  msg.markers.push_back(BuildTerrainBlock(center2, size, ori.inverse()));
+  msg.markers.back().id = 2;
+
+  // flat end
+  Vector3d center_end(length_start_end_/2.+x_start_+length_, 0.0, -0.05-eps_);
+  msg.markers.push_back(BuildTerrainBlock(center_end, size_start_end));
+  msg.markers.back().id = 3;
+
 
   return msg;
 }
@@ -281,7 +373,7 @@ RvizMarkerBuilder::CreateEEForces (const EEForces& ee_forces,
 
   for (auto ee : ee_forces.GetEEsOrdered()) {
     Marker m = CreateForceArrow(-ee_forces.At(ee), ee_pos.At(ee));
-    m.color  = red;//GetLegColor(ee);
+    m.color  = red;
     m.ns     = "ee_force";
     vec.push_back(m);
   }

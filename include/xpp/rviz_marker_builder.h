@@ -52,6 +52,7 @@ public:
   MarkerArray BuildTerrainStairs() const;
   MarkerArray BuildTerrainGap() const;
   MarkerArray BuildTerrainSlope() const;
+  MarkerArray BuildTerrainChimney() const;
 
   Marker BuildTerrainBlock(const Vector3d& pos,
                            const Vector3d& edge_length,
@@ -82,6 +83,7 @@ private:
   std_msgs::ColorRGBA red, green, blue, white, brown, yellow, purple, black, gray;
 
   ParamsMsg params_;
+  double eps_ = 0.02; // lowering of terrain
 };
 
 } /* namespace xpp */
