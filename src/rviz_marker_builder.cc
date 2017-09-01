@@ -16,8 +16,8 @@ RvizMarkerBuilder::RvizMarkerBuilder()
   // define a few colors
   red.a = green.a = blue.a = white.a = brown.a = yellow.a = purple.a = black.a = 1.0;
 
-  black.r  =           black.g  =           black.b  = 0.3;
-  gray.r  =            gray.g  =            gray.b  = 0.8;
+  black.r  =           black.g  =           black.b  = 0.1;
+  gray.r  =            gray.g  =            gray.b  = 0.7;
   red.r    = 1.0;      red.g    = 0.0;      red.b    = 0.0;
   green.r  = 0.0;      green.g  = 150./255; green.b  = 76./255;
   blue.r   = 0.0;      blue.g   = 102./255; blue.b   = 204./255;
@@ -25,6 +25,8 @@ RvizMarkerBuilder::RvizMarkerBuilder()
   white.b  =           white.g  =           white.r  = 1.0;
   yellow.r = 204./255; yellow.g = 204./255; yellow.b = 0.0;
   purple.r = 72./255;  purple.g = 61./255;  purple.b = 139./255;
+
+  terrain_ = opt::HeightMap::MakeTerrain(opt::HeightMap::FlatID);
 }
 
 void
@@ -33,48 +35,48 @@ RvizMarkerBuilder::SetOptimizationParameters (const ParamsMsg& msg)
   params_ = msg;
 }
 
-RvizMarkerBuilder::MarkerArray
-RvizMarkerBuilder::BuildTrajectoryMarkers (const RobotCartTraj& traj) const
-{
-  MarkerArray msg;
-  int id = BuildStateMarkers(traj.front()).markers.back().id+1; // to not interfere with state
-  int i=0;
-  for (const auto& state : traj) {
-
-    // only plot every second state
-    if (i++%2 != 0)
-      continue;
-
-    MarkerArray msg_state = BuildStateMarkers(state);
-
-    // adapt some parameters
-    for (Marker m : msg_state.markers) {
-
-      m.color.a = 0.2; // make slightly transparent
-
-      if (m.ns == "support_polygons")
-        m.color.a = 0.41/(20*m.points.size()+1); // more transparent for support triangles
-
-      if (m.type == Marker::SPHERE)
-        m.scale.x = m.scale.y = m.scale.z = 0.01;
-
-      if (m.ns == "ee_force" ||
-          m.ns == "inverted_pendulum" ||
-          m.ns == "gravity_force")
-        continue; // don't plot endeffector forces in trajectory
-
-      if (m.ns == "base_pose")
-        m.scale.x = m.scale.y = m.scale.z = 0.01;
-
-      m.id = id++;
-//      m.lifetime = ::ros::Duration(100);
-      m.ns = "traj_" + m.ns;
-      msg.markers.push_back(m);
-    }
-  }
-
-  return msg;
-}
+//RvizMarkerBuilder::MarkerArray
+//RvizMarkerBuilder::BuildTrajectoryMarkers (const RobotCartTraj& traj) const
+//{
+//  MarkerArray msg;
+//  int id = BuildStateMarkers(traj.front()).markers.back().id+1; // to not interfere with state
+//  int i=0;
+//  for (const auto& state : traj) {
+//
+//    // only plot every second state
+//    if (i++%2 != 0)
+//      continue;
+//
+//    MarkerArray msg_state = BuildStateMarkers(state);
+//
+//    // adapt some parameters
+//    for (Marker m : msg_state.markers) {
+//
+//      m.color.a = 0.2; // make slightly transparent
+//
+//      if (m.ns == "support_polygons")
+//        m.color.a = 0.41/(20*m.points.size()+1); // more transparent for support triangles
+//
+//      if (m.type == Marker::SPHERE)
+//        m.scale.x = m.scale.y = m.scale.z = 0.01;
+//
+//      if (m.ns == "ee_force" ||
+//          m.ns == "inverted_pendulum" ||
+//          m.ns == "gravity_force")
+//        continue; // don't plot endeffector forces in trajectory
+//
+//      if (m.ns == "base_pose")
+//        m.scale.x = m.scale.y = m.scale.z = 0.01;
+//
+//      m.id = id++;
+////      m.lifetime = ::ros::Duration(100);
+//      m.ns = "traj_" + m.ns;
+//      msg.markers.push_back(m);
+//    }
+//  }
+//
+//  return msg;
+//}
 
 RvizMarkerBuilder::MarkerArray
 RvizMarkerBuilder::BuildStateMarkers (const RobotState& state) const
@@ -92,7 +94,7 @@ RvizMarkerBuilder::BuildStateMarkers (const RobotState& state) const
   MarkerVec ee_pos = CreateEEPositions(state.GetEEPos(), state.ee_contact_);
   msg.markers.insert(msg.markers.begin(), ee_pos.begin(), ee_pos.end());
 
-  MarkerVec ee_forces = CreateEEForces(state.ee_forces_,state.GetEEPos());
+  MarkerVec ee_forces = CreateEEForces(state.ee_forces_,state.GetEEPos(), state.ee_contact_);
   msg.markers.insert(msg.markers.begin(), ee_forces.begin(), ee_forces.end());
 
   MarkerVec rom = CreateRangeOfMotion(state.base_);
@@ -106,10 +108,22 @@ RvizMarkerBuilder::BuildStateMarkers (const RobotState& state) const
 
   msg.markers.push_back(CreateGravityForce(state.base_.lin.p_));
 
-  int id = 1; // goal marker has id zero
+
+  if (state.t_global_ < 1e-4) // first state in trajectory
+    trajectory_id_ = trajectory_ids_start_;
+
+  int id = state_ids_start_; // earlier IDs filled by terrain
   for (Marker& m : msg.markers) {
     m.header.frame_id = "world";
-    m.id = id++;
+
+    // use unique ID that doesn't get overwritten in next state.
+    if (m.lifetime == ::ros::DURATION_MAX)
+      m.id = trajectory_id_++;
+    else
+      m.id = id;
+
+    id++;
+
     //  m.header.stamp = ::ros::Time();
     //  m.action = visualization_msgs::Marker::MODIFY;
     //  m.action = visualization_msgs::Marker::DELETE;
@@ -120,16 +134,27 @@ RvizMarkerBuilder::BuildStateMarkers (const RobotState& state) const
 }
 
 RvizMarkerBuilder::MarkerArray
-RvizMarkerBuilder::BuildTerrain (int terrain) const
+RvizMarkerBuilder::BuildTerrain (int terrain)
 {
+  using namespace xpp::opt;
+  terrain_ = HeightMap::MakeTerrain(static_cast<opt::HeightMap::ID>(terrain));
+
+  MarkerArray msg;
+
   switch (terrain) {
-    case opt::HeightMap::FlatID:    return BuildTerrainFlat(); break;
-    case opt::HeightMap::StairsID:  return BuildTerrainStairs(); break;
-    case opt::HeightMap::GapID:     return BuildTerrainGap(); break;
-    case opt::HeightMap::SlopeID:   return BuildTerrainSlope(); break;
-    case opt::HeightMap::ChimneyID: return BuildTerrainChimney(); break;
+    case HeightMap::FlatID:    msg = BuildTerrainFlat(); break;
+    case HeightMap::StairsID:  msg = BuildTerrainStairs(); break;
+    case HeightMap::GapID:     msg = BuildTerrainGap(); break;
+    case HeightMap::SlopeID:   msg = BuildTerrainSlope(); break;
+    case HeightMap::ChimneyID: msg = BuildTerrainChimney(); break;
     default: return MarkerArray(); // terrain visualization not implemented
   }
+
+  int id = terrain_ids_start_;
+  for (Marker& m : msg.markers)
+    m.id = id++;
+
+  return msg;
 }
 
 RvizMarkerBuilder::MarkerArray
@@ -137,11 +162,15 @@ RvizMarkerBuilder::BuildTerrainFlat() const
 {
   MarkerArray msg;
 
-  for (int i=0; i<5; ++i) {
+  for (int i=0; i<terrain_ids_start_; ++i) {
     msg.markers.push_back(BuildTerrainBlock(Vector3d(), Vector3d()));
     msg.markers.back().color.a = 0.0;
-    msg.markers.back().id = i;
   }
+
+  // one long path
+  Vector3d size_start_end(5,1,0.1);
+  Vector3d center0(1.5, 0.0, -0.05-eps_);
+  msg.markers.at(0) = BuildTerrainBlock(center0, size_start_end);
 
   return msg;
 }
@@ -154,7 +183,6 @@ RvizMarkerBuilder::BuildTerrainStairs() const
   Vector3d size0(4.5,1,0.1);
   Vector3d center0(1.25, 0.0, -0.05-eps_);
   msg.markers.push_back(BuildTerrainBlock(center0, size0));
-  msg.markers.back().id = 0;
 
   double height_first_step = 0.2;
   double first_step_start = 0.7;
@@ -164,13 +192,11 @@ RvizMarkerBuilder::BuildTerrainStairs() const
   Vector3d size(first_step_width+width_top,1,height_first_step);
   Vector3d center1(size.x()/2 + first_step_start, 0.0, size.z()/2-eps_);
   msg.markers.push_back(BuildTerrainBlock(center1, size));
-  msg.markers.back().id = 1;
 
   double height_second_step = 0.4;
   Vector3d size2(width_top,1,height_second_step);
   Vector3d pos2(first_step_start+first_step_width+size2.x()/2, 0.0, size2.z()/2-eps_);
   msg.markers.push_back(BuildTerrainBlock(pos2, size2));
-  msg.markers.back().id = 2;
 
   return msg;
 }
@@ -190,16 +216,13 @@ RvizMarkerBuilder::BuildTerrainGap() const
   Vector3d size0(4.5,1,0.1);
   Vector3d center0(1.25, 0.0, -lz-eps_);
   msg.markers.push_back(BuildTerrainBlock(center0, size0));
-  msg.markers.back().id = 0;
 
   Vector3d size(lx,ly,lz);
   Vector3d center1(0.0, 0.0, -lz/2-eps_);
   msg.markers.push_back(BuildTerrainBlock(center1, size));
-  msg.markers.back().id = 1;
 
   Vector3d pos2(l_gap + lx, 0.0, -lz/2-eps_);
   msg.markers.push_back(BuildTerrainBlock(pos2, size));
-  msg.markers.back().id = 2;
 
   return msg;
 }
@@ -223,7 +246,6 @@ RvizMarkerBuilder::BuildTerrainSlope() const
   Vector3d size_start_end(2,1,0.1);
   Vector3d center0(-length_start_end_/2. + slope_start, 0.0, -0.05-eps_);
   msg.markers.push_back(BuildTerrainBlock(center0, size_start_end));
-  msg.markers.back().id = 0;
 
 
   double roll = 0.0;
@@ -243,19 +265,14 @@ RvizMarkerBuilder::BuildTerrainSlope() const
   // slope up
   Vector3d center1(slope_start+up_length_/2, 0.0, height_center/2-lz);
   msg.markers.push_back(BuildTerrainBlock(center1, size, ori));
-  msg.markers.back().id = 1;
-
 
   // slope_down
   Vector3d center2(x_down_start_+down_length_/2, 0.0, height_center/2-lz);
   msg.markers.push_back(BuildTerrainBlock(center2, size, ori.inverse()));
-  msg.markers.back().id = 2;
-
 
   // flat end
   Vector3d center_end(length_start_end_/2.+x_flat_start_, 0.0, -0.05-eps_);
   msg.markers.push_back(BuildTerrainBlock(center_end, size_start_end));
-  msg.markers.back().id = 3;
 
 
   return msg;
@@ -268,8 +285,8 @@ RvizMarkerBuilder::BuildTerrainChimney() const
 
   const double x_start_ = 0.5;
   const double length_  = 1.0;
-  const double y_start_ = 0.2; // distance to start of slope from center at z=0
-  const double slope    = 2;
+  const double y_start_ = 0.3; // distance to start of slope from center at z=0
+  const double slope    = 3;
 
   double length_start_end_ = 2.0; // [m]
 
@@ -296,24 +313,21 @@ RvizMarkerBuilder::BuildTerrainChimney() const
   Vector3d size_start_end(2,1,0.1);
   Vector3d center0(-length_start_end_/2. + x_start_, 0.0, -0.05-eps_);
   msg.markers.push_back(BuildTerrainBlock(center0, size_start_end));
-  msg.markers.back().id = 0;
 
   // slope left
   Vector3d center1(x_start_+length_/2, y_start_+y_length/2, z_height/2);
   msg.markers.push_back(BuildTerrainBlock(center1, size, ori));
-  msg.markers.back().id = 1;
+  msg.markers.back().color.a = 0.8;
 
 
   // slope_right
   Vector3d center2(x_start_+length_/2, -y_start_-y_length/2, z_height/2);
   msg.markers.push_back(BuildTerrainBlock(center2, size, ori.inverse()));
-  msg.markers.back().id = 2;
+  msg.markers.back().color.a = 0.8;
 
   // flat end
   Vector3d center_end(length_start_end_/2.+x_start_+length_, 0.0, -0.05-eps_);
   msg.markers.push_back(BuildTerrainBlock(center_end, size_start_end));
-  msg.markers.back().id = 3;
-
 
   return msg;
 }
@@ -341,11 +355,10 @@ RvizMarkerBuilder::CreateEEPositions (const EEPos& ee_pos, const ContactState& i
   for (auto ee : ee_pos.GetEEsOrdered()) {
     Marker m = CreateSphere(ee_pos.At(ee), 0.04);
     m.ns     = "endeffector_pos";
+    m.color  = GetLegColor(ee);
 
     if (in_contact.At(ee))
-      m.color  = red;
-    else
-      m.color  = GetLegColor(ee);
+      m.lifetime = ::ros::DURATION_MAX; // keep showing footholds
 
     vec.push_back(m);
   }
@@ -367,14 +380,27 @@ RvizMarkerBuilder::CreateGravityForce (const Vector3d& base_pos) const
 
 RvizMarkerBuilder::MarkerVec
 RvizMarkerBuilder::CreateEEForces (const EEForces& ee_forces,
-                                   const EEPos& ee_pos) const
+                                   const EEPos& ee_pos,
+                                   const ContactState& contact_state) const
 {
   MarkerVec vec;
 
   for (auto ee : ee_forces.GetEEsOrdered()) {
-    Marker m = CreateForceArrow(-ee_forces.At(ee), ee_pos.At(ee));
+    Vector3d p = ee_pos.At(ee);
+    Vector3d f = ee_forces.At(ee);
+
+
+    Marker m = CreateForceArrow(-f, p);
     m.color  = red;
+    m.color.a = f.sum() > 0.1? 1.0 : 0.0;
     m.ns     = "ee_force";
+    vec.push_back(m);
+
+    Vector3d n = terrain_->GetNormalizedBasis(opt::HeightMap::Normal, p.x(), p.y());
+    m = CreateFrictionCone(p, n);
+    m.color  = red;
+    m.color.a = contact_state.At(ee)? 0.25 : 0.0;
+    m.ns     = "friction_cone";
     vec.push_back(m);
   }
 
@@ -387,7 +413,6 @@ RvizMarkerBuilder::CreateBasePose (const Vector3d& pos,
                                   const ContactState& contact_state) const
 {
   Vector3d edge_length(0.1, 0.05, 0.02);
-//  Vector3d edge_length(0.7, 0.3, 0.15);
   Marker m = CreateBox(pos, ori, 3*edge_length);
 
   m.color = black;
@@ -402,7 +427,7 @@ RvizMarkerBuilder::CreateBasePose (const Vector3d& pos,
 
 RvizMarkerBuilder::Marker
 RvizMarkerBuilder::CreateCopPos (const EEForces& ee_forces,
-                                  const EEPos& ee_pos) const
+                                 const EEPos& ee_pos) const
 {
   double z_sum = 0.0;
   for (Vector3d ee : ee_forces.ToImpl())
@@ -417,6 +442,8 @@ RvizMarkerBuilder::CreateCopPos (const EEForces& ee_forces,
     }
   }
 
+  cop.z() = terrain_->GetHeight(cop.x(), cop.y());
+
   Marker m = CreateSphere(cop);
   m.color = red;
   m.ns = "cop";
@@ -426,12 +453,13 @@ RvizMarkerBuilder::CreateCopPos (const EEForces& ee_forces,
 
 RvizMarkerBuilder::Marker
 RvizMarkerBuilder::CreatePendulum (const Vector3d& pos,
-                                    const EEForces& ee_forces,
-                                    const EEPos& ee_pos) const
+                                   const EEForces& ee_forces,
+                                   const EEPos& ee_pos) const
 {
   Marker m;
   m.type = Marker::LINE_STRIP;
-  m.scale.x = 0.007; // thinkness of pendulum pole
+  m.scale.x = 0.007; // thickness of pendulum pole
+
 
   geometry_msgs::Point cop = CreateCopPos(ee_forces, ee_pos).pose.position;
   geometry_msgs::Point com = CreateSphere(pos).pose.position;
@@ -441,6 +469,13 @@ RvizMarkerBuilder::CreatePendulum (const Vector3d& pos,
 
   m.ns = "inverted_pendulum";
   m.color = black;
+
+  double fz_sum = 0.0;
+  for (Vector3d ee : ee_forces.ToImpl())
+    fz_sum += ee.z();
+
+  if (fz_sum < 1.0) // [N] flight phase
+    m.color.a = 0.0; // hide marker
 
   return m;
 }
@@ -496,15 +531,16 @@ RvizMarkerBuilder::CreateSphere (const Vector3d& pos, double diameter) const
 
 RvizMarkerBuilder::Marker
 RvizMarkerBuilder::CreateForceArrow (const Vector3d& force,
-                                      const Vector3d& ee_pos) const
+                                     const Vector3d& ee_pos) const
 {
   Marker m;
   m.type = Marker::ARROW;
+
   m.scale.x = 0.01; // shaft diameter
   m.scale.y = 0.02; // arrow-head diameter
   m.scale.z = 0.06; // arrow-head length
 
-  double force_scale = params_.base_mass*40; // scaled by base weight
+  double force_scale = 800; //params_.base_mass*40; // scaled by base weight
   auto start = ros::RosConversions::XppToRos<geometry_msgs::Point>(ee_pos - force/force_scale);
   m.points.push_back(start);
 
@@ -514,9 +550,32 @@ RvizMarkerBuilder::CreateForceArrow (const Vector3d& force,
   return m;
 }
 
+RvizMarkerBuilder::Marker
+RvizMarkerBuilder::CreateFrictionCone (const Vector3d& pos,
+                                       const Vector3d& normal) const
+{
+  Marker m;
+  m.type = Marker::ARROW;
+
+  double cone_height = 0.1; // [m]
+  double friction = 0.5;
+
+  m.scale.x = 0.00; // [shaft diameter] hide arrow shaft to generate cone
+  m.scale.y = 2.0 * cone_height * terrain_->GetFrictionCoeff(); // arrow-head diameter
+  m.scale.z = cone_height; // arrow head length
+
+  auto start = ros::RosConversions::XppToRos<geometry_msgs::Point>(pos + normal);
+  m.points.push_back(start);
+
+  auto end = ros::RosConversions::XppToRos<geometry_msgs::Point>(pos);
+  m.points.push_back(end);
+
+  return m;
+}
+
 RvizMarkerBuilder::MarkerVec
 RvizMarkerBuilder::CreateSupportArea (const ContactState& contact_state,
-                                       const EEPos& ee_pos) const
+                                      const EEPos& ee_pos) const
 {
   MarkerVec vec;
 
@@ -528,14 +587,14 @@ RvizMarkerBuilder::CreateSupportArea (const ContactState& contact_state,
     if (contact_state.At(ee)) { // endeffector in contact
       auto p = ros::RosConversions::XppToRos<geometry_msgs::Point>(ee_pos.At(ee));
       m.points.push_back(p);
-      m.color = GetLegColor(ee);
+      m.color = black;
+      m.color.a = 0.2;
     }
   }
 
   switch (m.points.size()) {
     case 4: {
       m.type = Marker::TRIANGLE_LIST;
-      m.color = black;
       auto temp = m.points;
 
       // add two triangles to represent a square
@@ -562,13 +621,13 @@ RvizMarkerBuilder::CreateSupportArea (const ContactState& contact_state,
     }
     case 1: {
       /* just make so small that random marker can't be seen */
-      m.scale.x = m.scale.y = m.scale.z = 0.0001;
+      m.color.a = 0.0; // hide marker
       vec.push_back(m);
       vec.push_back(m);
       break;
     }
     default:
-      m.scale.x = m.scale.y = m.scale.z = 0.0001;
+      m.color.a = 0.0; // hide marker
       vec.push_back(m);
       vec.push_back(m);
       break;

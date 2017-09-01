@@ -12,6 +12,8 @@
 #include <visualization_msgs/MarkerArray.h>
 #include <xpp_msgs/OptParameters.h>
 
+#include <xpp/height_map.h>
+
 namespace xpp {
 
 /** @brief Builds ROS marker array messages that can be visualized in RVIZ.
@@ -33,6 +35,8 @@ public:
 
   using ParamsMsg       = xpp_msgs::OptParameters;
 
+
+
 public:
   RvizMarkerBuilder();
   virtual ~RvizMarkerBuilder () {};
@@ -44,10 +48,10 @@ public:
 
 public:
   MarkerArray BuildStateMarkers(const RobotState& state) const;
-  MarkerArray BuildTrajectoryMarkers(const RobotCartTraj& traj) const;
+//  MarkerArray BuildTrajectoryMarkers(const RobotCartTraj& traj) const;
 
   // visualizes the terrains found in xpp/height_map.h
-  MarkerArray BuildTerrain(int terrain_id) const;
+  MarkerArray BuildTerrain(int terrain_id);
   MarkerArray BuildTerrainFlat() const;
   MarkerArray BuildTerrainStairs() const;
   MarkerArray BuildTerrainGap() const;
@@ -60,11 +64,12 @@ public:
 
 
 
+
 private:
   // next level in the hierarchy (add color and namespace)
   MarkerVec CreateEEPositions(const EEPos& ee_pos, const ContactState& contact_state) const;
-  MarkerVec CreateEEForces(const EEForces& ee_forces, const EEPos& ee_pos) const;
-  Marker CreateGravityForce (const Vector3d& base_pos) const;
+  MarkerVec CreateEEForces(const EEForces& ee_forces, const EEPos& ee_pos, const ContactState& contact_state) const;
+  Marker    CreateGravityForce (const Vector3d& base_pos) const;
   MarkerVec CreateRangeOfMotion(const State3d& base) const;
   Marker    CreateBasePose(const Vector3d& pos, Eigen::Quaterniond ori,
                            const ContactState& contact_state) const;
@@ -72,10 +77,11 @@ private:
   Marker    CreatePendulum(const Vector3d& pos, const EEForces& ee_forces, const EEPos& ee_pos) const;
 
   // new and improved functions
-  Marker CreateForceArrow(const Vector3d& force, const Vector3d& ee_pos) const;
+  Marker    CreateFrictionCone(const Vector3d& pos, const Vector3d& normal) const;
+  Marker    CreateForceArrow(const Vector3d& force, const Vector3d& ee_pos) const;
   MarkerVec CreateSupportArea(const ContactState& contact_state, const EEPos& ee_pos) const;
-  Marker CreateSphere(const Vector3d& pos, double diameter = 0.03) const;
-  Marker CreateBox(const Vector3d& pos, Eigen::Quaterniond ori, const Vector3d& edge_length) const;
+  Marker    CreateSphere(const Vector3d& pos, double diameter = 0.03) const;
+  Marker    CreateBox(const Vector3d& pos, Eigen::Quaterniond ori, const Vector3d& edge_length) const;
 
   std_msgs::ColorRGBA GetLegColor(int leg) const;
 
@@ -84,6 +90,11 @@ private:
 
   ParamsMsg params_;
   double eps_ = 0.02; // lowering of terrain
+  opt::HeightMap::Ptr terrain_;
+  int state_ids_start_ = 0;
+  int terrain_ids_start_ = 50;
+  int trajectory_ids_start_ = 70;
+  mutable int trajectory_id_;
 };
 
 } /* namespace xpp */

@@ -76,8 +76,7 @@ int main(int argc, char *argv[])
 
 	// publishers
 	rviz_marker_pub = n.advertise<MarkerArrayMsg>("xpp/rviz_markers", 1);
-	rviz_pose_pub = n.advertise<PoseMsg>("xpp/goal", 1);
-
+	rviz_pose_pub   = n.advertise<PoseMsg>("xpp/goal", 1);
 
 	std::cout<<"Created rviz marker visualizer"<<std::endl;
 
