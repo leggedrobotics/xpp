@@ -83,14 +83,14 @@ private:
 
 
 template<typename T>
-std::map<T, JointID> GetMap(const std::map<EndeffectorID, std::vector<T> >& map_ee_to_joings) {
+std::map<T, JointID> GetMap(const std::map<EndeffectorID, std::vector<T> >& map_ee_to_joints) {
 
   std::map<T, JointID> map;
 
   int j = 0;
-  for (int i=0; i<map_ee_to_joings.size(); ++i) {
+  for (int i=0; i<map_ee_to_joints.size(); ++i) {
     auto ee = static_cast<EndeffectorID>(i);
-    for (auto hyq_joint : map_ee_to_joings.at(ee)) {
+    for (T hyq_joint : map_ee_to_joints.at(ee)) {
       auto xpp_joint = static_cast<JointID>(j++);
       map[hyq_joint] = xpp_joint;
     }

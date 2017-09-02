@@ -19,8 +19,8 @@ enum BipedJointID {
 };
 
 static const std::map<EndeffectorID, std::vector<BipedJointID> > kMapBipedEEToJoints {
-  { Reverse(kMapOptToBiped).at(L),  {L_HAA, L_HFE, L_KFE} },
-  { Reverse(kMapOptToBiped).at(R),  {R_HAA, R_HFE, R_KFE} },
+  { kMapIDToEE.at(L),  {L_HAA, L_HFE, L_KFE} },
+  { kMapIDToEE.at(R),  {R_HAA, R_HFE, R_KFE} },
 };
 
 } /* namespace biped */

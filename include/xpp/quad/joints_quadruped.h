@@ -19,10 +19,10 @@ enum QuadJointID {
 };
 
 static const std::map<EndeffectorID, std::vector<QuadJointID> > kMapQuadEEToJoints {
-  { Reverse(kMapOptToQuad).at(LF),  {LF_HAA, LF_HFE, LF_KFE} },
-  { Reverse(kMapOptToQuad).at(LH),  {LH_HAA, LH_HFE, LH_KFE} },
-  { Reverse(kMapOptToQuad).at(RF),  {RF_HAA, RF_HFE, RF_KFE} },
-  { Reverse(kMapOptToQuad).at(RH),  {RH_HAA, RH_HFE, RH_KFE} },
+  { kMapIDToEE.at(LF),  {LF_HAA, LF_HFE, LF_KFE} },
+  { kMapIDToEE.at(LH),  {LH_HAA, LH_HFE, LH_KFE} },
+  { kMapIDToEE.at(RF),  {RF_HAA, RF_HFE, RF_KFE} },
+  { kMapIDToEE.at(RH),  {RH_HAA, RH_HFE, RH_KFE} },
 };
 
 } /* namespace quad */

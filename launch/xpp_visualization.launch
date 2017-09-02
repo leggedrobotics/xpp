@@ -30,4 +30,14 @@
    <node name="rviz" pkg="rviz" type="rviz"  args="-d $(find xpp_vis)/rviz/xpp.rviz">
    </node>
    
+   
+   <!-- for commanding goal positions and tasks -->
+   <node name="nlp_user_input_node" pkg="xpp_ros" type="nlp_user_input_node" output="screen" cwd="node" >  
+   </node>
+   
+   <!-- for commanding goal positions and tasks -->
+   <node name="keyboard" pkg="keyboard" type="keyboard" output="screen" cwd="node" >  
+   </node>
+   
+   
 </launch>

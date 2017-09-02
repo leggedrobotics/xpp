@@ -211,7 +211,7 @@ RvizMarkerBuilder::BuildTerrainGap() const
   double lz = 0.5;
 
   double x_start = 0.5;
-  double l_gap   = 0.5;
+  double l_gap   = 0.7;
 
   Vector3d size0(4.5,1,0.1);
   Vector3d center0(1.25, 0.0, -lz-eps_);
@@ -285,7 +285,7 @@ RvizMarkerBuilder::BuildTerrainChimney() const
 
   const double x_start_ = 0.5;
   const double length_  = 1.0;
-  const double y_start_ = 0.3; // distance to start of slope from center at z=0
+  const double y_start_ = 0.5; // distance to start of slope from center at z=0
   const double slope    = 3;
 
   double length_start_end_ = 2.0; // [m]
@@ -315,13 +315,12 @@ RvizMarkerBuilder::BuildTerrainChimney() const
   msg.markers.push_back(BuildTerrainBlock(center0, size_start_end));
 
   // slope left
-  Vector3d center1(x_start_+length_/2, y_start_+y_length/2, z_height/2);
+  Vector3d center1(x_start_+length_/2, y_start_+eps_, 0);
   msg.markers.push_back(BuildTerrainBlock(center1, size, ori));
   msg.markers.back().color.a = 0.8;
 
-
   // slope_right
-  Vector3d center2(x_start_+length_/2, -y_start_-y_length/2, z_height/2);
+  Vector3d center2(x_start_+length_/2, -y_start_-eps_, 0);
   msg.markers.push_back(BuildTerrainBlock(center2, size, ori.inverse()));
   msg.markers.back().color.a = 0.8;
 

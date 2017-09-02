@@ -20,26 +20,21 @@ HyqInverseKinematics::GetAllJointAngles(const EndeffectorsPos& pos_B) const
 
   for (auto ee : pos_B.GetEEsOrdered()) {
 
-    FootID foot = kMapOptToQuad.at(ee);
+    std::string foot = ReverseMap(kMapIDToEE).at(ee);
     mono::HyqlegInverseKinematics::KneeBend bend = mono::HyqlegInverseKinematics::Forward;
 
-    switch (foot) {
-      case LF:
-        ee_pos_H = pos_B.At(ee);
-        break;
-      case RF:
-        ee_pos_H = pos_B.At(ee).cwiseProduct(Eigen::Vector3d(1,-1,1));
-        break;
-      case LH:
-        ee_pos_H = pos_B.At(ee).cwiseProduct(Eigen::Vector3d(-1,1,1));
-        bend = mono::HyqlegInverseKinematics::Backward;
-        break;
-      case RH:
-        ee_pos_H = pos_B.At(ee).cwiseProduct(Eigen::Vector3d(-1,-1,1));
-        bend = mono::HyqlegInverseKinematics::Backward;
-        break;
-      default: assert(false);
-        break;
+    if (foot == LF) {
+      ee_pos_H = pos_B.At(ee);
+    } else if (foot == RF) {
+      ee_pos_H = pos_B.At(ee).cwiseProduct(Eigen::Vector3d(1,-1,1));
+    } else if (foot == LH) {
+      ee_pos_H = pos_B.At(ee).cwiseProduct(Eigen::Vector3d(-1,1,1));
+      bend = mono::HyqlegInverseKinematics::Backward;
+    } else if (foot == RH) {
+      ee_pos_H = pos_B.At(ee).cwiseProduct(Eigen::Vector3d(-1,-1,1));
+      bend = mono::HyqlegInverseKinematics::Backward;
+    } else {
+      assert(false); // foot_id does not exist
     }
 
     ee_pos_H -= base2hip_LF_;
