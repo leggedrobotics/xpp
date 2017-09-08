@@ -38,13 +38,16 @@ public:
   using UrdfJointNames       = std::map<JointID, std::string>;
   using InverseKinematics    = std::shared_ptr<AInverseKinematics>;
 
-  UrdfVisualizer(const InverseKinematics&, const UrdfJointNames&,
-                      const std::string& urdf_name);
+  UrdfVisualizer(const InverseKinematics&,
+                 const UrdfJointNames&,
+                 const std::string& urdf_name,
+                 const std::string& rviz_fixed_frame,
+                 const std::string& state_msg_name);
   virtual ~UrdfVisualizer();
 
 private:
-  ros::Subscriber state_sub_; /// gets joint states, floating base and stance estimation
-  ros::Publisher curr_state_pub_; ///< publishes the current state, so can be used as simulator
+  ros::Subscriber state_sub_curr_; /// gets joint states, floating base and stance estimation
+  ros::Subscriber state_sub_des_; /// gets joint states, floating base and stance estimation
   tf::TransformBroadcaster broadcaster;
   std::shared_ptr<robot_state_publisher::RobotStatePublisher> robot_state_publisher;
 
@@ -60,6 +63,9 @@ private:
 
   InverseKinematics inverse_kinematics_;
   UrdfJointNames urdf_joint_names_;
+  std::string state_msg_name_;
+  std::string rviz_fixed_frame_;
+  std::string tf_prefix_;
 };
 
 } // namespace xpp

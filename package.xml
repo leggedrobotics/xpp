@@ -56,8 +56,6 @@
   <!-- one legged hopper visualization -->
   <build_depend>monoped_description</build_depend>
   <run_depend>monoped_description</run_depend>
-
-  
   
   
 

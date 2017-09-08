@@ -136,13 +136,6 @@ target_link_libraries(urdf_visualizer_hyq
   ${catkin_LIBRARIES}
 )
 
-add_executable(urdf_visualizer_anymal src/exe/urdf_visualizer_anymal.cc)
-target_link_libraries(urdf_visualizer_anymal
-  xpp_vis
-  ${catkin_LIBRARIES}
-)
-
-
 
 ## other visualizers
 add_executable(rviz_marker_node src/exe/rviz_marker_node.cc)
@@ -150,7 +143,6 @@ target_link_libraries(rviz_marker_node
   xpp_vis
   ${catkin_LIBRARIES}
 )
-
 
 ## misc
 add_executable(rosbag_traj_combiner src/exe/rosbag_traj_combiner.cc)

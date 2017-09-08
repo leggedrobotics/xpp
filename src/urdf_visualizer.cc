@@ -15,18 +15,21 @@ namespace xpp {
 
 UrdfVisualizer::UrdfVisualizer(const InverseKinematics& ik,
                                const UrdfJointNames& urdf_joint_names,
-                               const std::string& urdf_name)
+                               const std::string& urdf_name,
+                               const std::string& fixed_frame,
+                               const std::string& state_msg_name)
 {
   inverse_kinematics_ = ik;
   urdf_joint_names_   = urdf_joint_names;
+  rviz_fixed_frame_ = fixed_frame;
+  tf_prefix_ = state_msg_name;
 
 
   ::ros::NodeHandle nh;
-  state_sub_ = nh.subscribe(xpp_msgs::robot_state, 1,
-                            &UrdfVisualizer::StateCallback, this);
-  ROS_INFO("Subscribed to: %s", state_sub_.getTopic().c_str());
+  state_sub_des_ = nh.subscribe(state_msg_name, 1, &UrdfVisualizer::StateCallback, this);
 
-  curr_state_pub_ = nh.advertise<StateMsg>(xpp_msgs::robot_state, 1);
+  ROS_INFO("Subscribed to: %s", state_sub_curr_.getTopic().c_str());
+  ROS_INFO("Subscribed to: %s", state_sub_des_.getTopic().c_str());
 
   // Load model from file
   KDL::Tree my_kdl_tree;
@@ -80,8 +83,8 @@ UrdfVisualizer::VisualizeJoints(const ::ros::Time& stamp,
 
 	// Ready to publish the state
 	broadcaster.sendTransform(W_X_B_message);
-	robot_state_publisher->publishTransforms(joint_positions, ::ros::Time::now(),"");
-	robot_state_publisher->publishFixedTransforms("");
+	robot_state_publisher->publishTransforms(joint_positions, ::ros::Time::now(),tf_prefix_);
+	robot_state_publisher->publishFixedTransforms(tf_prefix_);
 }
 
 UrdfVisualizer::UrdfnameToJointAngle
@@ -102,9 +105,9 @@ UrdfVisualizer::GetBaseFromRos(const ::ros::Time& stamp,
   // Converting from joint messages to robot state
   geometry_msgs::TransformStamped W_X_B_message;
   W_X_B_message.header.stamp    = stamp;
-  W_X_B_message.header.frame_id = "world";
+  W_X_B_message.header.frame_id = rviz_fixed_frame_;
   // this must be the same name as the base_link in the URDF file
-  W_X_B_message.child_frame_id  = "base";
+  W_X_B_message.child_frame_id  = tf_prefix_ + "/" + urdf_joint_names_.at(BaseJoint);
 
 	W_X_B_message.transform.translation.x =  msg.position.x;
 	W_X_B_message.transform.translation.y =  msg.position.y;

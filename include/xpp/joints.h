@@ -16,7 +16,7 @@
 
 namespace xpp {
 
-enum JointID { J0=0, J1, J2, J3, J4, J5, J6, J7, J8, J9, J10, J11, J12, J13, J14 };
+enum JointID { J0=0, J1, J2, J3, J4, J5, J6, J7, J8, J9, J10, J11, J12, J13, J14, BaseJoint };
 
 /** @brief Container to access values associated to joints of endeffectors.
   */

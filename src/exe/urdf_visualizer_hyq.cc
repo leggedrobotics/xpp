@@ -10,6 +10,7 @@
 #include <xpp/quad/hyq_inverse_kinematics.h>
 #include <xpp/quad/joints_quadruped.h>
 #include <xpp/urdf_visualizer.h>
+#include <xpp/ros/topic_names.h>
 
 using namespace xpp;
 using namespace quad;
@@ -22,6 +23,7 @@ int main(int argc, char *argv[])
 
 	// this is how the joints are called in the URDF file
 	std::map<xpp::JointID, std::string> kMapXppJointToUrdfNames {
+	  { BaseJoint,               "base" },
     { map.at(LF_HAA),  "lf_haa_joint" },
     { map.at(LF_HFE),  "lf_hfe_joint" },
     { map.at(LF_KFE),  "lf_kfe_joint" },
@@ -39,7 +41,7 @@ int main(int argc, char *argv[])
 	auto hyq_ik = std::make_shared<HyqInverseKinematics>();
 	std::string urdf = "hyq_rviz_urdf_robot_description";
 
-	UrdfVisualizer node(hyq_ik, kMapXppJointToUrdfNames, urdf);
+	UrdfVisualizer node(hyq_ik, kMapXppJointToUrdfNames, urdf, "world", xpp_msgs::robot_state_desired);
 	std::cout<<"Created hyq_urdf_visualizer"<<std::endl;
 
 	::ros::spin();

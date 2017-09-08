@@ -6,6 +6,7 @@
  */
 
 #include <xpp/rviz_marker_builder.h>
+
 #include <xpp/ros/ros_conversions.h>
 #include <xpp/height_map.h>
 
@@ -30,7 +31,7 @@ RvizMarkerBuilder::RvizMarkerBuilder()
 }
 
 void
-RvizMarkerBuilder::SetOptimizationParameters (const ParamsMsg& msg)
+RvizMarkerBuilder::SetOptimizationParameters (const xpp_msgs::OptParameters& msg)
 {
   params_ = msg;
 }
@@ -109,15 +110,15 @@ RvizMarkerBuilder::BuildStateMarkers (const RobotState& state) const
   msg.markers.push_back(CreateGravityForce(state.base_.lin.p_));
 
 
-  if (state.t_global_ < 1e-4) // first state in trajectory
+  if (state.t_global_ < 0.01) // first state in trajectory
     trajectory_id_ = trajectory_ids_start_;
 
   int id = state_ids_start_; // earlier IDs filled by terrain
   for (Marker& m : msg.markers) {
-    m.header.frame_id = "world";
+    m.header.frame_id = frame_id_;
 
     // use unique ID that doesn't get overwritten in next state.
-    if (m.lifetime == ::ros::DURATION_MAX)
+    if (false /*m.lifetime == ::ros::DURATION_MAX*/)
       m.id = trajectory_id_++;
     else
       m.id = id;
@@ -142,11 +143,13 @@ RvizMarkerBuilder::BuildTerrain (int terrain)
   MarkerArray msg;
 
   switch (terrain) {
-    case HeightMap::FlatID:    msg = BuildTerrainFlat(); break;
-    case HeightMap::StairsID:  msg = BuildTerrainStairs(); break;
-    case HeightMap::GapID:     msg = BuildTerrainGap(); break;
-    case HeightMap::SlopeID:   msg = BuildTerrainSlope(); break;
-    case HeightMap::ChimneyID: msg = BuildTerrainChimney(); break;
+    case HeightMap::FlatID:      msg = BuildTerrainFlat(); break;
+    case HeightMap::BlockID:     msg = BuildTerrainBlock(); break;
+    case HeightMap::StairsID:    msg = BuildTerrainStairs(); break;
+    case HeightMap::GapID:       msg = BuildTerrainGap(); break;
+    case HeightMap::SlopeID:     msg = BuildTerrainSlope(); break;
+    case HeightMap::ChimneyID:   msg = BuildTerrainChimney(); break;
+    case HeightMap::ChimneyLRID: msg = BuildTerrainChimneyLR(); break;
     default: return MarkerArray(); // terrain visualization not implemented
   }
 
@@ -174,6 +177,27 @@ RvizMarkerBuilder::BuildTerrainFlat() const
 
   return msg;
 }
+
+RvizMarkerBuilder::MarkerArray
+RvizMarkerBuilder::BuildTerrainBlock() const
+{
+  MarkerArray msg;
+
+  Vector3d size0(4.5,1,0.1);
+  Vector3d center0(1.25, 0.0, -0.05-eps_);
+  msg.markers.push_back(BuildTerrainBlock(center0, size0));
+
+  double block_start = 1.5;
+  double length_     = 2.0;
+  double height_     = 1.0; // [m]
+
+  Vector3d size(length_,1,height_);
+  Vector3d center1(size.x()/2 + block_start, 0.0, size.z()/2-eps_);
+  msg.markers.push_back(BuildTerrainBlock(center1, size));
+
+  return msg;
+}
+
 
 RvizMarkerBuilder::MarkerArray
 RvizMarkerBuilder::BuildTerrainStairs() const
@@ -251,10 +275,7 @@ RvizMarkerBuilder::BuildTerrainSlope() const
   double roll = 0.0;
   double pitch = -atan(slope);
   double yaw = 0.0;
-  Eigen::AngleAxisd rollAngle(roll,   Vector3d::UnitX());
-  Eigen::AngleAxisd pitchAngle(pitch, Vector3d::UnitY());
-  Eigen::AngleAxisd yawAngle(yaw,     Vector3d::UnitZ());
-  Eigen::Quaterniond ori = rollAngle*pitchAngle*yawAngle;
+  Eigen::Quaterniond ori =  GetQuaternionFromEulerZYX(yaw, pitch, roll);
 
 
   double lx = height_center/sin(pitch);
@@ -294,10 +315,57 @@ RvizMarkerBuilder::BuildTerrainChimney() const
   double roll = atan(slope);
   double pitch = 0.0;
   double yaw = 0.0;
-  Eigen::AngleAxisd rollAngle(roll,   Vector3d::UnitX());
-  Eigen::AngleAxisd pitchAngle(pitch, Vector3d::UnitY());
-  Eigen::AngleAxisd yawAngle(yaw,     Vector3d::UnitZ());
-  Eigen::Quaterniond ori = rollAngle*pitchAngle*yawAngle;
+  Eigen::Quaterniond ori =  GetQuaternionFromEulerZYX(yaw, pitch, roll);
+
+
+  double lx = length_;
+  double ly = 1.0;
+  double lz = 0.04;
+  Vector3d size(lx,ly,lz);
+
+  double y_length = cos(roll)*ly;
+  double z_height = sin(roll)*ly;
+
+
+  // start
+  Vector3d size_start_end(2,1,0.1);
+  Vector3d center0(-length_start_end_/2. + x_start_, 0.0, -0.05-eps_);
+  msg.markers.push_back(BuildTerrainBlock(center0, size_start_end));
+
+  // slope left
+  Vector3d center1(x_start_+length_/2, y_start_+eps_, 0);
+  msg.markers.push_back(BuildTerrainBlock(center1, size, ori));
+  msg.markers.back().color.a = 1.0;
+
+//  // slope_right
+//  Vector3d center2(x_start_+length_/2, -y_start_-eps_, 0);
+//  msg.markers.push_back(BuildTerrainBlock(center2, size, ori.inverse()));
+//  msg.markers.back().color.a = 0.8;
+
+  // flat end
+  Vector3d center_end(length_start_end_/2.+x_start_+length_, 0.0, -0.05-eps_);
+  msg.markers.push_back(BuildTerrainBlock(center_end, size_start_end));
+
+  return msg;
+}
+
+RvizMarkerBuilder::MarkerArray
+RvizMarkerBuilder::BuildTerrainChimneyLR() const
+{
+  MarkerArray msg;
+
+  const double x_start_ = 0.5;
+  const double length_  = 1.0;
+  const double y_start_ = 0.5; // distance to start of slope from center at z=0
+  const double slope    = 2;
+
+  double length_start_end_ = 2.0; // [m]
+
+
+  double roll = atan(slope);
+  double pitch = 0.0;
+  double yaw = 0.0;
+  Eigen::Quaterniond ori =  GetQuaternionFromEulerZYX(yaw, pitch, roll);
 
 
   double lx = length_;
@@ -320,12 +388,12 @@ RvizMarkerBuilder::BuildTerrainChimney() const
   msg.markers.back().color.a = 0.8;
 
   // slope_right
-  Vector3d center2(x_start_+length_/2, -y_start_-eps_, 0);
+  Vector3d center2(center1.x()+length_, -y_start_-eps_, 0);
   msg.markers.push_back(BuildTerrainBlock(center2, size, ori.inverse()));
   msg.markers.back().color.a = 0.8;
 
   // flat end
-  Vector3d center_end(length_start_end_/2.+x_start_+length_, 0.0, -0.05-eps_);
+  Vector3d center_end(length_start_end_/2.+x_start_+2*length_, 0.0, -0.05-eps_);
   msg.markers.push_back(BuildTerrainBlock(center_end, size_start_end));
 
   return msg;
@@ -620,12 +688,14 @@ RvizMarkerBuilder::CreateSupportArea (const ContactState& contact_state,
     }
     case 1: {
       /* just make so small that random marker can't be seen */
+      m.type = Marker::CUBE; // just so same shape is specified
       m.color.a = 0.0; // hide marker
       vec.push_back(m);
       vec.push_back(m);
       break;
     }
     default:
+      m.type = Marker::CUBE; // just so same shapes is specified
       m.color.a = 0.0; // hide marker
       vec.push_back(m);
       vec.push_back(m);
@@ -633,6 +703,26 @@ RvizMarkerBuilder::CreateSupportArea (const ContactState& contact_state,
   }
 
   return vec;
+}
+
+geometry_msgs::PoseStamped
+RvizMarkerBuilder::BuildGoalPose (double x, double y,
+                                  xpp_msgs::StateLin3d orientation) const
+{
+  geometry_msgs::PoseStamped msg_out;
+  msg_out.header.frame_id = frame_id_;
+
+  // linear part
+  msg_out.pose.position.x = x;
+  msg_out.pose.position.y = y;
+  msg_out.pose.position.z = terrain_->GetHeight(x,y);
+
+  // angular part
+  auto goal_ang = xpp::ros::RosConversions::RosToXpp(orientation);
+  Eigen::Quaterniond q = GetQuaternionFromEulerZYX(goal_ang.p_.z(),goal_ang.p_.y(), goal_ang.p_.x());
+  msg_out.pose.orientation = xpp::ros::RosConversions::XppToRos(q);
+
+  return msg_out;
 }
 
 std_msgs::ColorRGBA

@@ -8,10 +8,14 @@
 #ifndef XPP_VIS_INCLUDE_RVIZ_MARKER_BUILDER_H_
 #define XPP_VIS_INCLUDE_RVIZ_MARKER_BUILDER_H_
 
-#include <xpp/robot_state_cartesian.h>
+#include <geometry_msgs/PoseStamped.h>
 #include <visualization_msgs/MarkerArray.h>
-#include <xpp_msgs/OptParameters.h>
 
+#include <xpp_msgs/OptParameters.h>
+#include <xpp_msgs/StateLin3d.h>
+
+#include <xpp/state.h>
+#include <xpp/robot_state_cartesian.h>
 #include <xpp/height_map.h>
 
 namespace xpp {
@@ -33,30 +37,28 @@ public:
   using RobotState      = RobotStateCartesian;
   using RobotCartTraj   = std::vector<RobotState>;
 
-  using ParamsMsg       = xpp_msgs::OptParameters;
-
-
 
 public:
   RvizMarkerBuilder();
   virtual ~RvizMarkerBuilder () {};
 
-  void SetOptimizationParameters(const ParamsMsg& msg);
-
-
-
+  void SetOptimizationParameters(const xpp_msgs::OptParameters& msg);
 
 public:
+  geometry_msgs::PoseStamped BuildGoalPose(double x, double y, xpp_msgs::StateLin3d orientation) const;
+
   MarkerArray BuildStateMarkers(const RobotState& state) const;
 //  MarkerArray BuildTrajectoryMarkers(const RobotCartTraj& traj) const;
 
   // visualizes the terrains found in xpp/height_map.h
   MarkerArray BuildTerrain(int terrain_id);
   MarkerArray BuildTerrainFlat() const;
+  MarkerArray BuildTerrainBlock() const;
   MarkerArray BuildTerrainStairs() const;
   MarkerArray BuildTerrainGap() const;
   MarkerArray BuildTerrainSlope() const;
   MarkerArray BuildTerrainChimney() const;
+  MarkerArray BuildTerrainChimneyLR() const;
 
   Marker BuildTerrainBlock(const Vector3d& pos,
                            const Vector3d& edge_length,
@@ -88,13 +90,15 @@ private:
 
   std_msgs::ColorRGBA red, green, blue, white, brown, yellow, purple, black, gray;
 
-  ParamsMsg params_;
+  xpp_msgs::OptParameters params_;
   double eps_ = 0.02; // lowering of terrain
   opt::HeightMap::Ptr terrain_;
-  int state_ids_start_ = 0;
-  int terrain_ids_start_ = 50;
-  int trajectory_ids_start_ = 70;
+  const int state_ids_start_ = 10;
+  const int terrain_ids_start_ = 50;
+  const int trajectory_ids_start_ = 70;
   mutable int trajectory_id_;
+
+  const std::string frame_id_ = "world";
 };
 
 } /* namespace xpp */

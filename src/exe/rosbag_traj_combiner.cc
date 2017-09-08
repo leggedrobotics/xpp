@@ -70,7 +70,7 @@ int main(int argc, char *argv[])
   BOOST_FOREACH(rosbag::MessageInstance const m, view)
   {
     double t_global = t_iter.at(m.getTopic()) + m.getTime().toSec();
-    bag_w.write(xpp_msgs::robot_state, ::ros::Time(t_global), m);
+    bag_w.write(xpp_msgs::robot_state_desired, ::ros::Time(t_global), m);
   }
 
 
