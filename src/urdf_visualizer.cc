@@ -17,13 +17,13 @@ UrdfVisualizer::UrdfVisualizer(const InverseKinematics& ik,
                                const UrdfJointNames& urdf_joint_names,
                                const std::string& urdf_name,
                                const std::string& fixed_frame,
-                               const std::string& state_msg_name)
+                               const std::string& state_msg_name,
+                               const std::string& tf_prefix)
 {
   inverse_kinematics_ = ik;
   urdf_joint_names_   = urdf_joint_names;
   rviz_fixed_frame_ = fixed_frame;
-  tf_prefix_ = state_msg_name;
-
+  tf_prefix_ = tf_prefix;
 
   ::ros::NodeHandle nh;
   state_sub_des_ = nh.subscribe(state_msg_name, 1, &UrdfVisualizer::StateCallback, this);

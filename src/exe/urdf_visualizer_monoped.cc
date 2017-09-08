@@ -33,7 +33,8 @@ int main(int argc, char *argv[])
 	auto ik = std::make_shared<MonopedInverseKinematics>();
 	std::string urdf = "monoped_rviz_urdf_robot_description";
 
-	UrdfVisualizer node(ik, kMapXppJointToUrdfNames, urdf, "world", xpp_msgs::robot_state_desired);
+	UrdfVisualizer node(ik, kMapXppJointToUrdfNames, urdf, "world",
+	                    xpp_msgs::robot_state_desired, "monoped");
 	std::cout<<"Created monoped_urdf_visualizer"<<std::endl;
 
 	::ros::spin();

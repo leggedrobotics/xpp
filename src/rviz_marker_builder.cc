@@ -181,17 +181,21 @@ RvizMarkerBuilder::BuildTerrainFlat() const
 RvizMarkerBuilder::MarkerArray
 RvizMarkerBuilder::BuildTerrainBlock() const
 {
-  MarkerArray msg;
+  double block_start = 1.5;
+  double length_     = 1.0;
+  double height_     = 0.4; // [m]
 
-  Vector3d size0(4.5,1,0.1);
+
+  MarkerArray msg;
+  double area_width = 3.0;
+
+  Vector3d size0(4.5,area_width,0.1);
   Vector3d center0(1.25, 0.0, -0.05-eps_);
   msg.markers.push_back(BuildTerrainBlock(center0, size0));
 
-  double block_start = 1.5;
-  double length_     = 2.0;
-  double height_     = 1.0; // [m]
 
-  Vector3d size(length_,1,height_);
+
+  Vector3d size(length_,area_width,height_);
   Vector3d center1(size.x()/2 + block_start, 0.0, size.z()/2-eps_);
   msg.markers.push_back(BuildTerrainBlock(center1, size));
 
@@ -202,23 +206,26 @@ RvizMarkerBuilder::BuildTerrainBlock() const
 RvizMarkerBuilder::MarkerArray
 RvizMarkerBuilder::BuildTerrainStairs() const
 {
-  MarkerArray msg;
-
-  Vector3d size0(4.5,1,0.1);
-  Vector3d center0(1.25, 0.0, -0.05-eps_);
-  msg.markers.push_back(BuildTerrainBlock(center0, size0));
-
+  double first_step_start = 1.5;
   double height_first_step = 0.2;
-  double first_step_start = 0.7;
   double first_step_width = 0.4;
   double width_top = 1.0;
 
-  Vector3d size(first_step_width+width_top,1,height_first_step);
+
+  MarkerArray msg;
+  double area_width = 3.0;
+
+  Vector3d size0(4.5,area_width,0.1);
+  Vector3d center0(1.25, 0.0, -0.05-eps_);
+  msg.markers.push_back(BuildTerrainBlock(center0, size0));
+
+
+  Vector3d size(first_step_width+width_top,area_width,height_first_step);
   Vector3d center1(size.x()/2 + first_step_start, 0.0, size.z()/2-eps_);
   msg.markers.push_back(BuildTerrainBlock(center1, size));
 
   double height_second_step = 0.4;
-  Vector3d size2(width_top,1,height_second_step);
+  Vector3d size2(width_top,area_width,height_second_step);
   Vector3d pos2(first_step_start+first_step_width+size2.x()/2, 0.0, size2.z()/2-eps_);
   msg.markers.push_back(BuildTerrainBlock(pos2, size2));
 
@@ -230,12 +237,13 @@ RvizMarkerBuilder::BuildTerrainGap() const
 {
   MarkerArray msg;
 
-  double lx = 2.0;
-  double ly = 1.0;
+  double gap_start = 1.5;
+  double l_gap = 0.5;
+
+  double lx = gap_start*2.0;
+  double ly = 3.0;
   double lz = 0.5;
 
-  double x_start = 0.5;
-  double l_gap   = 0.7;
 
   Vector3d size0(4.5,1,0.1);
   Vector3d center0(1.25, 0.0, -lz-eps_);

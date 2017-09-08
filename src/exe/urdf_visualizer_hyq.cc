@@ -41,7 +41,8 @@ int main(int argc, char *argv[])
 	auto hyq_ik = std::make_shared<HyqInverseKinematics>();
 	std::string urdf = "hyq_rviz_urdf_robot_description";
 
-	UrdfVisualizer node(hyq_ik, kMapXppJointToUrdfNames, urdf, "world", xpp_msgs::robot_state_desired);
+	UrdfVisualizer node(hyq_ik, kMapXppJointToUrdfNames, urdf, "world",
+	                    xpp_msgs::robot_state_desired, "hyq");
 	std::cout<<"Created hyq_urdf_visualizer"<<std::endl;
 
 	::ros::spin();

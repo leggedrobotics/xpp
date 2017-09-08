@@ -35,7 +35,8 @@ int main(int argc, char *argv[])
 	auto ik = std::make_shared<BipedInverseKinematics>();
 	std::string urdf = "biped_rviz_urdf_robot_description";
 
-	UrdfVisualizer node(ik, kMapXppJointToUrdfNames, urdf, "world", xpp_msgs::robot_state_desired);
+	UrdfVisualizer node(ik, kMapXppJointToUrdfNames, urdf, "world",
+	                    xpp_msgs::robot_state_desired, "biped");
 	std::cout<<"Created biped_urdf_visualizer"<<std::endl;
 
 	::ros::spin();

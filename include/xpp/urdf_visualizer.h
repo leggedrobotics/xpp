@@ -42,7 +42,8 @@ public:
                  const UrdfJointNames&,
                  const std::string& urdf_name,
                  const std::string& rviz_fixed_frame,
-                 const std::string& state_msg_name);
+                 const std::string& state_msg_name,
+                 const std::string& tf_prefix = "");
   virtual ~UrdfVisualizer();
 
 private:
