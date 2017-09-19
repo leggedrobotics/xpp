@@ -37,6 +37,10 @@ int main(int argc, char *argv[])
 
 	UrdfVisualizer node(ik, kMapXppJointToUrdfNames, urdf, "world",
 	                    xpp_msgs::robot_state_desired, "biped");
+
+//  UrdfVisualizer node_biped(ik, kMapXppJointToUrdfNames, urdf, "world",
+//                      "xpp/state_biped", "biped");
+
 	std::cout<<"Created biped_urdf_visualizer"<<std::endl;
 
 	::ros::spin();

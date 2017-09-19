@@ -88,7 +88,7 @@ private:
   std_msgs::ColorRGBA GetLegColor(int leg) const;
 
 
-  std_msgs::ColorRGBA red, green, blue, white, brown, yellow, purple, black, gray;
+  std_msgs::ColorRGBA red, green, blue, dblue, white, brown, yellow, purple, black, gray, wheat;
 
   xpp_msgs::OptParameters params_;
   double eps_ = 0.02; // lowering of terrain

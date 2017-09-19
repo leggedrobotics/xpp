@@ -22,10 +22,12 @@ RvizMarkerBuilder::RvizMarkerBuilder()
   red.r    = 1.0;      red.g    = 0.0;      red.b    = 0.0;
   green.r  = 0.0;      green.g  = 150./255; green.b  = 76./255;
   blue.r   = 0.0;      blue.g   = 102./255; blue.b   = 204./255;
+  dblue.r   = 0.0;     dblue.g   = 0./255; dblue.b   = 128./255;
   brown.r  = 122./255; brown.g  = 61./255;  brown.b  = 0.0;
   white.b  =           white.g  =           white.r  = 1.0;
   yellow.r = 204./255; yellow.g = 204./255; yellow.b = 0.0;
   purple.r = 72./255;  purple.g = 61./255;  purple.b = 139./255;
+  wheat.r = 245./355;  wheat.g   =222./355;  wheat.b  = 179./355;
 
   terrain_ = opt::HeightMap::MakeTerrain(opt::HeightMap::FlatID);
 }
@@ -118,7 +120,7 @@ RvizMarkerBuilder::BuildStateMarkers (const RobotState& state) const
     m.header.frame_id = frame_id_;
 
     // use unique ID that doesn't get overwritten in next state.
-    if (false /*m.lifetime == ::ros::DURATION_MAX*/)
+    if (false/*m.lifetime == ::ros::DURATION_MAX*/)
       m.id = trajectory_id_++;
     else
       m.id = id;
@@ -182,21 +184,22 @@ RvizMarkerBuilder::MarkerArray
 RvizMarkerBuilder::BuildTerrainBlock() const
 {
   double block_start = 1.5;
-  double length_     = 1.0;
-  double height_     = 0.4; // [m]
+  double length_     = 3.5;
+  double height_     = 0.8; // [m]
 
 
   MarkerArray msg;
   double area_width = 3.0;
+  double ground_thickness = 0.1;
 
-  Vector3d size0(4.5,area_width,0.1);
-  Vector3d center0(1.25, 0.0, -0.05-eps_);
+  Vector3d size0(3,area_width,ground_thickness);
+  Vector3d center0(0, 0.0, -0.05-eps_);
   msg.markers.push_back(BuildTerrainBlock(center0, size0));
 
 
 
-  Vector3d size(length_,area_width,height_);
-  Vector3d center1(size.x()/2 + block_start, 0.0, size.z()/2-eps_);
+  Vector3d size(length_,area_width,height_+ground_thickness);
+  Vector3d center1(size.x()/2 + block_start, 0.0, size.z()/2-eps_-ground_thickness);
   msg.markers.push_back(BuildTerrainBlock(center1, size));
 
   return msg;
@@ -215,8 +218,8 @@ RvizMarkerBuilder::BuildTerrainStairs() const
   MarkerArray msg;
   double area_width = 3.0;
 
-  Vector3d size0(4.5,area_width,0.1);
-  Vector3d center0(1.25, 0.0, -0.05-eps_);
+  Vector3d size0(6.5,area_width,0.1);
+  Vector3d center0(2.25, 0.0, -0.05-eps_);
   msg.markers.push_back(BuildTerrainBlock(center0, size0));
 
 
@@ -238,16 +241,17 @@ RvizMarkerBuilder::BuildTerrainGap() const
   MarkerArray msg;
 
   double gap_start = 1.5;
-  double l_gap = 0.5;
+  double l_gap = 0.5;      // was 0.5m or 1m for biped  for anymal motions
 
   double lx = gap_start*2.0;
   double ly = 3.0;
-  double lz = 0.5;
+  double lz = 2.04;
 
 
-  Vector3d size0(4.5,1,0.1);
+  Vector3d size0(4.5,1,0.04);
   Vector3d center0(1.25, 0.0, -lz-eps_);
   msg.markers.push_back(BuildTerrainBlock(center0, size0));
+  msg.markers.back().color.a = 0.0;
 
   Vector3d size(lx,ly,lz);
   Vector3d center1(0.0, 0.0, -lz/2-eps_);
@@ -263,11 +267,12 @@ RvizMarkerBuilder::MarkerArray
 RvizMarkerBuilder::BuildTerrainSlope() const
 {
   MarkerArray msg;
+  double area_width = 3.0;
 
-  const double slope_start = 0.5;
+  const double slope_start = 1.0;
   const double up_length_   = 1.0;
   const double down_length_ = 1.0;
-  const double height_center = 0.5;
+  const double height_center = 0.7;
   const double x_down_start_ = slope_start+up_length_;
   const double x_flat_start_ = x_down_start_ + down_length_;
   const double slope = height_center/up_length_;
@@ -275,7 +280,7 @@ RvizMarkerBuilder::BuildTerrainSlope() const
   double length_start_end_ = 2.0; // [m]
 
 
-  Vector3d size_start_end(2,1,0.1);
+  Vector3d size_start_end(2,area_width,0.04);
   Vector3d center0(-length_start_end_/2. + slope_start, 0.0, -0.05-eps_);
   msg.markers.push_back(BuildTerrainBlock(center0, size_start_end));
 
@@ -287,7 +292,7 @@ RvizMarkerBuilder::BuildTerrainSlope() const
 
 
   double lx = height_center/sin(pitch);
-  double ly = 1.0;
+  double ly = area_width;
   double lz = 0.04;
   Vector3d size(lx,ly,lz);
 
@@ -311,11 +316,12 @@ RvizMarkerBuilder::MarkerArray
 RvizMarkerBuilder::BuildTerrainChimney() const
 {
   MarkerArray msg;
+  double area_width = 3.0;
 
-  const double x_start_ = 0.5;
-  const double length_  = 1.0;
-  const double y_start_ = 0.5; // distance to start of slope from center at z=0
-  const double slope    = 3;
+  const double x_start_ = 1.5;
+  const double length_  = 1.5;
+  const double y_start_ = 0.5; // for rosbag was: 0.8  or  0.5; distance to start of slope from center at z=0
+  const double slope    = 3;   // for rosbag was: 2    or  3
 
   double length_start_end_ = 2.0; // [m]
 
@@ -327,7 +333,7 @@ RvizMarkerBuilder::BuildTerrainChimney() const
 
 
   double lx = length_;
-  double ly = 1.0;
+  double ly = 4.0;
   double lz = 0.04;
   Vector3d size(lx,ly,lz);
 
@@ -336,12 +342,12 @@ RvizMarkerBuilder::BuildTerrainChimney() const
 
 
   // start
-  Vector3d size_start_end(2,1,0.1);
+  Vector3d size_start_end(2,area_width,0.1);
   Vector3d center0(-length_start_end_/2. + x_start_, 0.0, -0.05-eps_);
   msg.markers.push_back(BuildTerrainBlock(center0, size_start_end));
 
   // slope left
-  Vector3d center1(x_start_+length_/2, y_start_+eps_, 0);
+  Vector3d center1(x_start_+length_/2, y_start_+eps_, -3*eps_);
   msg.markers.push_back(BuildTerrainBlock(center1, size, ori));
   msg.markers.back().color.a = 1.0;
 
@@ -361,6 +367,7 @@ RvizMarkerBuilder::MarkerArray
 RvizMarkerBuilder::BuildTerrainChimneyLR() const
 {
   MarkerArray msg;
+  double area_width=3.0;
 
   const double x_start_ = 0.5;
   const double length_  = 1.0;
@@ -377,7 +384,7 @@ RvizMarkerBuilder::BuildTerrainChimneyLR() const
 
 
   double lx = length_;
-  double ly = 1.0;
+  double ly = 2.5;
   double lz = 0.04;
   Vector3d size(lx,ly,lz);
 
@@ -386,19 +393,19 @@ RvizMarkerBuilder::BuildTerrainChimneyLR() const
 
 
   // start
-  Vector3d size_start_end(2,1,0.1);
+  Vector3d size_start_end(2,area_width,0.1);
   Vector3d center0(-length_start_end_/2. + x_start_, 0.0, -0.05-eps_);
   msg.markers.push_back(BuildTerrainBlock(center0, size_start_end));
 
   // slope left
   Vector3d center1(x_start_+length_/2, y_start_+eps_, 0);
   msg.markers.push_back(BuildTerrainBlock(center1, size, ori));
-  msg.markers.back().color.a = 0.8;
+  msg.markers.back().color.a = 1.0;
 
   // slope_right
   Vector3d center2(center1.x()+length_, -y_start_-eps_, 0);
   msg.markers.push_back(BuildTerrainBlock(center2, size, ori.inverse()));
-  msg.markers.back().color.a = 0.8;
+  msg.markers.back().color.a = 1.0;
 
   // flat end
   Vector3d center_end(length_start_end_/2.+x_start_+2*length_, 0.0, -0.05-eps_);
@@ -416,7 +423,7 @@ RvizMarkerBuilder::BuildTerrainBlock (const Vector3d& pos,
 
   m.ns = "terrain";
   m.header.frame_id = "world";
-  m.color = gray;
+  m.color = wheat;
   m.color.a = 1.0;
 
   return m;
@@ -430,7 +437,7 @@ RvizMarkerBuilder::CreateEEPositions (const EEPos& ee_pos, const ContactState& i
   for (auto ee : ee_pos.GetEEsOrdered()) {
     Marker m = CreateSphere(ee_pos.At(ee), 0.04);
     m.ns     = "endeffector_pos";
-    m.color  = GetLegColor(ee);
+    m.color  = blue;//GetLegColor(ee);
 
     if (in_contact.At(ee))
       m.lifetime = ::ros::DURATION_MAX; // keep showing footholds
@@ -465,14 +472,14 @@ RvizMarkerBuilder::CreateEEForces (const EEForces& ee_forces,
     Vector3d f = ee_forces.At(ee);
 
 
-    Marker m = CreateForceArrow(-f, p);
+    Marker m = CreateForceArrow(f, p);
     m.color  = red;
     m.color.a = f.sum() > 0.1? 1.0 : 0.0;
     m.ns     = "ee_force";
     vec.push_back(m);
 
     Vector3d n = terrain_->GetNormalizedBasis(opt::HeightMap::Normal, p.x(), p.y());
-    m = CreateFrictionCone(p, n);
+    m = CreateFrictionCone(p, -n);
     m.color  = red;
     m.color.a = contact_state.At(ee)? 0.25 : 0.0;
     m.ns     = "friction_cone";
@@ -493,7 +500,8 @@ RvizMarkerBuilder::CreateBasePose (const Vector3d& pos,
   m.color = black;
   for (auto ee : contact_state.GetEEsOrdered())
     if (contact_state.At(ee))
-      m.color = red;
+      m.color = black;
+
 
   m.ns = "base_pose";
 
@@ -567,7 +575,7 @@ RvizMarkerBuilder::CreateRangeOfMotion (const State3d& base) const
     Vector3d pos_W = base.lin.p_ + w_R_b*ros::RosConversions::RosToXpp(pos_B);
 
     Marker m  = CreateBox(pos_W, base.ang.q, 2*ros::RosConversions::RosToXpp(params_.ee_max_dev));
-    m.color   = GetLegColor(ee++);
+    m.color   = blue;//GetLegColor(ee++);
     m.color.a = 0.2;
     m.ns      = "range_of_motion";
     vec.push_back(m);
