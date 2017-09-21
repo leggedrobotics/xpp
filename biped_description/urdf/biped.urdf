@@ -4,8 +4,8 @@
 	      <geometry>
 	        <box size="0.30 0.30 0.30"/>
 	      </geometry>
-	      <material name="blue">
-	        <color rgba="0 0 1 1"/>
+	      <material name="gray">
+	        <color rgba="0.3 0.3 0.3 1.0"/>
 	      </material>
 	    </visual>        
     </link>

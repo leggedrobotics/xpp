@@ -2,10 +2,10 @@
     <link name="base">
 	    <visual>
 	      <geometry>
-	        <box size="0.30 0.30 0.30"/>
+	        <box size="0.20 0.20 0.30"/>
 	      </geometry>
 	      <material name="blue">
-	        <color rgba="0 0 1 1"/>
+	        <color rgba="0.3 0.3 0.3 1.0"/>
 	      </material>
 	    </visual>        
     </link>
