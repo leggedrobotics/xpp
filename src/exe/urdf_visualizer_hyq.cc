@@ -42,10 +42,10 @@ int main(int argc, char *argv[])
 	std::string urdf = "hyq_rviz_urdf_robot_description";
 
 	UrdfVisualizer hyq_desired(hyq_ik, kMapXppJointToUrdfNames, urdf, "world",
-	                           xpp_msgs::robot_state_desired, "hyq");
+	                           xpp_msgs::robot_state_desired, "hyq_des");
 
-//  UrdfVisualizer hyq_current(hyq_ik, kMapXppJointToUrdfNames, urdf, "world",
-//                             xpp_msgs::robot_state_current, "hyq_curr");
+  UrdfVisualizer hyq_current(hyq_ik, kMapXppJointToUrdfNames, urdf, "world",
+                             xpp_msgs::robot_state_current, "hyq_curr");
 
 
 	std::cout<<"Created hyq_urdf_visualizer"<<std::endl;

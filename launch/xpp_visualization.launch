@@ -22,7 +22,7 @@
 <!--    <param name="quadrotor_rviz_urdf_robot_description" command="$(find xacro)/xacro.py '$(find quadrotor_description)/urdf/quadrotor.urdf'"/>  -->
    
   <!-- ANYMAL URDF + IK -->
-  <include file="$(find xpp_anymal_ik)/launch/load.launch"></include>
+<!--   <include file="$(find xpp_anymal_ik)/launch/load.launch"></include> -->
      
    
    <!-- Launch rviz with specific configuration -->

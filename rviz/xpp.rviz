@@ -12,8 +12,8 @@ Panels:
         - /Optimization Result1/Namespaces1
         - /MonopedURDF1
         - /BipedURDF1
+        - /HyqURDFcurrent1
         - /HyqURDFdesired1
-        - /ANYmalURDFcurrent1
         - /ANYmalURDFdesired1
         - /QuadrotorURDF1
         - /TF1/Frames1
@@ -82,7 +82,16 @@ Visualization Manager:
       Marker Topic: /xpp/rviz_markers
       Name: Optimization Result
       Namespaces:
-        {}
+        base_pose: true
+        cop: true
+        ee_force: true
+        endeffector_pos: true
+        friction_cone: true
+        gravity_force: false
+        inverted_pendulum: false
+        range_of_motion: true
+        support_polygons: true
+        terrain: false
       Queue Size: 100
       Value: true
     - Alpha: 1
@@ -127,7 +136,113 @@ Visualization Manager:
         Expand Link Details: false
         Expand Tree: false
         Link Tree Style: Links in Alphabetic Order
-        base_link:
+        base:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        lf_foot:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        lf_hipassembly:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        lf_lowerleg:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        lf_upperleg:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        lh_foot:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        lh_hipassembly:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        lh_lowerleg:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        lh_upperleg:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rf_foot:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rf_hipassembly:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rf_lowerleg:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rf_upperleg:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rh_foot:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rh_hipassembly:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rh_lowerleg:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rh_upperleg:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        trunk:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+      Name: HyqURDFcurrent
+      Robot Description: /hyq_rviz_urdf_robot_description
+      TF Prefix: hyq_curr
+      Update Interval: 0
+      Value: true
+      Visual Enabled: true
+    - Alpha: 0.5
+      Class: rviz/RobotModel
+      Collision Enabled: false
+      Enabled: true
+      Links:
+        All Links Enabled: true
+        Expand Joint Details: false
+        Expand Link Details: false
+        Expand Tree: false
+        Link Tree Style: Links in Alphabetic Order
+        base:
           Alpha: 1
           Show Axes: false
           Show Trail: false
@@ -219,283 +334,41 @@ Visualization Manager:
           Value: true
       Name: HyqURDFdesired
       Robot Description: /hyq_rviz_urdf_robot_description
-      TF Prefix: hyq
+      TF Prefix: hyq_des
       Update Interval: 0
       Value: true
       Visual Enabled: true
     - Alpha: 0.1
       Class: rviz/RobotModel
       Collision Enabled: false
-      Enabled: true
+      Enabled: false
       Links:
         All Links Enabled: true
         Expand Joint Details: false
         Expand Link Details: false
         Expand Tree: false
-        LF_FOOT:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        LF_FOOT_MOUNT:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        LF_FOOT_SENSOR:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        LF_HIP:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        LF_SHANK:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        LF_THIGH:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        LH_FOOT:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        LH_FOOT_MOUNT:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        LH_FOOT_SENSOR:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        LH_HIP:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        LH_SHANK:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        LH_THIGH:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
         Link Tree Style: Links in Alphabetic Order
-        RF_FOOT:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        RF_FOOT_MOUNT:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        RF_FOOT_SENSOR:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        RF_HIP:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        RF_SHANK:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        RF_THIGH:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        RH_FOOT:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        RH_FOOT_MOUNT:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        RH_FOOT_SENSOR:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        RH_HIP:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        RH_SHANK:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        RH_THIGH:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        base:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        base_inertia:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
       Name: ANYmalURDFcurrent
       Robot Description: /anymal_rviz_urdf_robot_description
       TF Prefix: anymal_curr
       Update Interval: 0
-      Value: true
+      Value: false
       Visual Enabled: true
     - Alpha: 1
       Class: rviz/RobotModel
       Collision Enabled: false
-      Enabled: true
+      Enabled: false
       Links:
         All Links Enabled: true
         Expand Joint Details: false
         Expand Link Details: false
         Expand Tree: false
-        LF_FOOT:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        LF_FOOT_MOUNT:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        LF_FOOT_SENSOR:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        LF_HIP:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        LF_SHANK:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        LF_THIGH:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        LH_FOOT:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        LH_FOOT_MOUNT:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        LH_FOOT_SENSOR:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        LH_HIP:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        LH_SHANK:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        LH_THIGH:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
         Link Tree Style: Links in Alphabetic Order
-        RF_FOOT:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        RF_FOOT_MOUNT:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        RF_FOOT_SENSOR:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        RF_HIP:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        RF_SHANK:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        RF_THIGH:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        RH_FOOT:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        RH_FOOT_MOUNT:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        RH_FOOT_SENSOR:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        RH_HIP:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        RH_SHANK:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        RH_THIGH:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        base:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        base_inertia:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
       Name: ANYmalURDFdesired
       Robot Description: /anymal_rviz_urdf_robot_description
       TF Prefix: anymal_des
       Update Interval: 0
-      Value: true
+      Value: false
       Visual Enabled: true
     - Alpha: 0.8
       Class: rviz/RobotModel
@@ -558,15 +431,15 @@ Visualization Manager:
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 0.642029
-        Y: 0.27612
+        X: 0.129804
+        Y: 0.0840886
         Z: -0.579999
       Name: Current View
       Near Clip Distance: 0.01
-      Pitch: 0.424797
+      Pitch: 0.0597975
       Target Frame: <Fixed Frame>
       Value: ThirdPersonFollower (rviz)
-      Yaw: 1.44398
+      Yaw: 1.77898
     Saved:
       - Angle: 3.14
         Class: rviz/TopDownOrtho
