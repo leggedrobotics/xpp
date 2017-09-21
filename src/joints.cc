@@ -30,6 +30,14 @@ Joints::Joints (const std::vector<VectorXd>& q_vec)
     At(ee) = q_vec.at(ee);
 }
 
+Joints::Joints (const VectorXd& q, const EEOrder& ee_order)
+    : Base(ee_order.size())
+{
+  n_joints_ = q.rows();
+  n_joints_per_leg_ = n_joints_/GetCount(); // assumes each endeffector has same amount of joints
+  SetFromVec(q, ee_order);
+}
+
 Joints::~Joints ()
 {
 }
@@ -116,4 +124,3 @@ Joints::GetNumJointsPerEE () const
 }
 
 } /* namespace xpp */
-

@@ -34,6 +34,7 @@ public:
     */
   explicit Joints (int n_ee, int n_joints_per_ee, double value = 0.0);
   explicit Joints (const std::vector<VectorXd>& joints);
+  explicit Joints (const VectorXd& q, const EEOrder& ee_order);
   virtual ~Joints ();
 
   /** @brief Converts joint values to Eigen vector.

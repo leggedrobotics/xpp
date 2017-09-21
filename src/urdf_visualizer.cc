@@ -22,7 +22,7 @@ UrdfVisualizer::UrdfVisualizer(const InverseKinematics& ik,
 {
   inverse_kinematics_ = ik;
   urdf_joint_names_   = urdf_joint_names;
-  rviz_fixed_frame_ = fixed_frame;
+  rviz_fixed_frame_   = fixed_frame;
   tf_prefix_ = tf_prefix;
 
   ::ros::NodeHandle nh;

@@ -22,7 +22,7 @@ public:
 	Joints GetAllJointAngles(const EndeffectorsPos& pos_b) const override;
 
 private:
-	Vector3d base2hip_LF_ = Vector3d(0.3735,0.207, 0.0);
+	Vector3d base2hip_LF_ = Vector3d(0.3735, 0.207, 0.0);
 };
 
 } /* namespace quad */
