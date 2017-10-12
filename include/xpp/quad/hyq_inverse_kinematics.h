@@ -2,7 +2,7 @@
 #define INVERSEKINEMATICS_H_
 
 #include <xpp/a_inverse_kinematics.h>
-#include <xpp/endeffectors.h>
+#include <xpp_states/endeffectors.h>
 
 namespace xpp {
 namespace quad {

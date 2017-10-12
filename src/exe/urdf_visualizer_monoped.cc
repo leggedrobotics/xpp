@@ -10,7 +10,8 @@
 #include <xpp/urdf_visualizer.h>
 #include <xpp/mono/joints_monoped.h>
 #include <xpp/mono/monoped_inverse_kinematics.h>
-#include <xpp/ros/topic_names.h>
+
+#include <xpp_msgs/topic_names.h>
 
 using namespace xpp;
 using namespace mono;

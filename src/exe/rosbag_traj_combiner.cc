@@ -16,8 +16,8 @@
 #include <rosbag/message_instance.h>
 #include <boost/foreach.hpp>
 
-#include <xpp/ros/ros_conversions.h>
-#include <xpp/ros/topic_names.h>
+#include <xpp_ros_conversions/ros_conversions.h>
+#include <xpp_msgs/topic_names.h>
 
 
 int main(int argc, char *argv[])

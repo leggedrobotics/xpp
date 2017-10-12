@@ -30,7 +30,7 @@
    </node>
    
    <!-- for commanding goal positions and tasks -->
-   <node name="nlp_user_input_node" pkg="xpp_ros" type="nlp_user_input_node" output="screen" cwd="node" >  
+   <node name="nlp_user_input_node" pkg="xpp_opt_ros" type="nlp_user_input_node" output="screen" cwd="node" >  
    </node>
    
    <!-- for commanding goal positions and tasks -->

@@ -10,7 +10,8 @@
 #include <xpp/quad/hyq_inverse_kinematics.h>
 #include <xpp/quad/joints_quadruped.h>
 #include <xpp/urdf_visualizer.h>
-#include <xpp/ros/topic_names.h>
+
+#include <xpp_msgs/topic_names.h>
 
 using namespace xpp;
 using namespace quad;
@@ -46,7 +47,6 @@ int main(int argc, char *argv[])
 
   UrdfVisualizer hyq_current(hyq_ik, kMapXppJointToUrdfNames, urdf, "world",
                              xpp_msgs::robot_state_current, "hyq_curr");
-
 
 	std::cout<<"Created hyq_urdf_visualizer"<<std::endl;
 

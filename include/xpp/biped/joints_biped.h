@@ -8,7 +8,7 @@
 #ifndef XPP_BIPED_BIPED_JOINTS_H_
 #define XPP_BIPED_BIPED_JOINTS_H_
 
-#include <xpp/endeffectors.h>
+#include <xpp_states/endeffectors.h>
 
 namespace xpp {
 namespace biped {

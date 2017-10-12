@@ -10,7 +10,7 @@
 #include <cmath>
 #include <map>
 
-#include <xpp/cartesian_declarations.h>
+#include <xpp_states/cartesian_declarations.h>
 
 namespace xpp {
 namespace mono {

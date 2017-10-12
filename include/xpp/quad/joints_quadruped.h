@@ -8,14 +8,14 @@
 #ifndef XPP_XPP_COMMON_INCLUDE_XPP_QUAD_JOINTS_H_
 #define XPP_XPP_COMMON_INCLUDE_XPP_QUAD_JOINTS_H_
 
-#include <xpp/endeffectors.h>
+#include <xpp_states/endeffectors.h>
 
 namespace xpp {
 namespace quad {
 
 enum QuadJointID {
-  LF_HAA,LF_HFE,LF_KFE,LH_HAA,LH_HFE,LH_KFE,
-  RH_HAA,RH_HFE,RH_KFE,RF_HAA,RF_HFE,RF_KFE,
+  LF_HAA,LF_HFE,LF_KFE,RF_HAA,RF_HFE,RF_KFE,
+  LH_HAA,LH_HFE,LH_KFE,RH_HAA,RH_HFE,RH_KFE,
 };
 
 static const std::map<EndeffectorID, std::vector<QuadJointID> > kMapQuadEEToJoints {

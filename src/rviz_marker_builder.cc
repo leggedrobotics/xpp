@@ -7,8 +7,7 @@
 
 #include <xpp/rviz_marker_builder.h>
 
-#include <xpp/ros/ros_conversions.h>
-#include <xpp/height_map.h>
+#include <xpp_ros_conversions/ros_conversions.h>
 
 namespace xpp {
 

@@ -7,9 +7,10 @@
   Based on code provided by Alexander Winkler
  */
 
+#include <xpp_msgs/topic_names.h>
+
 #include <xpp/urdf_visualizer.h>
-#include <xpp/ros/topic_names.h>
-#include <xpp/ros/ros_conversions.h>
+#include <xpp_ros_conversions/ros_conversions.h>
 
 namespace xpp {
 

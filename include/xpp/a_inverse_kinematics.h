@@ -10,8 +10,8 @@
 
 #include <Eigen/Dense>
 
-#include <xpp/endeffectors.h>
-#include "joints.h"
+#include <xpp_states/endeffectors.h>
+#include <xpp_states/joints.h>
 
 namespace xpp {
 

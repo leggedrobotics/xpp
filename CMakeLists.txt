@@ -9,7 +9,9 @@ find_package(catkin REQUIRED COMPONENTS
   kdl_parser
   robot_state_publisher
   rosbag
-  xpp_ros
+  xpp_states
+  xpp_ros_conversions     
+  xpp_opt                 # so far only because of height map
   hyqb_description        # urdf file for rviz
   monoped_description     # urdf file for rviz
 )
@@ -87,7 +89,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wfatal-errors -std=c++11" )
 catkin_package(
    INCLUDE_DIRS include
    LIBRARIES ${PROJECT_NAME}
-   CATKIN_DEPENDS xpp_ros
+   CATKIN_DEPENDS xpp_states xpp_ros_conversions
    #DEPENDS eigen
 )
 
@@ -107,7 +109,6 @@ include_directories(
 add_library(${PROJECT_NAME}
   src/urdf_visualizer.cc
   src/rviz_marker_builder.cc
-  src/joints.cc
   src/hyqleg_inverse_kinematics.cc
   src/hyq_inverse_kinematics.cc
   src/biped_inverse_kinematics.cc
