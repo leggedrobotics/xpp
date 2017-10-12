@@ -10,8 +10,9 @@
 
 #include <xpp_msgs/UserCommand.h>      // listen to goal state
 #include <xpp/rviz_marker_builder.h>
-#include <xpp/ros/ros_conversions.h>
-#include <xpp/ros/topic_names.h>
+#include <xpp_ros_conversions/ros_conversions.h>
+
+#include <xpp_msgs/topic_names.h>
 
 
 using namespace ros;

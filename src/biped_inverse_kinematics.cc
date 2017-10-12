@@ -3,8 +3,8 @@
 #include <cmath>
 #include <iostream>
 
-#include <xpp/endeffectors.h>
-#include <xpp/cartesian_declarations.h>
+#include <xpp_states/endeffectors.h>
+#include <xpp_states/cartesian_declarations.h>
 #include <xpp/mono/hyqleg_inverse_kinematics.h>
 
 namespace xpp {

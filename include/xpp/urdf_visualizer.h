@@ -26,7 +26,7 @@
 
 #include <xpp_msgs/RobotStateCartesian.h>
 
-#include <xpp/state.h>
+#include <xpp_states/state.h>
 #include <xpp/a_inverse_kinematics.h>
 
 namespace xpp {

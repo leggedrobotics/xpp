@@ -46,8 +46,14 @@
   <build_depend>robot_state_publisher</build_depend>
   <build_depend>rosbag</build_depend>
   
-  <build_depend>xpp_ros</build_depend>
-  <run_depend>xpp_ros</run_depend>
+  <build_depend>xpp_states</build_depend>
+  <run_depend>xpp_states</run_depend>
+  
+  <build_depend>xpp_ros_conversions</build_depend>
+  <run_depend>xpp_ros_conversions</run_depend>
+  
+  <build_depend>xpp_opt</build_depend>
+  <run_depend>xpp_opt</run_depend>
 
    <!-- hyq robot (urdf and inverse kinematics) -->  
   <build_depend>hyqb_description</build_depend>

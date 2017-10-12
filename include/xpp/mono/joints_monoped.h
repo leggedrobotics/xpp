@@ -10,7 +10,7 @@
 
 #include <map>
 
-#include <xpp/endeffectors.h>
+#include <xpp_states/endeffectors.h>
 
 namespace xpp {
 namespace mono {

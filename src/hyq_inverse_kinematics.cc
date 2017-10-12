@@ -1,6 +1,7 @@
 #include <xpp/quad/hyq_inverse_kinematics.h>
 
-#include <xpp/cartesian_declarations.h>
+#include <xpp_states/cartesian_declarations.h>
+
 #include <xpp/mono/hyqleg_inverse_kinematics.h>
 #include <xpp/quad/joints_quadruped.h>
 

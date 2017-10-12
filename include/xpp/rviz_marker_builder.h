@@ -14,8 +14,9 @@
 #include <xpp_msgs/OptParameters.h>
 #include <xpp_msgs/StateLin3d.h>
 
-#include <xpp/state.h>
-#include <xpp/robot_state_cartesian.h>
+#include <xpp_states/state.h>
+#include <xpp_states/robot_state_cartesian.h>
+
 #include <xpp/height_map.h>
 
 namespace xpp {

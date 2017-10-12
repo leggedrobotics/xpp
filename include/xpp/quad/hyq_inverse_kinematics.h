@@ -2,7 +2,7 @@
 #define INVERSEKINEMATICS_H_
 
 #include <xpp/a_inverse_kinematics.h>
-#include <xpp/endeffectors.h>
+#include <xpp_states/endeffectors.h>
 
 namespace xpp {
 namespace quad {
@@ -22,7 +22,7 @@ public:
 	Joints GetAllJointAngles(const EndeffectorsPos& pos_b) const override;
 
 private:
-	Vector3d base2hip_LF_ = Vector3d(0.3735,0.207, 0.0);
+	Vector3d base2hip_LF_ = Vector3d(0.3735, 0.207, 0.0);
 };
 
 } /* namespace quad */

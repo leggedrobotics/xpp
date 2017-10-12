@@ -2,7 +2,7 @@
 #define XPP_BIPED_BIPED_INVERSEKINEMATICS_H_
 
 #include <xpp/a_inverse_kinematics.h>
-#include <xpp/biped/joints_biped.h>
+//#include <xpp/biped/joints_biped.h>
 
 namespace xpp {
 namespace biped {

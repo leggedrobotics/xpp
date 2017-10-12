@@ -9,7 +9,8 @@
 #include <xpp/urdf_visualizer.h>
 #include <xpp/biped/joints_biped.h>
 #include <xpp/biped/biped_inverse_kinematics.h>
-#include <xpp/ros/topic_names.h>
+
+#include <xpp_msgs/topic_names.h>
 
 using namespace xpp;
 using namespace biped;

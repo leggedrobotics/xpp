@@ -7,9 +7,10 @@
   Based on code provided by Alexander Winkler
  */
 
+#include <xpp_msgs/topic_names.h>
+
 #include <xpp/urdf_visualizer.h>
-#include <xpp/ros/topic_names.h>
-#include <xpp/ros/ros_conversions.h>
+#include <xpp_ros_conversions/ros_conversions.h>
 
 namespace xpp {
 
@@ -22,7 +23,7 @@ UrdfVisualizer::UrdfVisualizer(const InverseKinematics& ik,
 {
   inverse_kinematics_ = ik;
   urdf_joint_names_   = urdf_joint_names;
-  rviz_fixed_frame_ = fixed_frame;
+  rviz_fixed_frame_   = fixed_frame;
   tf_prefix_ = tf_prefix;
 
   ::ros::NodeHandle nh;
