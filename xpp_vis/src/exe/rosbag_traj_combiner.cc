@@ -19,12 +19,13 @@
 #include <xpp_ros_conversions/ros_conversions.h>
 #include <xpp_msgs/topic_names.h>
 
+using namespace xpp;
 
 int main(int argc, char *argv[])
 {
 	ros::init(argc, argv, "rosbag_trajectory_combiner");
 
-	std::string name = xpp::ros::RosConversions::GetStringFromServer("/xpp/rosbag_name");
+	std::string name = RosConversions::GetStringFromServer("/xpp/rosbag_name");
 
   rosbag::Bag bag_r;
   bag_r.open(name+".bag", rosbag::bagmode::Read);

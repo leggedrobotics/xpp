@@ -5,7 +5,7 @@
  @brief   Defines a class that builds rviz markers
  */
 
-#include <xpp/rviz_marker_builder.h>
+#include <xpp_vis/rviz_marker_builder.h>
 
 #include <xpp_ros_conversions/ros_conversions.h>
 #include <xpp_states/terrain_types.h>
@@ -86,7 +86,7 @@ RvizMarkerBuilder::SetOptimizationParameters (const xpp_msgs::OptParameters& msg
 RvizMarkerBuilder::MarkerArray
 RvizMarkerBuilder::BuildStateMarkers (const xpp_msgs::RobotStateCartesian& state_msg) const
 {
-  auto state   = xpp::ros::RosConversions::RosToXpp(state_msg);
+  auto state   = RosConversions::RosToXpp(state_msg);
   MarkerArray msg;
 
   Marker base = CreateBasePose(state.base_.lin.p_,
@@ -481,7 +481,7 @@ RvizMarkerBuilder::CreateEEForces (const EEForces& ee_forces,
     m.ns     = "ee_force";
     vec.push_back(m);
 
-//    auto normals = xpp::ros::RosConversions::RosToXpp(terrain_msg_.surface_normals);
+//    auto normals = RosConversions::RosToXpp(terrain_msg_.surface_normals);
 //    Vector3d n = normals.At(ee);//terrain_->GetNormalizedBasis(opt::HeightMap::Normal, p.x(), p.y());
 //    m = CreateFrictionCone(p, -n);
 //    m.color  = red;
@@ -491,7 +491,7 @@ RvizMarkerBuilder::CreateEEForces (const EEForces& ee_forces,
   }
 
 
-  auto normals = xpp::ros::RosConversions::RosToXpp(terrain_msg_.surface_normals);
+  auto normals = RosConversions::RosToXpp(terrain_msg_.surface_normals);
   for (auto ee : normals.GetEEsOrdered()) {
     Marker m;
     Vector3d n = normals.At(ee);
@@ -594,9 +594,9 @@ RvizMarkerBuilder::CreateRangeOfMotion (const State3d& base) const
 
   int ee = E0;
   for (const auto& pos_B : params_.nominal_ee_pos) {
-    Vector3d pos_W = base.lin.p_ + w_R_b*ros::RosConversions::RosToXpp(pos_B);
+    Vector3d pos_W = base.lin.p_ + w_R_b*RosConversions::RosToXpp(pos_B);
 
-    Marker m  = CreateBox(pos_W, base.ang.q, 2*ros::RosConversions::RosToXpp(params_.ee_max_dev));
+    Marker m  = CreateBox(pos_W, base.ang.q, 2*RosConversions::RosToXpp(params_.ee_max_dev));
     m.color   = blue;//GetLegColor(ee++);
     m.color.a = 0.2;
     m.ns      = "range_of_motion";
@@ -613,9 +613,9 @@ RvizMarkerBuilder::CreateBox (const Vector3d& pos, Eigen::Quaterniond ori,
   Marker m;
 
   m.type = Marker::CUBE;
-  m.pose.position    = ros::RosConversions::XppToRos<geometry_msgs::Point>(pos);
-  m.pose.orientation = ros::RosConversions::XppToRos(ori);
-  m.scale            = ros::RosConversions::XppToRos<geometry_msgs::Vector3>(edge_length);
+  m.pose.position    = RosConversions::XppToRos<geometry_msgs::Point>(pos);
+  m.pose.orientation = RosConversions::XppToRos(ori);
+  m.scale            = RosConversions::XppToRos<geometry_msgs::Vector3>(edge_length);
 
   return m;
 }
@@ -626,7 +626,7 @@ RvizMarkerBuilder::CreateSphere (const Vector3d& pos, double diameter) const
   Marker m;
 
   m.type = Marker::SPHERE;
-  m.pose.position = ros::RosConversions::XppToRos<geometry_msgs::Point>(pos);
+  m.pose.position = RosConversions::XppToRos<geometry_msgs::Point>(pos);
   m.scale.x = diameter;
   m.scale.y = diameter;
   m.scale.z = diameter;
@@ -646,10 +646,10 @@ RvizMarkerBuilder::CreateForceArrow (const Vector3d& force,
   m.scale.z = 0.06; // arrow-head length
 
   double force_scale = 800; //params_.base_mass*40; // scaled by base weight
-  auto start = ros::RosConversions::XppToRos<geometry_msgs::Point>(ee_pos - force/force_scale);
+  auto start = RosConversions::XppToRos<geometry_msgs::Point>(ee_pos - force/force_scale);
   m.points.push_back(start);
 
-  auto end = ros::RosConversions::XppToRos<geometry_msgs::Point>(ee_pos);
+  auto end = RosConversions::XppToRos<geometry_msgs::Point>(ee_pos);
   m.points.push_back(end);
 
   return m;
@@ -669,10 +669,10 @@ RvizMarkerBuilder::CreateFrictionCone (const Vector3d& pos,
   m.scale.y = 2.0 * cone_height * terrain_msg_.friction_coeff; // arrow-head diameter
   m.scale.z = cone_height; // arrow head length
 
-  auto start = ros::RosConversions::XppToRos<geometry_msgs::Point>(pos + normal);
+  auto start = RosConversions::XppToRos<geometry_msgs::Point>(pos + normal);
   m.points.push_back(start);
 
-  auto end = ros::RosConversions::XppToRos<geometry_msgs::Point>(pos);
+  auto end = RosConversions::XppToRos<geometry_msgs::Point>(pos);
   m.points.push_back(end);
 
   return m;
@@ -690,7 +690,7 @@ RvizMarkerBuilder::CreateSupportArea (const ContactState& contact_state,
 
   for (auto ee : contact_state.GetEEsOrdered()) {
     if (contact_state.At(ee)) { // endeffector in contact
-      auto p = ros::RosConversions::XppToRos<geometry_msgs::Point>(ee_pos.At(ee));
+      auto p = RosConversions::XppToRos<geometry_msgs::Point>(ee_pos.At(ee));
       m.points.push_back(p);
       m.color = black;
       m.color.a = 0.2;
@@ -757,9 +757,9 @@ RvizMarkerBuilder::BuildGoalPose (const geometry_msgs::Point pos,
 //  msg_out.pose.position.z = terrain_->GetHeight(x,y);
 
   // angular part
-  auto goal_ang = xpp::ros::RosConversions::RosToXpp(orientation);
+  auto goal_ang = RosConversions::RosToXpp(orientation);
   Eigen::Quaterniond q = GetQuaternionFromEulerZYX(goal_ang.p_.z(),goal_ang.p_.y(), goal_ang.p_.x());
-  msg_out.pose.orientation = xpp::ros::RosConversions::XppToRos(q);
+  msg_out.pose.orientation = RosConversions::XppToRos(q);
 
   return msg_out;
 }

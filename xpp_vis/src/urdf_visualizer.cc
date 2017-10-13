@@ -9,8 +9,9 @@
 
 #include <xpp_msgs/topic_names.h>
 
-#include <xpp/urdf_visualizer.h>
 #include <xpp_ros_conversions/ros_conversions.h>
+
+#include <xpp_vis/urdf_visualizer.h>
 
 namespace xpp {
 
@@ -52,7 +53,7 @@ UrdfVisualizer::UrdfVisualizer(const InverseKinematics& ik,
 void
 UrdfVisualizer::StateCallback(const StateMsg& msg)
 {
-  auto cart   = xpp::ros::RosConversions::RosToXpp(msg);
+  auto cart   = RosConversions::RosToXpp(msg);
   VectorXd v = GetJointAngles(cart.base_,cart.GetEEPos());
 
   sensor_msgs::JointState joint_msg;

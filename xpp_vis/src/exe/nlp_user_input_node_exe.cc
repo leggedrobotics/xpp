@@ -7,13 +7,13 @@
 
 #include <ros/init.h>
 
-#include <xpp/nlp_user_input_node.h>
+#include <xpp_vis/nlp_user_input_node.h>
 
 int main(int argc, char *argv[])
 {
   ros::init(argc, argv, "nlp_user_input_node");
 
-  xpp::ros::NlpUserInputNode nlp_user_input_node;
+  xpp::NlpUserInputNode nlp_user_input_node;
 
   ros::spin();
 

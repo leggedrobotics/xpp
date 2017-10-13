@@ -19,7 +19,6 @@
 #include <xpp_states/robot_state_cartesian.h>
 
 namespace xpp {
-namespace ros {
 
 /**
  * Ros specific functions that only depend on utils folder, ros messages,
@@ -451,7 +450,6 @@ RosToXpp(const xpp_msgs::RobotStateCartesianTrajectory& ros)
 
 }; // RosHelpers
 
-} // namespace ros
 } // namespace xpp
 
 #endif /* INCLUDE_XPP_MSGS_ROS_HELPERS_H_ */

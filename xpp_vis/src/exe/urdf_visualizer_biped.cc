@@ -6,11 +6,12 @@
 
 #include <ros/ros.h>
 
-#include <xpp/urdf_visualizer.h>
-#include <xpp/biped/joints_biped.h>
-#include <xpp/biped/biped_inverse_kinematics.h>
-
 #include <xpp_msgs/topic_names.h>
+
+#include <xpp_vis/urdf_visualizer.h>
+#include <xpp_vis/biped/joints_biped.h>
+#include <xpp_vis/biped/biped_inverse_kinematics.h>
+
 
 using namespace xpp;
 using namespace biped;

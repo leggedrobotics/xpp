@@ -5,7 +5,7 @@
  @brief   Brief description
  */
 
-#include <xpp/mono/hyqleg_inverse_kinematics.h>
+#include <xpp_vis/mono/hyqleg_inverse_kinematics.h>
 
 #include <cmath>
 #include <map>

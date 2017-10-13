@@ -5,7 +5,7 @@
  @brief   Defines the NlpUserInputNode class
  */
 
-#include <xpp/nlp_user_input_node.h>
+#include <xpp_vis/nlp_user_input_node.h>
 
 #include <iostream>
 #include <vector>
@@ -25,7 +25,6 @@
 //#include <xpp/models/gait_generator.h>
 
 namespace xpp {
-namespace ros {
 
 
 NlpUserInputNode::NlpUserInputNode ()
@@ -219,5 +218,4 @@ void NlpUserInputNode::PublishCommand()
 //  PublishCommand();
 //}
 
-} /* namespace ros */
 } /* namespace xpp */

@@ -1,11 +1,12 @@
-#include <xpp/biped/biped_inverse_kinematics.h>
+#include <xpp_vis/biped/biped_inverse_kinematics.h>
 
 #include <cmath>
 #include <iostream>
 
 #include <xpp_states/endeffectors.h>
 #include <xpp_states/cartesian_declarations.h>
-#include <xpp/mono/hyqleg_inverse_kinematics.h>
+
+#include <xpp_vis/mono/hyqleg_inverse_kinematics.h>
 
 namespace xpp {
 namespace biped {

@@ -1,7 +1,7 @@
 #ifndef INVERSEKINEMATICS_H_
 #define INVERSEKINEMATICS_H_
 
-#include <xpp/a_inverse_kinematics.h>
+#include <xpp_vis/a_inverse_kinematics.h>
 #include <xpp_states/endeffectors.h>
 
 namespace xpp {

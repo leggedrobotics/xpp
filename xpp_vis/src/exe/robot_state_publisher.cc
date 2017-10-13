@@ -80,7 +80,7 @@ int main(int argc, char **argv)
 
   state.t_global_ = 1.0;
 
-  auto msg = xpp::ros::RosConversions::XppToRos(state);
+  auto msg = RosConversions::XppToRos(state);
   ROS_INFO_STREAM("Publishing current state to " << current_state_pub.getTopic());
   ROS_INFO_STREAM("Publishing current state to " << desired_state_pub.getTopic());
 

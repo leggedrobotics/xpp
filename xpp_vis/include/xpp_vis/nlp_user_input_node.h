@@ -18,7 +18,6 @@
 
 
 namespace xpp {
-namespace ros {
 
 /** @brief Provides user specified information about the NLP to the optimizer
   *
@@ -64,7 +63,6 @@ private:
 //  void ModifyGoalJoy();
 };
 
-} /* namespace ros */
 } /* namespace xpp */
 
 #endif /* USER_TASK_DEPENDS_XPP_OPT_INCLUDE_XPP_ROS_NLP_USER_INPUT_NODE_H_ */

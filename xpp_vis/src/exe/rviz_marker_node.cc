@@ -9,15 +9,13 @@
 #include <geometry_msgs/PoseStamped.h>
 
 #include <xpp_msgs/UserCommand.h>      // listen to goal state
-#include <xpp/rviz_marker_builder.h>
-#include <xpp_ros_conversions/ros_conversions.h>
-
 #include <xpp_msgs/topic_names.h>
 #include <xpp_msgs/TerrainInfo.h>
+#include <xpp_ros_conversions/ros_conversions.h>
 
+#include <xpp_vis/rviz_marker_builder.h>
 
 using namespace ros;
-
 
 static Publisher rviz_marker_pub;
 static ros::Publisher rviz_pose_pub;

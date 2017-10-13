@@ -7,9 +7,9 @@
 
 #include <ros/ros.h>
 
-#include <xpp/urdf_visualizer.h>
-#include <xpp/mono/joints_monoped.h>
-#include <xpp/mono/monoped_inverse_kinematics.h>
+#include <xpp_vis/urdf_visualizer.h>
+#include <xpp_vis/mono/joints_monoped.h>
+#include <xpp_vis/mono/monoped_inverse_kinematics.h>
 
 #include <xpp_msgs/topic_names.h>
 

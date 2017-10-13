@@ -7,9 +7,9 @@
 
 #include <ros/ros.h>
 
-#include <xpp/quad/hyq_inverse_kinematics.h>
-#include <xpp/quad/joints_quadruped.h>
-#include <xpp/urdf_visualizer.h>
+#include <xpp_vis/quad/hyq_inverse_kinematics.h>
+#include <xpp_vis/quad/joints_quadruped.h>
+#include <xpp_vis/urdf_visualizer.h>
 
 #include <xpp_msgs/topic_names.h>
 

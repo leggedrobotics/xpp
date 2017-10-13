@@ -1,10 +1,10 @@
 
-#include <xpp/mono/monoped_inverse_kinematics.h>
+#include <xpp_vis/mono/monoped_inverse_kinematics.h>
 
 #include <cmath>
 #include <iostream>
 
-#include <xpp/mono/hyqleg_inverse_kinematics.h>
+#include <xpp_vis/mono/hyqleg_inverse_kinematics.h>
 
 namespace xpp {
 namespace mono {

@@ -9,7 +9,7 @@
 #define XPP_XPP_VIS_INCLUDE_XPP_HYQLEG_INVERSE_KINEMATICS_H_
 
 #include <Eigen/Dense>
-#include <xpp/mono/joints_monoped.h>
+#include <xpp_vis/mono/joints_monoped.h>
 
 namespace xpp {
 namespace mono {
