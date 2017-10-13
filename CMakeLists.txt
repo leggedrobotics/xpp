@@ -5,15 +5,13 @@ project(xpp_vis)
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
+  keyboard
+  joy
   tf
   kdl_parser
   robot_state_publisher
   rosbag
-  xpp_states
-  xpp_ros_conversions     
-  xpp_opt                 # so far only because of height map
-  hyqb_description        # urdf file for rviz
-  monoped_description     # urdf file for rviz
+  xpp_ros_conversions
 )
 
 ## System dependencies are found with CMake's conventions
@@ -89,7 +87,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wfatal-errors -std=c++11" )
 catkin_package(
    INCLUDE_DIRS include
    LIBRARIES ${PROJECT_NAME}
-   CATKIN_DEPENDS xpp_states xpp_ros_conversions
+   CATKIN_DEPENDS
    #DEPENDS eigen
 )
 
@@ -113,10 +111,31 @@ add_library(${PROJECT_NAME}
   src/hyq_inverse_kinematics.cc
   src/biped_inverse_kinematics.cc
   src/monoped_inverse_kinematics.cc
+  src/nlp_user_input_node.cc
 )
 target_link_libraries(xpp_vis
   ${catkin_LIBRARIES}
 )
+
+
+
+add_executable(nlp_user_input_node
+    src/exe/nlp_user_input_node_exe.cc
+)
+target_link_libraries(nlp_user_input_node 
+  ${PROJECT_NAME}
+  ${catkin_LIBRARIES}
+)
+
+add_executable(robot_state_publisher
+    src/exe/robot_state_publisher.cc
+)
+target_link_libraries(robot_state_publisher
+  ${PROJECT_NAME}
+  ${catkin_LIBRARIES}
+)
+
+
 
 ## URDF visualizers
 add_executable(urdf_visualizer_monoped src/exe/urdf_visualizer_monoped.cc)

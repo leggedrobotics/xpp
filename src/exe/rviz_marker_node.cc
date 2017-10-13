@@ -13,6 +13,7 @@
 #include <xpp_ros_conversions/ros_conversions.h>
 
 #include <xpp_msgs/topic_names.h>
+#include <xpp_msgs/TerrainInfo.h>
 
 
 using namespace ros;
@@ -24,9 +25,13 @@ static xpp::RvizMarkerBuilder marker_builder;
 
 static void StateCallback (const xpp_msgs::RobotStateCartesian& state_msg)
 {
-  auto state = xpp::ros::RosConversions::RosToXpp(state_msg);
-  auto rviz_marker_msg = marker_builder.BuildStateMarkers(state);
+  auto rviz_marker_msg = marker_builder.BuildStateMarkers(state_msg);
   rviz_marker_pub.publish(rviz_marker_msg);
+}
+
+static void TerrainInfoCallback (const xpp_msgs::TerrainInfo& terrain_msg)
+{
+  marker_builder.terrain_msg_ = terrain_msg;
 }
 
 static void ParamsCallback (const xpp_msgs::OptParameters& params_msg)
@@ -42,8 +47,7 @@ void CallbackUserCommand(const xpp_msgs::UserCommand& msg_in)
   rviz_marker_pub.publish(msg);
 
   // publish goal pose
-  auto goal_msg = marker_builder.BuildGoalPose(msg_in.goal_lin.pos.x,
-                                               msg_in.goal_lin.pos.y,
+  auto goal_msg = marker_builder.BuildGoalPose(msg_in.goal_lin.pos,
                                                msg_in.goal_ang);
   rviz_pose_pub.publish(goal_msg);
 }
@@ -58,9 +62,10 @@ int main(int argc, char *argv[])
   Subscriber parameters_sub;
   parameters_sub = n.subscribe(xpp_msgs::opt_parameters, 1, ParamsCallback);
 
-	Subscriber state_sub_curr, state_sub_des;
-	state_sub_curr = n.subscribe(xpp_msgs::robot_state_current, 1, StateCallback);
-	state_sub_des  = n.subscribe(xpp_msgs::robot_state_desired, 1, StateCallback);
+	Subscriber state_sub_curr, state_sub_des, terrain_info_sub;
+	state_sub_curr    = n.subscribe(xpp_msgs::robot_state_current, 1, StateCallback);
+	state_sub_des     = n.subscribe(xpp_msgs::robot_state_desired, 1, StateCallback);
+	terrain_info_sub  = n.subscribe(xpp_msgs::terrain_info, 1,  TerrainInfoCallback);
 
 	Subscriber goal_sub;
 	goal_sub = n.subscribe(xpp_msgs::user_command, 1, CallbackUserCommand);

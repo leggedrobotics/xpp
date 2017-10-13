@@ -12,12 +12,13 @@
 #include <visualization_msgs/MarkerArray.h>
 
 #include <xpp_msgs/OptParameters.h>
+#include <xpp_msgs/RobotStateCartesian.h>
+#include <xpp_msgs/TerrainInfo.h>
 #include <xpp_msgs/StateLin3d.h>
 
 #include <xpp_states/state.h>
 #include <xpp_states/robot_state_cartesian.h>
 
-#include <xpp/height_map.h>
 
 namespace xpp {
 
@@ -35,8 +36,13 @@ public:
   using ContactState    = EndeffectorsBool;
   using EEPos           = EndeffectorsPos;
   using EEForces        = Endeffectors<Vector3d>;
+  using TerrainNormals  = Endeffectors<Vector3d>;
   using RobotState      = RobotStateCartesian;
   using RobotCartTraj   = std::vector<RobotState>;
+
+
+public:
+  xpp_msgs::TerrainInfo terrain_msg_;
 
 
 public:
@@ -46,12 +52,15 @@ public:
   void SetOptimizationParameters(const xpp_msgs::OptParameters& msg);
 
 public:
-  geometry_msgs::PoseStamped BuildGoalPose(double x, double y, xpp_msgs::StateLin3d orientation) const;
+  geometry_msgs::PoseStamped BuildGoalPose(const geometry_msgs::Point pos,
+                                           xpp_msgs::StateLin3d orientation) const;
 
-  MarkerArray BuildStateMarkers(const RobotState& state) const;
+  // spring_clean_ add default state
+  MarkerArray BuildStateMarkers(const xpp_msgs::RobotStateCartesian&) const;
 //  MarkerArray BuildTrajectoryMarkers(const RobotCartTraj& traj) const;
 
   // visualizes the terrains found in xpp/height_map.h
+  // spring_clean_ move these out of file
   MarkerArray BuildTerrain(int terrain_id);
   MarkerArray BuildTerrainFlat() const;
   MarkerArray BuildTerrainBlock() const;
@@ -93,7 +102,7 @@ private:
 
   xpp_msgs::OptParameters params_;
   double eps_ = 0.02; // lowering of terrain
-  opt::HeightMap::Ptr terrain_;
+//  opt::HeightMap::Ptr terrain_;
   const int state_ids_start_ = 10;
   const int terrain_ids_start_ = 50;
   const int trajectory_ids_start_ = 70;

@@ -8,6 +8,7 @@
 #include <xpp/rviz_marker_builder.h>
 
 #include <xpp_ros_conversions/ros_conversions.h>
+#include <xpp_states/terrain_types.h>
 
 namespace xpp {
 
@@ -28,7 +29,9 @@ RvizMarkerBuilder::RvizMarkerBuilder()
   purple.r = 72./255;  purple.g = 61./255;  purple.b = 139./255;
   wheat.r = 245./355;  wheat.g   =222./355;  wheat.b  = 179./355;
 
-  terrain_ = opt::HeightMap::MakeTerrain(opt::HeightMap::FlatID);
+  terrain_msg_.friction_coeff = 1.0;
+
+//  terrain_ = opt::HeightMap::MakeTerrain(opt::HeightMap::FlatID);
 }
 
 void
@@ -81,8 +84,9 @@ RvizMarkerBuilder::SetOptimizationParameters (const xpp_msgs::OptParameters& msg
 //}
 
 RvizMarkerBuilder::MarkerArray
-RvizMarkerBuilder::BuildStateMarkers (const RobotState& state) const
+RvizMarkerBuilder::BuildStateMarkers (const xpp_msgs::RobotStateCartesian& state_msg) const
 {
+  auto state   = xpp::ros::RosConversions::RosToXpp(state_msg);
   MarkerArray msg;
 
   Marker base = CreateBasePose(state.base_.lin.p_,
@@ -138,19 +142,19 @@ RvizMarkerBuilder::BuildStateMarkers (const RobotState& state) const
 RvizMarkerBuilder::MarkerArray
 RvizMarkerBuilder::BuildTerrain (int terrain)
 {
-  using namespace xpp::opt;
-  terrain_ = HeightMap::MakeTerrain(static_cast<opt::HeightMap::ID>(terrain));
+//  using namespace xpp::opt;
+//  terrain_ = HeightMap::MakeTerrain(static_cast<opt::HeightMap::ID>(terrain));
 
   MarkerArray msg;
 
   switch (terrain) {
-    case HeightMap::FlatID:      msg = BuildTerrainFlat(); break;
-    case HeightMap::BlockID:     msg = BuildTerrainBlock(); break;
-    case HeightMap::StairsID:    msg = BuildTerrainStairs(); break;
-    case HeightMap::GapID:       msg = BuildTerrainGap(); break;
-    case HeightMap::SlopeID:     msg = BuildTerrainSlope(); break;
-    case HeightMap::ChimneyID:   msg = BuildTerrainChimney(); break;
-    case HeightMap::ChimneyLRID: msg = BuildTerrainChimneyLR(); break;
+    case FlatID:      msg = BuildTerrainFlat(); break;
+    case BlockID:     msg = BuildTerrainBlock(); break;
+    case StairsID:    msg = BuildTerrainStairs(); break;
+    case GapID:       msg = BuildTerrainGap(); break;
+    case SlopeID:     msg = BuildTerrainSlope(); break;
+    case ChimneyID:   msg = BuildTerrainChimney(); break;
+    case ChimneyLRID: msg = BuildTerrainChimneyLR(); break;
     default: return MarkerArray(); // terrain visualization not implemented
   }
 
@@ -477,13 +481,31 @@ RvizMarkerBuilder::CreateEEForces (const EEForces& ee_forces,
     m.ns     = "ee_force";
     vec.push_back(m);
 
-    Vector3d n = terrain_->GetNormalizedBasis(opt::HeightMap::Normal, p.x(), p.y());
-    m = CreateFrictionCone(p, -n);
+//    auto normals = xpp::ros::RosConversions::RosToXpp(terrain_msg_.surface_normals);
+//    Vector3d n = normals.At(ee);//terrain_->GetNormalizedBasis(opt::HeightMap::Normal, p.x(), p.y());
+//    m = CreateFrictionCone(p, -n);
+//    m.color  = red;
+//    m.color.a = contact_state.At(ee)? 0.25 : 0.0;
+//    m.ns     = "friction_cone";
+//    vec.push_back(m);
+  }
+
+
+  auto normals = xpp::ros::RosConversions::RosToXpp(terrain_msg_.surface_normals);
+  for (auto ee : normals.GetEEsOrdered()) {
+    Marker m;
+    Vector3d n = normals.At(ee);
+    m = CreateFrictionCone(ee_pos.At(ee), -n);
     m.color  = red;
     m.color.a = contact_state.At(ee)? 0.25 : 0.0;
     m.ns     = "friction_cone";
     vec.push_back(m);
   }
+
+
+
+
+
 
   return vec;
 }
@@ -520,11 +542,12 @@ RvizMarkerBuilder::CreateCopPos (const EEForces& ee_forces,
   if (z_sum > 0.0) {
     for (auto ee : ee_forces.GetEEsOrdered()) {
       double p = ee_forces.At(ee).z()/z_sum;
-      cop.topRows<kDim2d>() += p*ee_pos.At(ee).topRows<kDim2d>();
+//      cop.topRows<kDim2d>() += p*ee_pos.At(ee).topRows<kDim2d>();
+      cop += p*ee_pos.At(ee);
     }
   }
 
-  cop.z() = terrain_->GetHeight(cop.x(), cop.y());
+//  cop.z() = terrain_->GetHeight(cop.x(), cop.y());
 
   Marker m = CreateSphere(cop);
   m.color = red;
@@ -643,7 +666,7 @@ RvizMarkerBuilder::CreateFrictionCone (const Vector3d& pos,
   double friction = 0.5;
 
   m.scale.x = 0.00; // [shaft diameter] hide arrow shaft to generate cone
-  m.scale.y = 2.0 * cone_height * terrain_->GetFrictionCoeff(); // arrow-head diameter
+  m.scale.y = 2.0 * cone_height * terrain_msg_.friction_coeff; // arrow-head diameter
   m.scale.z = cone_height; // arrow head length
 
   auto start = ros::RosConversions::XppToRos<geometry_msgs::Point>(pos + normal);
@@ -721,16 +744,17 @@ RvizMarkerBuilder::CreateSupportArea (const ContactState& contact_state,
 }
 
 geometry_msgs::PoseStamped
-RvizMarkerBuilder::BuildGoalPose (double x, double y,
+RvizMarkerBuilder::BuildGoalPose (const geometry_msgs::Point pos,
                                   xpp_msgs::StateLin3d orientation) const
 {
   geometry_msgs::PoseStamped msg_out;
   msg_out.header.frame_id = frame_id_;
 
   // linear part
-  msg_out.pose.position.x = x;
-  msg_out.pose.position.y = y;
-  msg_out.pose.position.z = terrain_->GetHeight(x,y);
+  msg_out.pose.position = pos;
+//  msg_out.pose.position.x = x;
+//  msg_out.pose.position.y = y;
+//  msg_out.pose.position.z = terrain_->GetHeight(x,y);
 
   // angular part
   auto goal_ang = xpp::ros::RosConversions::RosToXpp(orientation);
