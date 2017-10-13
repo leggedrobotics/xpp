@@ -1,0 +1,41 @@
+<launch>
+   
+   <!-- visualizes goal, opt. parameters and cartesian base state, endeffector positions and forces -->
+   <node name="rviz_marker_node" pkg="xpp_vis" type="rviz_marker_node" output="screen">
+   </node>
+
+
+<!--    MONOPED  --> 
+<!--    <node name="urdf_visualizer_monoped" pkg="xpp_vis" type="urdf_visualizer_monoped" output="screen"/> -->
+<!--    <param name="monoped_rviz_urdf_robot_description" command="$(find xacro)/xacro.py '$(find monoped_description)/urdf/monoped.urdf'"/> -->
+   
+<!--    BIPED  --> 
+<!--    <node name="urdf_visualizer_biped" pkg="xpp_vis" type="urdf_visualizer_biped" output="screen"/> -->
+<!--    <param name="biped_rviz_urdf_robot_description" command="$(find xacro)/xacro.py '$(find biped_description)/urdf/biped.urdf'"/> -->
+   
+<!--   HYQ   --> 
+   <node name="urdf_visualizer_hyq" pkg="xpp_vis" type="urdf_visualizer_hyq" output="screen"/>
+   <param name="hyq_rviz_urdf_robot_description" command="$(find xacro)/xacro.py '$(find hyqb_description)/urdf/robots/hyqb.urdf.xacro'"/>
+   
+<!--    DRONE  --> 
+<!--    no IK needed, just need base state, so use one of the above   -->
+<!--    <param name="quadrotor_rviz_urdf_robot_description" command="$(find xacro)/xacro.py '$(find quadrotor_description)/urdf/quadrotor.urdf'"/>  -->
+   
+  <!-- ANYMAL URDF + IK -->
+<!--   <include file="$(find xpp_anymal_ik)/launch/load.launch"></include> -->
+     
+   
+   <!-- Launch rviz with specific configuration -->
+   <node name="rviz_xpp" pkg="rviz" type="rviz"  args="-d $(find xpp_vis)/rviz/xpp.rviz">
+   </node>
+   
+   <!-- for commanding goal positions and tasks -->
+   <node name="nlp_user_input_node" pkg="xpp_vis" type="nlp_user_input_node" output="screen" cwd="node" >  
+   </node>
+   
+   <!-- for commanding goal positions and tasks -->
+   <node name="keyboard" pkg="keyboard" type="keyboard" output="screen" cwd="node" >  
+   </node>
+   
+   
+</launch>
