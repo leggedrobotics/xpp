@@ -27,6 +27,9 @@ static const std::string opt_parameters("xpp/params");
 // position of the desired goal to reach
 static const std::string user_command("xpp/user_command");
 
+// information about terrain normals and friction coefficients
+static const std::string terrain_info("xpp/terrain_info");
+
 //// command that tells the walking controller to start executing
 //static const std::string start_walking_topic("xpp/start_walking");
 

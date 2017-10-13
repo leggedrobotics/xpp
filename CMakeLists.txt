@@ -21,6 +21,7 @@ add_message_files(
   OptParameters.msg
   RobotStateCartesianTrajectory.msg
   RobotStateCartesian.msg
+  TerrainInfo.msg
 )
 
 ## Generate added messages and services with any dependencies listed here
