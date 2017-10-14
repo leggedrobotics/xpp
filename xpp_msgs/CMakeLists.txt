@@ -21,6 +21,7 @@ add_message_files(
   OptParameters.msg
   RobotStateCartesianTrajectory.msg
   RobotStateCartesian.msg
+  RobotStateJoint.msg
   TerrainInfo.msg
 )
 

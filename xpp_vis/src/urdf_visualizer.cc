@@ -7,30 +7,28 @@
   Based on code provided by Alexander Winkler
  */
 
-#include <xpp_msgs/topic_names.h>
-
-#include <xpp_ros_conversions/ros_conversions.h>
-
 #include <xpp_vis/urdf_visualizer.h>
 
 namespace xpp {
 
-UrdfVisualizer::UrdfVisualizer(const InverseKinematics& ik,
-                               const UrdfJointNames& urdf_joint_names,
+UrdfVisualizer::UrdfVisualizer(const std::vector<URDFName>& joint_names_in_urdf,
+                               const URDFName& base_joint_in_urdf,
                                const std::string& urdf_name,
                                const std::string& fixed_frame,
                                const std::string& state_msg_name,
                                const std::string& tf_prefix)
 {
-  inverse_kinematics_ = ik;
-  urdf_joint_names_   = urdf_joint_names;
+//  urdf_joint_names_   = urdf_joint_names;
+  joint_names_in_urdf_ = joint_names_in_urdf;
+  base_joint_in_urdf_  = base_joint_in_urdf;
+
   rviz_fixed_frame_   = fixed_frame;
   tf_prefix_ = tf_prefix;
 
   ::ros::NodeHandle nh;
   state_sub_des_ = nh.subscribe(state_msg_name, 1, &UrdfVisualizer::StateCallback, this);
 
-  ROS_INFO("Subscribed to: %s", state_sub_curr_.getTopic().c_str());
+//  ROS_INFO("Subscribed to: %s", state_sub_curr_.getTopic().c_str());
   ROS_INFO("Subscribed to: %s", state_sub_des_.getTopic().c_str());
 
   // Load model from file
@@ -51,51 +49,33 @@ UrdfVisualizer::UrdfVisualizer(const InverseKinematics& ik,
 }
 
 void
-UrdfVisualizer::StateCallback(const StateMsg& msg)
+UrdfVisualizer::StateCallback(const xpp_msgs::RobotStateJoint& msg)
 {
-  auto cart   = RosConversions::RosToXpp(msg);
-  VectorXd v = GetJointAngles(cart.base_,cart.GetEEPos());
+  auto joint_positions = AssignAngleToURDFJointName(msg.joint_state);
+  auto W_X_B_message   = GetBaseFromRos(::ros::Time::now(), msg.base.pose);
 
-  sensor_msgs::JointState joint_msg;
-  joint_msg.position = std::vector<double>(v.data(), v.data()+v.size());
-
-  VisualizeJoints(::ros::Time::now(), msg.base.pose, joint_msg);
-}
-
-VectorXd
-UrdfVisualizer::GetJointAngles (const State3d& base_W, const EndeffectorsPos& ee_W) const
-{
-  // transform world -> base frame
-  Eigen::Matrix3d B_R_W = base_W.ang.q.normalized().toRotationMatrix().inverse();
-
-  EndeffectorsPos ee_B = ee_W;
-  for (auto ee : ee_W.GetEEsOrdered())
-    ee_B.At(ee) = B_R_W * (ee_W.At(ee) - base_W.lin.p_);
-
-  return inverse_kinematics_->GetAllJointAngles(ee_B).ToVec();
-}
-
-void
-UrdfVisualizer::VisualizeJoints(const ::ros::Time& stamp,
-                                const geometry_msgs::Pose& baseState,
-                                const sensor_msgs::JointState& jointState)
-{
-	auto joint_positions = GetJointsFromRos(jointState);
-	auto W_X_B_message   = GetBaseFromRos(stamp, baseState);
-
-	// Ready to publish the state
-	broadcaster.sendTransform(W_X_B_message);
-	robot_state_publisher->publishTransforms(joint_positions, ::ros::Time::now(),tf_prefix_);
-	robot_state_publisher->publishFixedTransforms(tf_prefix_);
+  // Ready to publish the state
+  broadcaster.sendTransform(W_X_B_message);
+  robot_state_publisher->publishTransforms(joint_positions, ::ros::Time::now(),tf_prefix_);
+  robot_state_publisher->publishFixedTransforms(tf_prefix_);
 }
 
 UrdfVisualizer::UrdfnameToJointAngle
-UrdfVisualizer::GetJointsFromRos(const sensor_msgs::JointState &msg) const
+UrdfVisualizer::AssignAngleToURDFJointName(const sensor_msgs::JointState &msg) const
 {
   UrdfnameToJointAngle q;
 
-  for(size_t i = 0 ; i < msg.position.size(); i++)
-    q[urdf_joint_names_.at(static_cast<JointID>(i))] = msg.position[i];
+//  for(auto m : urdf_joint_names_) {
+//    URDFName name = m.second;
+//    int idx = m.first;
+//
+//    if (idx != BaseJoint)
+//      q[name] = msg.position[idx];
+//  }
+
+
+  for (int i=0; i<msg.position.size(); ++i)
+    q[joint_names_in_urdf_.at(i)] = msg.position.at(i);
 
   return q;
 }
@@ -109,7 +89,7 @@ UrdfVisualizer::GetBaseFromRos(const ::ros::Time& stamp,
   W_X_B_message.header.stamp    = stamp;
   W_X_B_message.header.frame_id = rviz_fixed_frame_;
   // this must be the same name as the base_link in the URDF file
-  W_X_B_message.child_frame_id  = tf_prefix_ + "/" + urdf_joint_names_.at(BaseJoint);
+  W_X_B_message.child_frame_id  = tf_prefix_ + "/" + base_joint_in_urdf_;
 
 	W_X_B_message.transform.translation.x =  msg.position.x;
 	W_X_B_message.transform.translation.y =  msg.position.y;

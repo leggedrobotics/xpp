@@ -9,6 +9,7 @@
 #define USER_TASK_DEPENDS_XPP_OPT_INCLUDE_XPP_OPT_A_INVERSE_KINEMATICS_H_
 
 #include <Eigen/Dense>
+#include <memory>
 
 #include <xpp_states/endeffectors.h>
 #include <xpp_states/joints.h>
@@ -27,6 +28,7 @@ public:
   using Vector3d    = Eigen::Vector3d;
   using EEPosition  = Vector3d;
   using EEID        = EndeffectorID;
+  using Ptr         = std::shared_ptr<AInverseKinematics>;
 
   AInverseKinematics () {};
   virtual ~AInverseKinematics () {};

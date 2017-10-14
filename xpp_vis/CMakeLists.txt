@@ -106,6 +106,7 @@ include_directories(
 # Declare a C++ library
 add_library(${PROJECT_NAME}
   src/urdf_visualizer.cc
+  src/cartesian_joint_converter.cc
   src/rviz_marker_builder.cc
   src/hyqleg_inverse_kinematics.cc
   src/hyq_inverse_kinematics.cc

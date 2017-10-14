@@ -19,27 +19,24 @@
 #include <tf/transform_broadcaster.h>
 #include <ros/package.h>
 #include <urdf/model.h>
-
 #include <sensor_msgs/JointState.h>
 #include <robot_state_publisher/robot_state_publisher.h>
 #include <kdl_parser/kdl_parser.hpp>
 
-#include <xpp_msgs/RobotStateCartesian.h>
 
-#include <xpp_states/state.h>
-#include <xpp_vis/a_inverse_kinematics.h>
+#include <xpp_msgs/RobotStateJoint.h>
+#include <xpp_states/joints.h>
 
 namespace xpp {
 
 class UrdfVisualizer {
 public:
-  using StateMsg             = xpp_msgs::RobotStateCartesian;
-  using UrdfnameToJointAngle = std::map<std::string, double>;
-  using UrdfJointNames       = std::map<JointID, std::string>;
-  using InverseKinematics    = std::shared_ptr<AInverseKinematics>;
+  using URDFName             = std::string;
+//  using UrdfJointNames       = std::map<JointID, URDFName>;
+  using UrdfnameToJointAngle = std::map<URDFName, double>;
 
-  UrdfVisualizer(const InverseKinematics&,
-                 const UrdfJointNames&,
+  UrdfVisualizer(const std::vector<URDFName>& joint_names_in_urdf,
+                 const URDFName& base_joint_in_urdf,
                  const std::string& urdf_name,
                  const std::string& rviz_fixed_frame,
                  const std::string& state_msg_name,
@@ -47,23 +44,19 @@ public:
   virtual ~UrdfVisualizer();
 
 private:
-  ros::Subscriber state_sub_curr_; /// gets joint states, floating base and stance estimation
   ros::Subscriber state_sub_des_; /// gets joint states, floating base and stance estimation
   tf::TransformBroadcaster broadcaster;
   std::shared_ptr<robot_state_publisher::RobotStatePublisher> robot_state_publisher;
 
+  void StateCallback(const xpp_msgs::RobotStateJoint& msg);
 
-  void StateCallback(const StateMsg& msg);
-  void VisualizeJoints(const ros::Time& stamp, const geometry_msgs::Pose& baseState,
-                      const sensor_msgs::JointState& jointState);
-
-  UrdfnameToJointAngle GetJointsFromRos(const sensor_msgs::JointState &msg) const;
+  UrdfnameToJointAngle AssignAngleToURDFJointName(const sensor_msgs::JointState &msg) const;
   geometry_msgs::TransformStamped GetBaseFromRos(const ::ros::Time& stamp, const geometry_msgs::Pose &msg) const;
 
-  VectorXd GetJointAngles (const State3d& base_W, const EndeffectorsPos& ee_W) const;
+  std::vector<URDFName> joint_names_in_urdf_;
+  URDFName base_joint_in_urdf_;
 
-  InverseKinematics inverse_kinematics_;
-  UrdfJointNames urdf_joint_names_;
+//  UrdfJointNames urdf_joint_names_;
   std::string state_msg_name_;
   std::string rviz_fixed_frame_;
   std::string tf_prefix_;

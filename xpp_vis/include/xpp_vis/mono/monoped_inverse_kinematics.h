@@ -2,7 +2,7 @@
 #define INVERSEKINEMATICS_H_
 
 #include <xpp_vis/a_inverse_kinematics.h>
-#include <xpp_vis/mono/joints_monoped.h>
+//#include <xpp_vis/mono/joints_monoped.h>
 
 namespace xpp {
 namespace mono {

@@ -3,7 +3,7 @@
 #include <xpp_states/cartesian_declarations.h>
 
 #include <xpp_vis/mono/hyqleg_inverse_kinematics.h>
-#include <xpp_vis/quad/joints_quadruped.h>
+//#include <xpp_vis/quad/joints_quadruped.h>
 
 namespace xpp {
 namespace quad {

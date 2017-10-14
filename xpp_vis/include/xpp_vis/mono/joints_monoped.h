@@ -15,11 +15,12 @@
 namespace xpp {
 namespace mono {
 
-enum MonopedJointID {HAA, HFE, KFE};
+// joint order for 3DoF leg
+enum MonopedJointID {HAA, HFE, KFE, KNumJoints};
 
-static const std::map<EndeffectorID, std::vector<MonopedJointID> > kMapMonoEEToJoints {
-  { E0, {HAA, HFE, KFE} },
-};
+//static const std::map<EndeffectorID, std::vector<MonopedJointID> > kMapMonoEEToJoints {
+//  { E0, {HAA, HFE, KFE} },
+//};
 
 } /* namespace mono */
 } /* namespace xpp */

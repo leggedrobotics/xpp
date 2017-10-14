@@ -20,22 +20,28 @@ int main(int argc, char *argv[])
 {
 	::ros::init(argc, argv, "monoped_urdf_visualizer");
 
-	auto map = GetMap(kMapMonoEEToJoints);
+//	auto map = GetMap(kMapMonoEEToJoints);
+//
+//	// these strings must match the <joint name=...> tag in the URDF file
+//	// monoped_description/urdf/monoped.urdf
+//	std::map<xpp::JointID, std::string> kMapXppJointToUrdfNames {
+//	  { BaseJoint,         "base" },
+//    { map.at(HAA),  "haa_joint" },
+//    { map.at(HFE),  "hfe_joint" },
+//    { map.at(KFE),  "kfe_joint" },
+//	};
 
-	// these strings must match the <joint name=...> tag in the URDF file
-	// monoped_description/urdf/monoped.urdf
-	std::map<xpp::JointID, std::string> kMapXppJointToUrdfNames {
-	  { BaseJoint,         "base" },
-    { map.at(HAA),  "haa_joint" },
-    { map.at(HFE),  "hfe_joint" },
-    { map.at(KFE),  "kfe_joint" },
-	};
+  int n_j  = mono::KNumJoints;
+  std::vector<std::string> joint_names(n_j);
+  joint_names.at(mono::HAA) = "haa_joint";
+  joint_names.at(mono::HFE) = "hfe_joint";
+  joint_names.at(mono::KFE) = "kfe_joint";
 
 	auto ik = std::make_shared<MonopedInverseKinematics>();
 	std::string urdf = "monoped_rviz_urdf_robot_description";
 
-	UrdfVisualizer node_des(ik, kMapXppJointToUrdfNames, urdf, "world",
-	                    xpp_msgs::robot_state_desired, "monoped");
+	UrdfVisualizer node_des(joint_names, "base", urdf, "world",
+	                        xpp_msgs::robot_state_desired, "monoped");
 
 	// exclusively listens to this topic
 //  UrdfVisualizer node_mono(ik, kMapXppJointToUrdfNames, urdf, "world",

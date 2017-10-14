@@ -18,6 +18,9 @@ static const std::string robot_state_current("xpp/state_curr");
 // the desired state that comes from the optimizer
 static const std::string robot_state_desired("xpp/state_des");
 
+// desired joint state (equivalent to desired cartesian state
+static const std::string joint_desired("xpp/joint_des");
+
 // sequence of desired states coming from the optimizer
 static const std::string robot_trajectory_desired("xpp/trajectory_des");
 
