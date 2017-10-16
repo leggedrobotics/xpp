@@ -4,7 +4,6 @@
 #include <xpp_vis/a_inverse_kinematics.h>
 
 namespace xpp {
-namespace biped {
 
 /** @brief The SL implementation of the inverse kinematics */
 class BipedInverseKinematics : public AInverseKinematics {
@@ -20,7 +19,6 @@ public:
 	Joints GetAllJointAngles(const EndeffectorsPos& pos_b) const override;
 };
 
-} /* namespace biped */
 } /* namespace xpp  */
 
 #endif /* XPP_BIPED_BIPED_INVERSEKINEMATICS_H_ */

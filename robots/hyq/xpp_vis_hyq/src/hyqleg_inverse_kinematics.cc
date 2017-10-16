@@ -5,7 +5,7 @@
  @brief   Brief description
  */
 
-#include <xpp_vis/mono/hyqleg_inverse_kinematics.h>
+#include <xpp_vis_hyq/hyqleg_inverse_kinematics.h>
 
 #include <cmath>
 #include <map>
@@ -13,7 +13,6 @@
 #include <xpp_states/cartesian_declarations.h>
 
 namespace xpp {
-namespace mono {
 
 HyqlegInverseKinematics::HyqlegInverseKinematics ()
 {
@@ -136,5 +135,4 @@ HyqlegInverseKinematics::~HyqlegInverseKinematics ()
   // TODO Auto-generated destructor stub
 }
 
-} /* namespace mono */
 } /* namespace xpp */

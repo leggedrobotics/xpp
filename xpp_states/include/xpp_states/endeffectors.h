@@ -8,10 +8,10 @@
 #ifndef XPP_INCLUDE_XPP_ENDEFFECTORS_H_
 #define XPP_INCLUDE_XPP_ENDEFFECTORS_H_
 
-#include <deque>
 #include <iostream>
 #include <map>
 #include <vector>
+#include <deque>
 #include <Eigen/Dense>
 
 namespace xpp {
@@ -140,18 +140,18 @@ static const std::map<std::string, EndeffectorID> kMapIDToEE {
 }
 
 
-template<typename T>
-static std::map<EndeffectorID, T> ReverseMap(std::map<T, EndeffectorID> map) {
-
-  std::map<EndeffectorID, T> reverse;
-  for (auto p : map) {
-    auto flipped = std::pair<EndeffectorID, T>(p.second, p.first);
-    if ( !reverse.insert(flipped).second )
-      assert(false); //  key already present, won't overwrite...
-  }
-
-  return reverse;
-}
+//template<typename T>
+//static std::map<EndeffectorID, T> ReverseMap(std::map<T, EndeffectorID> map) {
+//
+//  std::map<EndeffectorID, T> reverse;
+//  for (auto p : map) {
+//    auto flipped = std::pair<EndeffectorID, T>(p.second, p.first);
+//    if ( !reverse.insert(flipped).second )
+//      assert(false); //  key already present, won't overwrite...
+//  }
+//
+//  return reverse;
+//}
 
 
 

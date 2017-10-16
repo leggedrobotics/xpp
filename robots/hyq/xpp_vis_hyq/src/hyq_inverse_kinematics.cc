@@ -1,12 +1,10 @@
-#include <xpp_vis/quad/hyq_inverse_kinematics.h>
+#include <xpp_vis_hyq/hyq_inverse_kinematics.h>
 
 #include <xpp_states/cartesian_declarations.h>
 
-#include <xpp_vis/mono/hyqleg_inverse_kinematics.h>
-//#include <xpp_vis/quad/joints_quadruped.h>
+#include <xpp_vis_hyq/hyqleg_inverse_kinematics.h>
 
 namespace xpp {
-namespace quad {
 
 HyqInverseKinematics::HyqInverseKinematics ()
 {
@@ -17,23 +15,23 @@ HyqInverseKinematics::GetAllJointAngles(const EndeffectorsPos& pos_B) const
 {
   Vector3d ee_pos_H; // foothold expressed in hip frame
   std::vector<Eigen::VectorXd> q_vec;
-  mono::HyqlegInverseKinematics leg;
+  HyqlegInverseKinematics leg;
 
   for (auto ee : pos_B.GetEEsOrdered()) {
 
-    std::string foot = ReverseMap(kMapIDToEE).at(ee);
-    mono::HyqlegInverseKinematics::KneeBend bend = mono::HyqlegInverseKinematics::Forward;
+    HyqlegInverseKinematics::KneeBend bend = HyqlegInverseKinematics::Forward;
 
-    if (foot == LF) {
+    using namespace quad;
+    if (ee == kMapIDToEE.at(LF)) {
       ee_pos_H = pos_B.At(ee);
-    } else if (foot == RF) {
+    } else if (ee == kMapIDToEE.at(RF)) {
       ee_pos_H = pos_B.At(ee).cwiseProduct(Eigen::Vector3d(1,-1,1));
-    } else if (foot == LH) {
+    } else if (ee == kMapIDToEE.at(LH)) {
       ee_pos_H = pos_B.At(ee).cwiseProduct(Eigen::Vector3d(-1,1,1));
-      bend = mono::HyqlegInverseKinematics::Backward;
-    } else if (foot == RH) {
+      bend = HyqlegInverseKinematics::Backward;
+    } else if (ee == kMapIDToEE.at(RH)) {
       ee_pos_H = pos_B.At(ee).cwiseProduct(Eigen::Vector3d(-1,-1,1));
-      bend = mono::HyqlegInverseKinematics::Backward;
+      bend = HyqlegInverseKinematics::Backward;
     } else {
       assert(false); // foot_id does not exist
     }
@@ -50,7 +48,6 @@ HyqInverseKinematics::~HyqInverseKinematics ()
 }
 
 
-} /* namespace quad */
 } /* namespace xpp */
 
 

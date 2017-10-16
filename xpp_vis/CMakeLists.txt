@@ -87,7 +87,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wfatal-errors -std=c++11" )
 catkin_package(
    INCLUDE_DIRS include
    LIBRARIES ${PROJECT_NAME}
-   CATKIN_DEPENDS
+   CATKIN_DEPENDS xpp_ros_conversions
    #DEPENDS eigen
 )
 
@@ -108,13 +108,9 @@ add_library(${PROJECT_NAME}
   src/urdf_visualizer.cc
   src/cartesian_joint_converter.cc
   src/rviz_marker_builder.cc
-  src/hyqleg_inverse_kinematics.cc
-  src/hyq_inverse_kinematics.cc
-  src/biped_inverse_kinematics.cc
-  src/monoped_inverse_kinematics.cc
   src/nlp_user_input_node.cc
 )
-target_link_libraries(xpp_vis
+target_link_libraries(${PROJECT_NAME}
   ${catkin_LIBRARIES}
 )
 
@@ -128,40 +124,14 @@ target_link_libraries(nlp_user_input_node
   ${catkin_LIBRARIES}
 )
 
-add_executable(robot_state_publisher
-    src/exe/robot_state_publisher.cc
-)
-target_link_libraries(robot_state_publisher
-  ${PROJECT_NAME}
-  ${catkin_LIBRARIES}
-)
 
 
-
-## URDF visualizers
-add_executable(urdf_visualizer_monoped src/exe/urdf_visualizer_monoped.cc)
-target_link_libraries(urdf_visualizer_monoped
-  xpp_vis
-  ${catkin_LIBRARIES}
-)
-
-add_executable(urdf_visualizer_biped src/exe/urdf_visualizer_biped.cc)
-target_link_libraries(urdf_visualizer_biped
-  xpp_vis
-  ${catkin_LIBRARIES}
-)
-
-add_executable(urdf_visualizer_hyq src/exe/urdf_visualizer_hyq.cc)
-target_link_libraries(urdf_visualizer_hyq
-  xpp_vis
-  ${catkin_LIBRARIES}
-)
 
 
 ## other visualizers
 add_executable(rviz_marker_node src/exe/rviz_marker_node.cc)
 target_link_libraries(rviz_marker_node
-  xpp_vis
+  ${PROJECT_NAME}
   ${catkin_LIBRARIES}
 )
 
@@ -170,6 +140,30 @@ add_executable(rosbag_traj_combiner src/exe/rosbag_traj_combiner.cc)
 target_link_libraries(rosbag_traj_combiner
   ${catkin_LIBRARIES}
 )
+
+
+
+
+## example demos
+add_executable(monped_publisher demo/monoped_pub.cc)
+target_link_libraries(monped_publisher
+  ${PROJECT_NAME}
+  ${catkin_LIBRARIES}
+)
+
+add_executable(monped_bag_builder demo/monoped_bag_builder.cc)
+target_link_libraries(monped_bag_builder
+  ${PROJECT_NAME}
+  ${catkin_LIBRARIES}
+)
+
+#add_executable(robot_state_publisher demo/robot_state_publisher.cc)
+#target_link_libraries(robot_state_publisher
+#  ${PROJECT_NAME}
+#  ${catkin_LIBRARIES}
+#)
+
+
 
 
 #add_executable(base_state_visualizer src/exe/base_state_visualizer.cc)

@@ -5,7 +5,6 @@
 #include <xpp_states/endeffectors.h>
 
 namespace xpp {
-namespace quad {
 
 /** @brief The SL implementation of the inverse kinematics */
 class HyqInverseKinematics : public AInverseKinematics {
@@ -25,7 +24,6 @@ private:
 	Vector3d base2hip_LF_ = Vector3d(0.3735, 0.207, 0.0);
 };
 
-} /* namespace quad */
 } /* namespace xpp */
 
 #endif /* INVERSEKINEMATICS_H_ */
