@@ -8,9 +8,9 @@
 #include <ros/ros.h>
 
 #include <xpp_msgs/RobotStateCartesian.h>
-#include <xpp_msgs/topic_names.h>
 
-#include <xpp_ros_conversions/ros_conversions.h>
+#include <../../xpp_ros_conversions/include/xpp_ros_conversions/convert.h>
+#include <xpp_msgs/topic_names.h>
 
 #include <xpp_states/robot_state_cartesian.h>
 
@@ -44,7 +44,7 @@ int main(int argc, char *argv[])
     hopper.ee_forces_.At(E0).z() = 100; // N
     hopper.ee_contact_.At(E0) = true;
 
-    state_pub.publish(RosConversions::XppToRos(hopper));
+    state_pub.publish(Convert::ToRos(hopper));
 
     ros::spinOnce();
     ros::Duration(dt).sleep(); // pause loop so visualization has correct speed.

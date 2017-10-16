@@ -6,7 +6,7 @@ project(xpp_vis)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
   keyboard
-  joy
+#  joy
   tf
   kdl_parser
   robot_state_publisher
@@ -107,8 +107,9 @@ include_directories(
 add_library(${PROJECT_NAME}
   src/urdf_visualizer.cc
   src/cartesian_joint_converter.cc
-  src/rviz_marker_builder.cc
-  src/nlp_user_input_node.cc
+  src/rviz_robot_builder.cc
+  src/rviz_terrain_builder.cc
+  src/user_interface.cc
 )
 target_link_libraries(${PROJECT_NAME}
   ${catkin_LIBRARIES}
@@ -116,10 +117,10 @@ target_link_libraries(${PROJECT_NAME}
 
 
 
-add_executable(nlp_user_input_node
-    src/exe/nlp_user_input_node_exe.cc
+add_executable(user_interface_node
+    src/exe/user_interface_node.cc
 )
-target_link_libraries(nlp_user_input_node 
+target_link_libraries(user_interface_node 
   ${PROJECT_NAME}
   ${catkin_LIBRARIES}
 )
@@ -134,14 +135,6 @@ target_link_libraries(rviz_marker_node
   ${PROJECT_NAME}
   ${catkin_LIBRARIES}
 )
-
-## misc
-add_executable(rosbag_traj_combiner src/exe/rosbag_traj_combiner.cc)
-target_link_libraries(rosbag_traj_combiner
-  ${catkin_LIBRARIES}
-)
-
-
 
 
 ## example demos
@@ -163,6 +156,17 @@ target_link_libraries(monped_bag_builder
 #  ${catkin_LIBRARIES}
 #)
 
+
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
+catkin_add_gtest(${PROJECT_NAME}_test
+  test/test_xpp_vis.cc 
+  test/utest.cc
+)
+
+#if(TARGET ${PROJECT_NAME}-test)
+#  target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
+#endif()
 
 
 

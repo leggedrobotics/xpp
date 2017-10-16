@@ -1,34 +1,41 @@
-/**
- @file    hyqleg_inverse_kinematics.h
- @author  Alexander W. Winkler (winklera@ethz.ch)
- @date    Aug 18, 2017
- @brief   Brief description
- */
 
-#ifndef XPP_XPP_VIS_INCLUDE_XPP_HYQLEG_INVERSE_KINEMATICS_H_
-#define XPP_XPP_VIS_INCLUDE_XPP_HYQLEG_INVERSE_KINEMATICS_H_
+#ifndef XPP_VIS_HYQLEG_INVERSE_KINEMATICS_H_
+#define XPP_VIS_HYQLEG_INVERSE_KINEMATICS_H_
 
 #include <Eigen/Dense>
 
-#include "joints_monoped.h"
-
 namespace xpp {
 
+enum HyqJointID {HAA=0, HFE, KFE, HyqlegJointCount};
+
+/**
+ * @brief Converts a hyq foot position to joint angles.
+ */
 class HyqlegInverseKinematics {
 public:
   using Vector3d = Eigen::Vector3d;
   enum KneeBend { Forward, Backward };
 
+  /**
+   * @brief Default c'tor initializing leg lengths with standard values.
+   */
   HyqlegInverseKinematics ();
-  virtual ~HyqlegInverseKinematics ();
+  virtual ~HyqlegInverseKinematics () {};
 
   /**
-   * @param ee_pos_H the foot position xyz expressed in the frame attached
-   *                  at the hip-aa.
+   * @brief Returns the joint angles to reach a Cartesian foot position.
+   * @param ee_pos_H  Foot position xyz expressed in the frame attached
+   * at the hip-aa (H).
    */
   Vector3d GetJointAngles(const Vector3d& ee_pos_H, KneeBend bend=Forward) const;
 
-  void EnforceLimits(double& val, MonopedJointID joint) const;
+  /**
+   * @brief Restricts the joint angles to lie inside the feasible range
+   * @param q[in/out]  Current joint angle that is adapted if it exceeds
+   * the specified range.
+   * @param joint  Which joint (HAA, HFE, KFE) this value represents.
+   */
+  void EnforceLimits(double& q, HyqJointID joint) const;
 
 private:
   Vector3d hfe_to_haa_z = Vector3d(0.0, 0.0, 0.08); //distance of HFE to HAA in z direction
@@ -38,4 +45,4 @@ private:
 
 } /* namespace xpp */
 
-#endif /* XPP_XPP_VIS_INCLUDE_XPP_HYQLEG_INVERSE_KINEMATICS_H_ */
+#endif /* XPP_VIS_HYQLEG_INVERSE_KINEMATICS_H_ */

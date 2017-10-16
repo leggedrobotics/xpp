@@ -9,7 +9,7 @@
    </node>
    
    <!-- for commanding goal positions and tasks -->
-   <node name="nlp_user_input_node" pkg="xpp_vis" type="nlp_user_input_node" output="screen" cwd="node" >  
+   <node name="user_interface_node" pkg="xpp_vis" type="user_interface_node" output="screen" cwd="node" >  
    </node>
    
    <!-- for commanding goal positions and tasks -->

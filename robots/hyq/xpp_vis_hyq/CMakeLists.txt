@@ -118,9 +118,9 @@ include_directories(
 # Declare a C++ library
 add_library(${PROJECT_NAME}
   src/hyqleg_inverse_kinematics.cc
-  src/hyq_inverse_kinematics.cc
-  src/biped_inverse_kinematics.cc
-  src/monoped_inverse_kinematics.cc
+  src/inverse_kinematics_hyq1.cc
+  src/inverse_kinematics_hyq2.cc
+  src/inverse_kinematics_hyq4.cc
 )
 
 
@@ -142,20 +142,20 @@ add_library(${PROJECT_NAME}
 # )
 
 ## URDF visualizers
-add_executable(urdf_visualizer_monoped src/exe/urdf_visualizer_monoped.cc)
-target_link_libraries(urdf_visualizer_monoped
+add_executable(urdf_visualizer_hyq1 src/exe/urdf_visualizer_hyq1.cc)
+target_link_libraries(urdf_visualizer_hyq1
   ${PROJECT_NAME}
   ${catkin_LIBRARIES}
 )
 
-add_executable(urdf_visualizer_biped src/exe/urdf_visualizer_biped.cc)
-target_link_libraries(urdf_visualizer_biped
+add_executable(urdf_visualizer_hyq2 src/exe/urdf_visualizer_hyq2.cc)
+target_link_libraries(urdf_visualizer_hyq2
   ${PROJECT_NAME}
   ${catkin_LIBRARIES}
 )
 
-add_executable(urdf_visualizer_hyq src/exe/urdf_visualizer_hyq.cc)
-target_link_libraries(urdf_visualizer_hyq
+add_executable(urdf_visualizer_hyq4 src/exe/urdf_visualizer_hyq4.cc)
+target_link_libraries(urdf_visualizer_hyq4
   ${PROJECT_NAME}
   ${catkin_LIBRARIES}
 )

@@ -1,21 +1,18 @@
-#include <xpp_vis_hyq/hyq_inverse_kinematics.h>
+#include <xpp_vis_hyq/inverse_kinematics_hyq4.h>
 
 #include <xpp_states/cartesian_declarations.h>
 
-#include <xpp_vis_hyq/hyqleg_inverse_kinematics.h>
-
 namespace xpp {
 
-HyqInverseKinematics::HyqInverseKinematics ()
+InverseKinematicsHyq4::InverseKinematicsHyq4 ()
 {
 }
 
 Joints
-HyqInverseKinematics::GetAllJointAngles(const EndeffectorsPos& pos_B) const
+InverseKinematicsHyq4::GetAllJointAngles(const EndeffectorsPos& pos_B) const
 {
   Vector3d ee_pos_H; // foothold expressed in hip frame
   std::vector<Eigen::VectorXd> q_vec;
-  HyqlegInverseKinematics leg;
 
   for (auto ee : pos_B.GetEEsOrdered()) {
 
@@ -43,7 +40,7 @@ HyqInverseKinematics::GetAllJointAngles(const EndeffectorsPos& pos_B) const
   return Joints(q_vec);
 }
 
-HyqInverseKinematics::~HyqInverseKinematics ()
+InverseKinematicsHyq4::~InverseKinematicsHyq4 ()
 {
 }
 

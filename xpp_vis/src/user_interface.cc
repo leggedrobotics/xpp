@@ -1,52 +1,42 @@
-/**
- @file    nlp_user_input_node.cc
- @author  Alexander W. Winkler (winklera@ethz.ch)
- @date    Sep 9, 2016
- @brief   Defines the NlpUserInputNode class
- */
 
-#include <xpp_vis/nlp_user_input_node.h>
+#include <xpp_vis/user_interface.h>
 
 #include <iostream>
 #include <vector>
 #include <Eigen/Dense>
 
 #include <ros/node_handle.h>
-#include <rosconsole/macros_generated.h>
-#include <std_msgs/Empty.h>         // send to trigger walking
-#include <xpp_msgs/UserCommand.h>   // send to optimizer node
 
+#include <xpp_msgs/UserCommand.h>
+
+#include <xpp_ros_conversions/convert.h>
 #include <xpp_msgs/topic_names.h>
-#include <xpp_ros_conversions/ros_conversions.h>
 
 #include <xpp_states/terrain_types.h>
 
-//#include <xpp/height_map.h>
-//#include <xpp/models/gait_generator.h>
 
 namespace xpp {
 
-
-NlpUserInputNode::NlpUserInputNode ()
+UserInterface::UserInterface ()
 {
   ::ros::NodeHandle n;
-  key_sub_ = n.subscribe("/keyboard/keydown", 1, &NlpUserInputNode::CallbackKeyboard, this);
-//  joy_sub_ = n.subscribe("/joy", 1, &NlpUserInputNode::CallbackJoy, this);
+  key_sub_ = n.subscribe("/keyboard/keydown", 1, &UserInterface::CallbackKeyboard, this);
+  ROS_INFO("Subscribed to: %s", key_sub_.getTopic().c_str());
 
   user_command_pub_ = n.advertise<xpp_msgs::UserCommand>(xpp_msgs::user_command, 1);
+  ROS_INFO("Publishing to: %s", user_command_pub_.getTopic().c_str());
 
   // publish goal zero initially
   goal_geom_.lin.p_.setZero();
   goal_geom_.lin.p_ << 1.3, 0.0, 0.46;
   goal_geom_.ang.p_ << 0.0, 0.0, 0.0; // roll, pitch, yaw angle applied Z->Y'->X''
 
-
   terrain_id_    = 0;
   gait_combo_id_ = 0;
 }
 
 void
-NlpUserInputNode::CallbackKeyboard (const KeyboardMsg& msg)
+UserInterface::CallbackKeyboard (const keyboard::Key& msg)
 {
   const static double d_lin = 0.1;  // [m]
   const static double d_ang = 0.25; // [rad]
@@ -109,7 +99,6 @@ NlpUserInputNode::CallbackKeyboard (const KeyboardMsg& msg)
       ROS_INFO_STREAM("Switched gait to combo " + std::to_string(gait_combo_id_) );
       break;
 
-
     // speed
     case msg.KEY_KP_PLUS:
       total_duration_ += 0.2;
@@ -148,21 +137,14 @@ NlpUserInputNode::CallbackKeyboard (const KeyboardMsg& msg)
       break;
   }
 
-
   PublishCommand();
 }
 
-
-
-
-void NlpUserInputNode::PublishCommand()
+void UserInterface::PublishCommand()
 {
-//  if (!joy_msg_.axes.empty())
-//    ModifyGoalJoy();
-
   xpp_msgs::UserCommand msg;
-  msg.goal_lin          = RosConversions::XppToRos(goal_geom_.lin);
-  msg.goal_ang          = RosConversions::XppToRos(goal_geom_.ang);
+  msg.goal_lin          = Convert::ToRos(goal_geom_.lin);
+  msg.goal_ang          = Convert::ToRos(goal_geom_.ang);
   msg.replay_trajectory = replay_trajectory_;
   msg.use_solver_snopt  = use_solver_snopt_;
   msg.optimize          = optimize_;
@@ -171,7 +153,6 @@ void NlpUserInputNode::PublishCommand()
   msg.total_duration    = total_duration_;
   msg.publish_traj      = publish_optimized_trajectory_;
 
-
   user_command_pub_.publish(msg);
 
   optimize_ = false;
@@ -179,43 +160,9 @@ void NlpUserInputNode::PublishCommand()
   publish_optimized_trajectory_ = false;
 }
 
-//void
-//NlpUserInputNode::ModifyGoalJoy ()
-//{
-//  enum Axis {L_LEFT = 0, L_FORWARD, R_LEFT, R_FORWARD};
-//
-//  double max_vel = 0.2; // [m/s]
-//
-//  double vel_y = -max_vel*joy_msg_.axes[L_FORWARD];
-//  double vel_x = max_vel*joy_msg_.axes[L_LEFT];
-//
-//  // integrate velocity
-//  double joy_deadzone = 0.05;
-//  goal_geom_.lin.p_.x() += vel_x * joy_deadzone;
-//  goal_geom_.lin.p_.y() += vel_y * joy_deadzone;
-//}
-//
-//void
-//NlpUserInputNode::CallbackJoy (const JoyMsg& msg)
-//{
-//  joy_msg_ = msg;
-//
-//  enum JoyButtons {X=0, A, B, Y};
-//
-//  if (joy_msg_.buttons[Y] == 1) {
-//    command_ = Command::kStartWalking;
-//    replay_trajectory_ = true;
-//  }
-//
-//  if (joy_msg_.buttons[A] == 1) {
-////    motion_type_ = opt::WalkID;
-//  }
-//
-//  if (joy_msg_.buttons[X] == 1) {
-////    motion_type_ = opt::TrotID;
-//  }
-//
-//  PublishCommand();
-//}
+int UserInterface::AdvanceCircularBuffer(int& curr, int max) const
+{
+  return curr==max? 0 : curr+1;
+}
 
 } /* namespace xpp */

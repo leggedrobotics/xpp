@@ -1,9 +1,3 @@
-/**
- @file    hyqleg_inverse_kinematics.cc
- @author  Alexander W. Winkler (winklera@ethz.ch)
- @date    Aug 18, 2017
- @brief   Brief description
- */
 
 #include <xpp_vis_hyq/hyqleg_inverse_kinematics.h>
 
@@ -12,11 +6,11 @@
 
 #include <xpp_states/cartesian_declarations.h>
 
+
 namespace xpp {
 
 HyqlegInverseKinematics::HyqlegInverseKinematics ()
 {
-  // TODO Auto-generated constructor stub
 }
 
 HyqlegInverseKinematics::Vector3d
@@ -97,7 +91,7 @@ HyqlegInverseKinematics::GetJointAngles (const Vector3d& ee_pos_B, KneeBend bend
 }
 
 void
-HyqlegInverseKinematics::EnforceLimits (double& val, MonopedJointID joint) const
+HyqlegInverseKinematics::EnforceLimits (double& val, HyqJointID joint) const
 {
   // real joint angle limits
   const static double haa_min = -90;
@@ -110,14 +104,14 @@ HyqlegInverseKinematics::EnforceLimits (double& val, MonopedJointID joint) const
   const static double kfe_max =  -20;
 
   // reduced joint angles for optimization
-  static const std::map<MonopedJointID, double> max_range {
+  static const std::map<HyqJointID, double> max_range {
     {HAA, haa_max/180.0*M_PI},
     {HFE, hfe_max/180.0*M_PI},
     {KFE, kfe_max/180.0*M_PI}
   };
 
   // reduced joint angles for optimization
-  static const std::map<MonopedJointID, double> min_range {
+  static const std::map<HyqJointID, double> min_range {
     {HAA, haa_min/180.0*M_PI},
     {HFE, hfe_min/180.0*M_PI},
     {KFE, kfe_min/180.0*M_PI}
@@ -128,11 +122,6 @@ HyqlegInverseKinematics::EnforceLimits (double& val, MonopedJointID joint) const
 
   double min = min_range.at(joint);
   val = val<min? min : val;
-}
-
-HyqlegInverseKinematics::~HyqlegInverseKinematics ()
-{
-  // TODO Auto-generated destructor stub
 }
 
 } /* namespace xpp */

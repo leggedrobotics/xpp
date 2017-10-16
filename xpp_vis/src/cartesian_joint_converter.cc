@@ -1,18 +1,14 @@
-/**
- @file    cartesian_joint_converter.cc
- @author  Alexander W. Winkler (winklera@ethz.ch)
- @date    Oct 14, 2017
- @brief   Brief description
- */
 
 #include <xpp_vis/cartesian_joint_converter.h>
 
-#include <xpp_ros_conversions/ros_conversions.h>
+#include <ros/node_handle.h>
+
 #include <xpp_msgs/RobotStateJoint.h>
+#include <xpp_ros_conversions/convert.h>
 
 namespace xpp {
 
-CartesianJointConverter::CartesianJointConverter (const AInverseKinematics::Ptr& ik,
+CartesianJointConverter::CartesianJointConverter (const InverseKinematics::Ptr& ik,
                                                   const std::string& cart_topic,
                                                   const std::string& joint_topic)
 {
@@ -29,7 +25,7 @@ CartesianJointConverter::CartesianJointConverter (const AInverseKinematics::Ptr&
 void
 CartesianJointConverter::StateCallback (const xpp_msgs::RobotStateCartesian& cart_msg)
 {
-  auto cart = RosConversions::RosToXpp(cart_msg);
+  auto cart = Convert::ToXpp(cart_msg);
 
   // transform feet from world -> base frame
   Eigen::Matrix3d B_R_W = cart.base_.ang.q.normalized().toRotationMatrix().inverse();
@@ -47,11 +43,6 @@ CartesianJointConverter::StateCallback (const xpp_msgs::RobotStateCartesian& car
   // Attention: Not filling joint velocities or torques
 
   joint_state_pub_.publish(joint_msg);
-}
-
-CartesianJointConverter::~CartesianJointConverter ()
-{
-  // TODO Auto-generated destructor stub
 }
 
 } /* namespace xpp */

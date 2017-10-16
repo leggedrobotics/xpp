@@ -9,9 +9,10 @@
 #include <rosbag/bag.h>
 
 #include <xpp_msgs/RobotStateCartesian.h>
+
+#include <../../xpp_ros_conversions/include/xpp_ros_conversions/convert.h>
 #include <xpp_msgs/topic_names.h>
 
-#include <xpp_ros_conversions/ros_conversions.h>
 #include <xpp_states/robot_state_cartesian.h>
 
 
@@ -40,7 +41,7 @@ int main(int argc, char *argv[])
 
     // save the state message with current time in the bag
     auto timestamp = ::ros::Time(t);
-    auto msg = RosConversions::XppToRos(hopper);
+    auto msg = Convert::ToRos(hopper);
     bag.write(xpp_msgs::robot_state_desired, timestamp, msg);
 
     t += dt;
