@@ -14,7 +14,7 @@ Joints
 InverseKinematicsHyq1::GetAllJointAngles(const EndeffectorsPos& x_B) const
 {
   Eigen::Vector3d offset_base_to_hip(0.0, 0.0, 0.15);
-  Eigen::VectorXd q0 = leg.GetJointAngles(x_B.At(E0) + offset_base_to_hip);
+  Eigen::VectorXd q0 = leg.GetJointAngles(x_B.at(0) + offset_base_to_hip);
 
   return Joints({q0});
 }

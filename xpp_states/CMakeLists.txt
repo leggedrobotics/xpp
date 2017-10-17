@@ -119,6 +119,7 @@ add_library(xpp_states
   src/state.cc
   src/joints.cc
   src/robot_state_cartesian.cc
+  src/robot_state_joint.cc
 )
 target_link_libraries(xpp_states
   ${catkin_LIBRARIES}

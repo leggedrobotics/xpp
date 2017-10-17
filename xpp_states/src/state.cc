@@ -1,20 +1,9 @@
-/*!
- * \file   base_state.h
- * \author Alexander Winkler
- * \date   Jul 4, 2014
- * \brief  Structures to hold the pose (position + orientation) of an object
- */
 
 #include <vector>
 
 #include <xpp_states/state.h>
 
 namespace xpp {
-
-StateLinXd::StateLinXd ()
-{
-  // careful: dimension not yet set
-}
 
 StateLinXd::StateLinXd (int dim)
 {
@@ -62,37 +51,6 @@ StateLinXd::GetByIndex (MotionDerivative deriv)
   }
 }
 
-StateLin1d
-StateLinXd::GetDimension (int dim) const
-{
-  assert(dim < kNumDim);
-
-  StateLin1d state1d;
-  state1d.p_(0) = p_(dim);
-  state1d.v_(0) = v_(dim);
-  state1d.a_(0) = a_(dim);
-  return state1d;
-}
-
-void
-StateLinXd::SetDimension (int dim, const StateLin1d& state1d)
-{
-  assert(dim < kNumDim);
-
-  p_(dim) = state1d.p_(0);
-  v_(dim) = state1d.v_(0);
-  a_(dim) = state1d.a_(0);
-}
-
-StateLin1d::StateLin1d (const StateLinXd& state_xd) : StateLinXd(1)
-{
-  assert(state_xd.kNumDim == 1);
-
-  p_ = state_xd.p_;
-  v_ = state_xd.v_;
-  a_ = state_xd.a_;
-}
-
 StateLin3d::StateLin3d (const StateLinXd& state_xd) : StateLinXd(3)
 {
   assert(state_xd.kNumDim == 3);
@@ -116,7 +74,7 @@ Vector6d
 State3d::Get6dVel () const
 {
   Vector6d h_xd;
-  h_xd.segment(AX, 3) = ang.v;
+  h_xd.segment(AX, 3) = ang.w;
   h_xd.segment(LX, 3) = lin.v_;
   return h_xd;
 }
@@ -125,7 +83,7 @@ Vector6d
 State3d::Get6dAcc () const
 {
   Vector6d h_xdd;
-  h_xdd.segment(AX, 3) =  ang.a;
+  h_xdd.segment(AX, 3) =  ang.wd;
   h_xdd.segment(LX, 3) =  lin.a_;
   return h_xdd;
 }

@@ -28,7 +28,7 @@ public:
   using MarkerVec       = std::vector<Marker>;
   using MarkerArray     = visualization_msgs::MarkerArray;
 
-  using ContactState    = EndeffectorsBool;
+  using ContactState    = EndeffectorsContact;
   using EEPos           = EndeffectorsPos;
   using EEForces        = Endeffectors<Vector3d>;
   using TerrainNormals  = Endeffectors<Vector3d>;

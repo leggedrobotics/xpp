@@ -9,7 +9,7 @@
 
 #include <xpp_msgs/RobotStateCartesian.h>
 
-#include <../../xpp_ros_conversions/include/xpp_ros_conversions/convert.h>
+#include <xpp_ros_conversions/convert.h>
 #include <xpp_msgs/topic_names.h>
 
 #include <xpp_states/robot_state_cartesian.h>
@@ -40,9 +40,9 @@ int main(int argc, char *argv[])
   {
     // base and foot follow half a sine motion up and down
     hopper.base_.lin.p_.z() = 0.7 - 0.05*sin(2*M_PI/(2*T)*t);
-    hopper.ee_motion_.At(E0).p_.z() = 0.1*sin(2*M_PI/(2*T)*t);
-    hopper.ee_forces_.At(E0).z() = 100; // N
-    hopper.ee_contact_.At(E0) = true;
+    hopper.ee_motion_.at(0).p_.z() = 0.1*sin(2*M_PI/(2*T)*t);
+    hopper.ee_forces_.at(0).z() = 100; // N
+    hopper.ee_contact_.at(0) = true;
 
     state_pub.publish(Convert::ToRos(hopper));
 

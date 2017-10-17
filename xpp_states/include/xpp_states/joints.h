@@ -1,12 +1,6 @@
-/**
- @file    joint_values.h
- @author  Alexander W. Winkler (winklera@ethz.ch)
- @date    Jan 2, 2017
- @brief   Brief description
- */
 
-#ifndef XPP_XPP_COMMON_INCLUDE_XPP_UTILS_JOINT_VALUES_H_
-#define XPP_XPP_COMMON_INCLUDE_XPP_UTILS_JOINT_VALUES_H_
+#ifndef _XPP_STATES_JOINTS_H_
+#define _XPP_STATES_JOINTS_H_
 
 #include <map>
 #include <vector>
@@ -16,91 +10,88 @@
 
 namespace xpp {
 
-enum JointID { J0=0, J1, J2, J3, J4, J5, J6, J7, J8, J9, J10, J11, J12, J13, J14, BaseJoint };
-
-/** @brief Container to access values associated to joints of endeffectors.
-  */
-class Joints : public Endeffectors<Eigen::VectorXd> {
+/**
+ * @brief Container to access joint values of each endeffectors.
+ *
+ * The idea is that every joint affects only one specific endeffector, so the
+ * joints are grouped in this fashion. They can also be transformed to or set
+ * from an undiscriminative Eigen::VectorXd. This however is not recommended,
+ * as this Cartesian <->joint relationship is
+ */
+class Joints : public Endeffectors<VectorXd> {
 public:
-  using VectorXd = Eigen::VectorXd;
   using Base = Endeffectors<VectorXd>;
-  using Base::GetCount;
-  using Base::At;
+  using Base::GetEECount;
+  using Base::at;
   using EEOrder = std::vector<EndeffectorID>;
+  using JointID = uint;
 
-  /** @param n_ee             total number of endeffectors.
-    * @param n_joints_per_ee  number of joints for each endeffector.
-    * @param value            default joint value
-    */
+  /**
+   * @brief  Constructs joint values all set to value.
+   * @param  n_ee             total number of endeffectors.
+   * @param  n_joints_per_ee  number of joints for each endeffector.
+   * @param  value            same joint value set for each joint.
+   */
   explicit Joints (int n_ee, int n_joints_per_ee, double value = 0.0);
+
+  /**
+   * @brief Converts a vector of leg joints into a Joint representation.
+   * @param joints  Joint values of each endeffector
+   *
+   * Attention: Each endeffector must have the same number of joints.
+   */
   explicit Joints (const std::vector<VectorXd>& joints);
-  explicit Joints (const VectorXd& q, const EEOrder& ee_order);
   virtual ~Joints ();
 
-  /** @brief Converts joint values to Eigen vector.
+  /**
+   * @brief Converts joint values to Eigen vector.
    *
-   * The endeffectors are processed from E0,E1,.. and for each endeffector
-   * the joints are appended.
+   * The endeffectors are starting from zero and for each endeffector
+   * the joints are appended in the order they where inserted.
    */
   VectorXd ToVec() const;
 
-  /** @brief Converts joint values to Eigen vector according to specific order.
-   *  @param ee_order  The order in which the Endeffectors are appended.
+  /**
+   * @brief Converts joint values to Eigen vector according to specific order.
+   * @param ee_order  The order in which the endeffector's joints are appended.
    */
   VectorXd ToVec(const EEOrder& ee_order) const;
 
-  /** @brief Sets joints values from Eigen vector.
-   *  @param q The Eigen Vector of joint values.
+  /**
+   * @brief Sets joints values from Eigen vector.
+   * @param q The Eigen Vector of joint values.
    *
-   * The vector q is interpreted to be ordered from E0,E1 with the correct
-   * number of endeffectors and joints per endeffector.
+   * The vector q is interpreted as if the top n_joints_per_leg values
+   * rows belong to endeffector 0, the next n_joints_per_leg values to
+   * endeffector 1 and so on.
    */
   void SetFromVec(const VectorXd& q);
 
-  /** @brief Sets joint values from Eigen vector in specific order.
-    * @param q         The Eigen Vector of joint values.
-    * @param ee_order  Describes the internal order of q.
-    */
+  /**
+   * @brief Sets joint values from Eigen vector in specific order.
+   * @param q         The Eigen Vector of joint values.
+   * @param ee_order  Describes the internal order of q.
+   */
   void SetFromVec(const VectorXd& q, const EEOrder& ee_order);
 
-  /** @returns read/write access of the joint value at joint.
-    */
-  double& At(JointID joint);
-  double At(JointID joint) const;
+  /**
+   * @returns read/write access of the joint value at index joint.
+   */
+  double& GetJoint(JointID joint);
+
+  /**
+   * @returns read access of the joint value at index joint.
+   */
+  double GetJoint(JointID joint) const;
 
   int GetNumJoints() const;
-
-  const Joints operator + (const Joints& rhs) const;
-  const Joints operator * (double scalar) const;
-
   int GetNumJointsPerEE() const;
 
-protected:
-  int n_joints_per_leg_;
-
 private:
+  int n_joints_per_leg_;
   int n_joints_;
 };
 
-
-//// spring_clean_ this seems hacky, double check this
-//template<typename T>
-//std::map<T, JointID> GetMap(const std::map<EndeffectorID, std::vector<T> >& map_ee_to_joints) {
-//
-//  std::map<T, JointID> map;
-//
-//  int j = 0;
-//  for (int i=0; i<map_ee_to_joints.size(); ++i) {
-//    auto ee = static_cast<EndeffectorID>(i);
-//    for (T hyq_joint : map_ee_to_joints.at(ee)) {
-//      auto xpp_joint = static_cast<JointID>(j++);
-//      map[hyq_joint] = xpp_joint;
-//    }
-//  }
-//
-//  return map;
-//}
-
 } /* namespace xpp */
 
-#endif /* XPP_XPP_COMMON_INCLUDE_XPP_UTILS_JOINT_VALUES_H_ */
+#endif /* _XPP_STATES_JOINTS_H_ */

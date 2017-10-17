@@ -7,6 +7,8 @@
 #include <xpp_vis/urdf_visualizer.h>
 #include <xpp_vis/cartesian_joint_converter.h>
 
+#include <xpp_states/endeffector_mappings.h>
+
 using namespace xpp;
 using namespace biped;
 
@@ -21,15 +23,15 @@ int main(int argc, char *argv[])
                                             xpp_msgs::robot_state_desired,
                                             joint_desired_biped);
 
-  int n_ee = biped::kMapIDToEE.size();
+  int n_ee = ik->GetEECount();
   int n_j  = HyqlegJointCount;
   std::vector<UrdfVisualizer::URDFName> joint_names(n_ee*n_j);
-  joint_names.at(n_j*kMapIDToEE.at(L) + HAA) = "L_haa_joint";
-  joint_names.at(n_j*kMapIDToEE.at(L) + HFE) = "L_hfe_joint";
-  joint_names.at(n_j*kMapIDToEE.at(L) + KFE) = "L_kfe_joint";
-  joint_names.at(n_j*kMapIDToEE.at(R) + HAA) = "R_haa_joint";
-  joint_names.at(n_j*kMapIDToEE.at(R) + HFE) = "R_hfe_joint";
-  joint_names.at(n_j*kMapIDToEE.at(R) + KFE) = "R_kfe_joint";
+  joint_names.at(n_j*L + HAA) = "L_haa_joint";
+  joint_names.at(n_j*L + HFE) = "L_hfe_joint";
+  joint_names.at(n_j*L + KFE) = "L_kfe_joint";
+  joint_names.at(n_j*R + HAA) = "R_haa_joint";
+  joint_names.at(n_j*R + HFE) = "R_hfe_joint";
+  joint_names.at(n_j*R + KFE) = "R_kfe_joint";
 
 	std::string urdf = "biped_rviz_urdf_robot_description";
 	UrdfVisualizer node(urdf, joint_names, "base", "world",

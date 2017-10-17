@@ -1,103 +1,140 @@
-/**
- @file    endeffectors.h
- @author  Alexander W. Winkler (winklera@ethz.ch)
- @date    Jan 2, 2017
- @brief   Declares the generic Endeffector class
- */
 
-#ifndef XPP_INCLUDE_XPP_ENDEFFECTORS_H_
-#define XPP_INCLUDE_XPP_ENDEFFECTORS_H_
+#ifndef _XPP_STATES_ENDEFFECTORS_H_
+#define _XPP_STATES_ENDEFFECTORS_H_
 
 #include <iostream>
-#include <map>
-#include <vector>
 #include <deque>
-#include <Eigen/Dense>
+
+#include <xpp_states/state.h>
 
 namespace xpp {
 
-enum EndeffectorID { E0, E1, E2, E3, E4, E5 };
+using EndeffectorID = uint;
 
-/** @brief Data structure to assign values to each endeffector.
+/**
+ * @brief Data structure to assign values to each endeffector.
  *
- *  Common values are xyz-positions (Vector3d), contact-flag (bool).
+ * Common values are xyz-positions (Vector3d), contact-flags (bool), or joints
+ * angles of each leg.
+ *
+ * This gives a unified interface, and also holds for boolean values (which
+ * is not possible using an std::vector). It allows to restrict default
+ * constructors, define addition and subtraction of all endeffectors and
+ * other convenience functions associated specifically to endeffectors.
+ *
+ * The idea is that this class is a enhanced STL container, but complies to the
+ * same interface, (e.g at()). However, in case this unified interface is
+ * burdensome, you can always access the underlying STL-deque container directly.
  */
 template<typename T>
 class Endeffectors {
 public:
-  using Container     = std::deque<T>; // to avoid faulty std::vector<bool>
+  using Container     = std::deque<T>;   // only to avoid faulty std::vector<bool>
   using EndeffectorsT = Endeffectors<T>;
 
   Endeffectors (int n_ee = 0);
   virtual ~Endeffectors ();
 
-  /** @brief Defines the number of endeffectors.
+  /**
+   * @brief Sets the number of endeffectors.
    */
   void SetCount(int n_ee);
 
-  /** @brief Sets each endeffector to value.
+  /**
+   * @brief Sets each endeffector to the same value.
    */
   void SetAll(const T& value);
 
-  /** @returns The number of endeffectors this structure holds.
+  /**
+   * @returns Number of endeffectors this structure holds.
    */
-  int GetCount() const;
+  int GetEECount() const;
 
-  /** @returns all endeffector IDs from E0->EN.
+  /**
+   * @returns All endeffector IDs from 0 to the number of endeffectors.
    */
   std::vector<EndeffectorID> GetEEsOrdered() const;
 
-  T& At(EndeffectorID ee);
-  const T& At(EndeffectorID ee) const;
+  /**
+   * @brief Read/write access to the endeffector stored at index ee.
+   * @param  ee  Endeffector index/position.
+   */
+  T& at(EndeffectorID ee);
+
+  /**
+   * @brief Read access to the endeffector stored at index ee.
+   * @param  ee  Endeffector index/position.
+   */
+  const T& at(EndeffectorID ee) const;
 
   const EndeffectorsT operator-(const EndeffectorsT& rhs) const;
   const EndeffectorsT operator/(double scalar) const;
+
+  /**
+   * @returns true if only one element differs from other.
+   */
   bool operator!=(const Endeffectors& other) const;
 
-  /** @returns a returns a read-only copy of the underlying STL-container.
+  /**
+   * @returns a returns a read-only copy of the underlying STL-deque container.
    */
   const Container ToImpl() const;
-
 
 private:
   Container ee_;
 };
 
+// convenience typedefs, can also be extended to derived classes if desired.
 using EndeffectorsPos  = Endeffectors<Eigen::Vector3d>;
-using EndeffectorsVel  = EndeffectorsPos;
+using EndeffectorsVel  = Endeffectors<Eigen::Vector3d>;
+using EndeffectorsAcc  = Endeffectors<Eigen::Vector3d>;
 
-
-template <typename T>
-std::ostream& operator<<(std::ostream& stream, Endeffectors<T> endeffectors)
-{
-  for (EndeffectorID ee : endeffectors.GetEEsOrdered())
-    stream << endeffectors.At(ee) << ", ";
-
-  return stream;
-}
-
-
-class EndeffectorsBool : public Endeffectors<bool> {
+/**
+ * @brief Bundles the position, velocity and acceleration of all endeffectors.
+ * as well as appending a EndeffectorMotion specific convenience function.
+ */
+class EndeffectorsMotion : public Endeffectors<StateLin3d> {
 public:
-  EndeffectorsBool (int n_ee = 0, bool val = false) :Endeffectors(n_ee) { SetAll(val);};
-  virtual ~EndeffectorsBool () {};
+  /**
+   * @brief  Extract only either the pos, vel or acc from all endeffectors.
+   * @param  deriv  Derivative being either position, velocity or acceleration.
+   */
+  Endeffectors<Vector3d> Get (MotionDerivative deriv) const
+  {
+    Endeffectors<Vector3d> val(GetEECount());
+    for (auto ee : GetEEsOrdered())
+      val.at(ee) = at(ee).GetByIndex(deriv);
 
-  /** @brief returns a copy with flipped boolean values. */
-//  EndeffectorsBool Invert() const
-//  {
-//    EndeffectorsBool ret(GetCount());
-//    for (auto ee : GetEEsOrdered())
-//      ret.At(ee) = !At(ee);
-//
-//    return ret;
-//  }
+    return val;
+  }
+};
 
-  /** @brief number of endeffectors with flag set to TRUE */
-  int GetTrueCount() const
+
+/**
+ * @brief Bundles the contact state of all endeffectors.
+ *
+ * Says if an endeffector is currently touching the environment or not.
+ * This is often an important criteria for motion planning, as only in the
+ * contact state can forces be exerted that move the body.
+ */
+class EndeffectorsContact : public Endeffectors<bool> {
+public:
+  /**
+   * @brief Constructs a state, the default being 0 feet, none in contact.
+   * @param  n_ee  Number of endeffectors.
+   * @param  in_contact  True if all legs should be in contact, false otherwise.
+   */
+  EndeffectorsContact (int n_ee=0, bool in_contact=false)
+      :Endeffectors(n_ee) { SetAll(in_contact);};
+
+  /**
+   * @brief The number of endeffectors in contact with the environment.
+   */
+  int GetContactCount() const
   {
     int count = 0;
     for (auto ee : GetEEsOrdered())
-      if (At(ee))
+      if (at(ee))
         count++;
 
     return count;
@@ -105,58 +142,7 @@ public:
 };
 
 
-
-namespace biped {
-static const std::string L = "L";
-static const std::string R = "R";
-static const std::map<std::string, EndeffectorID> kMapIDToEE {
-  { L, E0},
-  { R, E1},
-};
-}
-namespace quad {
-static const std::string LF = "LF";
-static const std::string RF = "RF";
-static const std::string LH = "LH";
-static const std::string RH = "RH";
-static const std::map<std::string, EndeffectorID> kMapIDToEE {
-  { LF, E0},
-  { RF, E1},
-  { LH, E2},
-  { RH, E3},
-};
-}
-namespace quad_rotor { // underscore to not collide with biped definitions
-static const std::string L = "L";
-static const std::string R = "R";
-static const std::string F = "F";
-static const std::string H = "H";
-static const std::map<std::string, EndeffectorID> kMapIDToEE {
-  { L, E0},
-  { R, E1},
-  { F, E2},
-  { H, E3},
-};
-}
-
-
-//template<typename T>
-//static std::map<EndeffectorID, T> ReverseMap(std::map<T, EndeffectorID> map) {
-//
-//  std::map<EndeffectorID, T> reverse;
-//  for (auto p : map) {
-//    auto flipped = std::pair<EndeffectorID, T>(p.second, p.first);
-//    if ( !reverse.insert(flipped).second )
-//      assert(false); //  key already present, won't overwrite...
-//  }
-//
-//  return reverse;
-//}
-
-
-
-
-// the implementation of the above functions
+// implementations
 template<typename T>
 Endeffectors<T>::Endeffectors (int n_ee)
 {
@@ -184,21 +170,21 @@ Endeffectors<T>::SetAll (const T& value)
 
 template<typename T>
 T&
-Endeffectors<T>::At (EndeffectorID idx)
+Endeffectors<T>::at (EndeffectorID idx)
 {
   return ee_.at(idx);
 }
 
 template<typename T>
 const T&
-Endeffectors<T>::At (EndeffectorID idx) const
+Endeffectors<T>::at (EndeffectorID idx) const
 {
   return ee_.at(idx);
 }
 
 template<typename T>
 int
-Endeffectors<T>::GetCount () const
+Endeffectors<T>::GetEECount () const
 {
   return ee_.size();
 }
@@ -211,12 +197,23 @@ Endeffectors<T>::ToImpl () const
 }
 
 template<typename T>
+std::vector<EndeffectorID>
+Endeffectors<T>::GetEEsOrdered () const
+{
+  std::vector<EndeffectorID> vec;
+  for (int i=0; i<ee_.size(); ++i)
+    vec.push_back(i);
+
+  return vec;
+}
+
+template<typename T>
 const typename Endeffectors<T>::EndeffectorsT
 Endeffectors<T>::operator - (const EndeffectorsT& rhs) const
 {
   EndeffectorsT result(ee_.size());
   for (auto i : GetEEsOrdered())
-    result.At(i) = ee_.at(i) - rhs.At(i);
+    result.at(i) = ee_.at(i) - rhs.at(i);
 
   return result;
 }
@@ -227,20 +224,18 @@ Endeffectors<T>::operator / (double scalar) const
 {
   EndeffectorsT result(ee_.size());
   for (auto i : GetEEsOrdered())
-    result.At(i) = ee_.at(i)/scalar;
+    result.at(i) = ee_.at(i)/scalar;
 
   return result;
 }
 
-template<typename T>
-std::vector<EndeffectorID>
-Endeffectors<T>::GetEEsOrdered () const
+template <typename T>
+std::ostream& operator<<(std::ostream& stream, Endeffectors<T> endeffectors)
 {
-  std::vector<EndeffectorID> vec;
-  for (int i=0; i<ee_.size(); ++i)
-    vec.push_back(static_cast<EndeffectorID>(i));
+  for (EndeffectorID ee : endeffectors.GetEEsOrdered())
+    stream << endeffectors.at(ee) << ", ";
 
-  return vec;
+  return stream;
 }
 
 template<typename T>
@@ -248,7 +243,7 @@ bool
 Endeffectors<T>::operator!=(const Endeffectors& other) const
 {
   for (auto ee : GetEEsOrdered()) {
-    if (ee_.at(ee) != other.At(ee))
+    if (ee_.at(ee) != other.at(ee))
       return true;
   }
   return false;
@@ -256,4 +251,4 @@ Endeffectors<T>::operator!=(const Endeffectors& other) const
 
 } /* namespace xpp */
 
-#endif /* XPP_INCLUDE_XPP_ENDEFFECTORS_H_ */
+#endif /* _XPP_STATES_ENDEFFECTORS_H_ */

@@ -1,6 +1,7 @@
 #include <xpp_vis_hyq/inverse_kinematics_hyq4.h>
 
 #include <xpp_states/cartesian_declarations.h>
+#include <xpp_states/endeffector_mappings.h>
 
 namespace xpp {
 
@@ -19,18 +20,23 @@ InverseKinematicsHyq4::GetAllJointAngles(const EndeffectorsPos& pos_B) const
     HyqlegInverseKinematics::KneeBend bend = HyqlegInverseKinematics::Forward;
 
     using namespace quad;
-    if (ee == kMapIDToEE.at(LF)) {
-      ee_pos_H = pos_B.At(ee);
-    } else if (ee == kMapIDToEE.at(RF)) {
-      ee_pos_H = pos_B.At(ee).cwiseProduct(Eigen::Vector3d(1,-1,1));
-    } else if (ee == kMapIDToEE.at(LH)) {
-      ee_pos_H = pos_B.At(ee).cwiseProduct(Eigen::Vector3d(-1,1,1));
-      bend = HyqlegInverseKinematics::Backward;
-    } else if (ee == kMapIDToEE.at(RH)) {
-      ee_pos_H = pos_B.At(ee).cwiseProduct(Eigen::Vector3d(-1,-1,1));
-      bend = HyqlegInverseKinematics::Backward;
-    } else {
-      assert(false); // foot_id does not exist
+    switch (ee) {
+      case LF:
+        ee_pos_H = pos_B.at(ee);
+        break;
+      case RF:
+        ee_pos_H = pos_B.at(ee).cwiseProduct(Eigen::Vector3d(1,-1,1));
+        break;
+      case LH:
+        ee_pos_H = pos_B.at(ee).cwiseProduct(Eigen::Vector3d(-1,1,1));
+        bend = HyqlegInverseKinematics::Backward;
+        break;
+      case RH:
+        ee_pos_H = pos_B.at(ee).cwiseProduct(Eigen::Vector3d(-1,-1,1));
+        bend = HyqlegInverseKinematics::Backward;
+        break;
+      default: assert(false); break; // foot id does not exist
+        break;
     }
 
     ee_pos_H -= base2hip_LF_;

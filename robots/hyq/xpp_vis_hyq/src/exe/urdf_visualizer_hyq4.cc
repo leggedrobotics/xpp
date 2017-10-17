@@ -9,6 +9,8 @@
 #include <xpp_vis_hyq/inverse_kinematics_hyq4.h>
 #include <xpp_msgs/topic_names.h>
 #include <xpp_states/joints.h>
+#include <xpp_states/endeffector_mappings.h>
+
 #include <xpp_vis/cartesian_joint_converter.h>
 #include <xpp_vis/urdf_visualizer.h>
 
@@ -27,21 +29,21 @@ int main(int argc, char *argv[])
 	                                          joint_desired_hyq);
 
 	// urdf joint names
-	int n_ee = quad::kMapIDToEE.size();
+	int n_ee = hyq_ik->GetEECount();
 	int n_j  = HyqlegJointCount;
 	std::vector<UrdfVisualizer::URDFName> joint_names(n_ee*n_j);
-	joint_names.at(n_j*kMapIDToEE.at(LF) + HAA) = "lf_haa_joint";
-	joint_names.at(n_j*kMapIDToEE.at(LF) + HFE) = "lf_hfe_joint";
-	joint_names.at(n_j*kMapIDToEE.at(LF) + KFE) = "lf_kfe_joint";
-	joint_names.at(n_j*kMapIDToEE.at(RF) + HAA) = "rf_haa_joint";
-	joint_names.at(n_j*kMapIDToEE.at(RF) + HFE) = "rf_hfe_joint";
-	joint_names.at(n_j*kMapIDToEE.at(RF) + KFE) = "rf_kfe_joint";
-	joint_names.at(n_j*kMapIDToEE.at(LH) + HAA) = "lh_haa_joint";
-	joint_names.at(n_j*kMapIDToEE.at(LH) + HFE) = "lh_hfe_joint";
-	joint_names.at(n_j*kMapIDToEE.at(LH) + KFE) = "lh_kfe_joint";
-	joint_names.at(n_j*kMapIDToEE.at(RH) + HAA) = "rh_haa_joint";
-	joint_names.at(n_j*kMapIDToEE.at(RH) + HFE) = "rh_hfe_joint";
-	joint_names.at(n_j*kMapIDToEE.at(RH) + KFE) = "rh_kfe_joint";
+	joint_names.at(n_j*LF + HAA) = "lf_haa_joint";
+	joint_names.at(n_j*LF + HFE) = "lf_hfe_joint";
+	joint_names.at(n_j*LF + KFE) = "lf_kfe_joint";
+	joint_names.at(n_j*RF + HAA) = "rf_haa_joint";
+	joint_names.at(n_j*RF + HFE) = "rf_hfe_joint";
+	joint_names.at(n_j*RF + KFE) = "rf_kfe_joint";
+	joint_names.at(n_j*LH + HAA) = "lh_haa_joint";
+	joint_names.at(n_j*LH + HFE) = "lh_hfe_joint";
+	joint_names.at(n_j*LH + KFE) = "lh_kfe_joint";
+	joint_names.at(n_j*RH + HAA) = "rh_haa_joint";
+	joint_names.at(n_j*RH + HFE) = "rh_hfe_joint";
+	joint_names.at(n_j*RH + KFE) = "rh_kfe_joint";
 
 	std::string urdf = "hyq_rviz_urdf_robot_description";
 	UrdfVisualizer hyq_desired(urdf, joint_names, "base", "world",

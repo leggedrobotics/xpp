@@ -3,6 +3,8 @@
 #include <cmath>
 #include <iostream>
 
+#include <xpp_states/endeffector_mappings.h>
+
 
 namespace xpp {
 
@@ -13,12 +15,11 @@ InverseKinematicsHyq2::InverseKinematicsHyq2 ()
 Joints
 InverseKinematicsHyq2::GetAllJointAngles(const EndeffectorsPos& x_B) const
 {
-
+  using namespace biped;
   std::vector<Eigen::VectorXd> q_vec;
 
-  q_vec.push_back(leg.GetJointAngles(x_B.At(E0) + Vector3d(0.0, -0.1, 0.15)));
-  if (x_B.GetCount() > 1)
-    q_vec.push_back(leg.GetJointAngles(x_B.At(E1) + Vector3d(0.0,  0.1, 0.15)));
+  q_vec.push_back(leg.GetJointAngles(x_B.at(L) + Vector3d(0.0, -0.1, 0.15)));
+  q_vec.push_back(leg.GetJointAngles(x_B.at(R) + Vector3d(0.0,  0.1, 0.15)));
 
   return Joints(q_vec);
 }

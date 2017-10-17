@@ -86,7 +86,7 @@ ToXpp(const std::vector<T>& ros)
   Endeffectors<Vector3d> xpp(ros.size());
 
   for (auto ee : xpp.GetEEsOrdered())
-    xpp.At(ee) = ToXpp(ros.at(ee));
+    xpp.at(ee) = ToXpp(ros.at(ee));
 
   return xpp;
 }
@@ -125,8 +125,8 @@ ToRos(const State3d& xpp)
   msg.accel.linear  = ToRos<geometry_msgs::Vector3>(xpp.lin.a_);
 
   msg.pose.orientation = ToRos(xpp.ang.q);
-  msg.twist.angular    = ToRos<geometry_msgs::Vector3>(xpp.ang.v);
-  msg.accel.angular    = ToRos<geometry_msgs::Vector3>(xpp.ang.a);
+  msg.twist.angular    = ToRos<geometry_msgs::Vector3>(xpp.ang.w);
+  msg.accel.angular    = ToRos<geometry_msgs::Vector3>(xpp.ang.wd);
 
   return msg;
 }
@@ -141,8 +141,8 @@ ToXpp(const xpp_msgs::State6d& ros)
   xpp.lin.a_ = ToXpp(ros.accel.linear);
 
   xpp.ang.q = ToXpp(ros.pose.orientation);
-  xpp.ang.v = ToXpp(ros.twist.angular);
-  xpp.ang.a = ToXpp(ros.accel.angular);
+  xpp.ang.w = ToXpp(ros.twist.angular);
+  xpp.ang.wd = ToXpp(ros.accel.angular);
 
   return xpp;
 }
@@ -153,12 +153,12 @@ ToRos(const RobotStateCartesian& xpp)
   xpp_msgs::RobotStateCartesian ros;
 
   ros.base            = ToRos(xpp.base_);
-  ros.time_from_start = ::ros::Duration(xpp.t_global_);
+  ros.time_from_start = ros::Duration(xpp.t_global_);
 
   for (auto ee : xpp.ee_contact_.GetEEsOrdered()) {
-    ros.ee_motion. push_back(ToRos(xpp.ee_motion_.At(ee)));
-    ros.ee_contact.push_back(xpp.ee_contact_.At(ee));
-    ros.ee_forces. push_back(ToRos<geometry_msgs::Vector3>(xpp.ee_forces_.At(ee)));
+    ros.ee_motion. push_back(ToRos(xpp.ee_motion_.at(ee)));
+    ros.ee_contact.push_back(xpp.ee_contact_.at(ee));
+    ros.ee_forces. push_back(ToRos<geometry_msgs::Vector3>(xpp.ee_forces_.at(ee)));
   }
 
   return ros;
@@ -175,9 +175,9 @@ ToXpp(const xpp_msgs::RobotStateCartesian& ros)
   xpp.t_global_ = ros.time_from_start.toSec();
 
   for (auto ee : xpp.ee_contact_.GetEEsOrdered()) {
-    xpp.ee_motion_.At(ee)  = ToXpp(ros.ee_motion.at(ee));
-    xpp.ee_contact_.At(ee) = ros.ee_contact.at(ee);
-    xpp.ee_forces_.At(ee)  = ToXpp(ros.ee_forces.at(ee));
+    xpp.ee_motion_.at(ee)  = ToXpp(ros.ee_motion.at(ee));
+    xpp.ee_contact_.at(ee) = ros.ee_contact.at(ee);
+    xpp.ee_forces_.at(ee)  = ToXpp(ros.ee_forces.at(ee));
   }
 
   return xpp;

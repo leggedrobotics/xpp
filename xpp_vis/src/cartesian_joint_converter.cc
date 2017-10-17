@@ -32,9 +32,9 @@ CartesianJointConverter::StateCallback (const xpp_msgs::RobotStateCartesian& car
 
   // transform feet from world -> base frame
   Eigen::Matrix3d B_R_W = cart.base_.ang.q.normalized().toRotationMatrix().inverse();
-  EndeffectorsPos ee_B(cart.ee_motion_.GetCount());
+  EndeffectorsPos ee_B(cart.ee_motion_.GetEECount());
   for (auto ee : ee_B.GetEEsOrdered())
-    ee_B.At(ee) = B_R_W * (cart.ee_motion_.At(ee).p_ - cart.base_.lin.p_);
+    ee_B.at(ee) = B_R_W * (cart.ee_motion_.at(ee).p_ - cart.base_.lin.p_);
 
   Eigen::VectorXd q =  inverse_kinematics_->GetAllJointAngles(ee_B).ToVec();
 

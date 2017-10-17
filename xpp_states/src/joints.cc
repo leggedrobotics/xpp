@@ -1,15 +1,8 @@
-/**
- @file    joint_values.cc
- @author  Alexander W. Winkler (winklera@ethz.ch)
- @date    Jan 2, 2017
- @brief   Brief description
- */
 
 #include <xpp_states/joints.h>
 
 namespace xpp {
 
-using EEID = EndeffectorID;
 
 Joints::Joints (int n_ee, int n_joints_per_leg, double value)
     : Base(n_ee)
@@ -21,25 +14,10 @@ Joints::Joints (int n_ee, int n_joints_per_leg, double value)
 }
 
 Joints::Joints (const std::vector<VectorXd>& q_vec)
-    : Base(q_vec.size())
+    : Joints(q_vec.size(), q_vec.front().rows())
 {
-  n_joints_per_leg_ = q_vec.front().rows(); // assume all are the same
-  n_joints_ = GetCount()*n_joints_per_leg_;
-
   for (auto ee : GetEEsOrdered())
-    At(ee) = q_vec.at(ee);
-}
-
-Joints::Joints (const VectorXd& q, const EEOrder& ee_order)
-    : Base(ee_order.size())
-{
-  n_joints_ = q.rows();
-  n_joints_per_leg_ = n_joints_/GetCount(); // assumes each endeffector has same amount of joints
-  SetFromVec(q, ee_order);
-}
-
-Joints::~Joints ()
-{
+    at(ee) = q_vec.at(ee);
 }
 
 int
@@ -48,14 +26,20 @@ Joints::GetNumJoints () const
   return n_joints_;
 }
 
-Joints::VectorXd
+int
+Joints::GetNumJointsPerEE () const
+{
+  return n_joints_per_leg_;
+}
+
+VectorXd
 Joints::ToVec (const EEOrder& ee_order) const
 {
   VectorXd q_combined(n_joints_);
   int j = 0;
 
-  for (EEID ee : ee_order) {
-    q_combined.middleRows(j, n_joints_per_leg_) = At(ee);
+  for (auto ee : ee_order) {
+    q_combined.middleRows(j, n_joints_per_leg_) = at(ee);
     j += n_joints_per_leg_;
   }
 
@@ -67,13 +51,13 @@ Joints::SetFromVec (const VectorXd& xpp, const EEOrder& ee_order)
 {
   int j = 0;
 
-  for (EEID ee : ee_order) {
-    At(ee) = xpp.middleRows(j, n_joints_per_leg_);
+  for (auto ee : ee_order) {
+    at(ee) = xpp.middleRows(j, n_joints_per_leg_);
     j += n_joints_per_leg_;
   }
 }
 
-Joints::VectorXd
+VectorXd
 Joints::ToVec () const
 {
   return ToVec(GetEEsOrdered());
@@ -86,41 +70,21 @@ Joints::SetFromVec (const VectorXd& q)
 }
 
 double&
-Joints::At (JointID joint)
+Joints::GetJoint (JointID joint)
 {
   div_t result = std::div(joint, n_joints_per_leg_);
-  EEID ee = static_cast<EEID>(result.quot);
-  return At(ee)[result.rem];
+  EndeffectorID ee = result.quot;
+  return at(ee)[result.rem];
 }
 
 double
-Joints::At (JointID joint) const
+Joints::GetJoint (JointID joint) const
 {
   return ToVec()[joint];
 }
 
-const Joints
-Joints::operator + (const Joints& rhs) const
+Joints::~Joints ()
 {
-  VectorXd result = ToVec() + rhs.ToVec();
-  Joints xpp(GetCount(), n_joints_per_leg_);
-  xpp.SetFromVec(result);
-  return xpp;
-}
-
-const Joints
-Joints::operator * (double scalar) const
-{
-  VectorXd result = scalar*ToVec();
-  Joints xpp(GetCount(), n_joints_per_leg_);
-  xpp.SetFromVec(result);
-  return xpp;
-}
-
-int
-Joints::GetNumJointsPerEE () const
-{
-  return n_joints_per_leg_;
 }
 
 } /* namespace xpp */

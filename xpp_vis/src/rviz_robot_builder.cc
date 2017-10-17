@@ -27,6 +27,7 @@ RvizRobotBuilder::MarkerArray
 RvizRobotBuilder::BuildRobotState (const xpp_msgs::RobotStateCartesian& state_msg) const
 {
   auto state = Convert::ToXpp(state_msg);
+  auto ee_pos = state.ee_motion_.Get(kPos);
   MarkerArray msg;
 
   Marker base = CreateBasePose(state.base_.lin.p_,
@@ -34,22 +35,22 @@ RvizRobotBuilder::BuildRobotState (const xpp_msgs::RobotStateCartesian& state_ms
                                state.ee_contact_);
   msg.markers.push_back(base);
 
-  Marker cop = CreateCopPos(state.ee_forces_,state.GetEEPos());
+  Marker cop = CreateCopPos(state.ee_forces_, ee_pos);
   msg.markers.push_back(cop);
 
-  MarkerVec ee_pos = CreateEEPositions(state.GetEEPos(), state.ee_contact_);
-  msg.markers.insert(msg.markers.begin(), ee_pos.begin(), ee_pos.end());
+  MarkerVec m_ee_pos = CreateEEPositions(ee_pos, state.ee_contact_);
+  msg.markers.insert(msg.markers.begin(), m_ee_pos.begin(), m_ee_pos.end());
 
-  MarkerVec ee_forces = CreateEEForces(state.ee_forces_,state.GetEEPos(), state.ee_contact_);
+  MarkerVec ee_forces = CreateEEForces(state.ee_forces_, ee_pos, state.ee_contact_);
   msg.markers.insert(msg.markers.begin(), ee_forces.begin(), ee_forces.end());
 
   MarkerVec rom = CreateRangeOfMotion(state.base_);
   msg.markers.insert(msg.markers.begin(), rom.begin(), rom.end());
 
-  MarkerVec support = CreateSupportArea(state.ee_contact_,state.GetEEPos());
+  MarkerVec support = CreateSupportArea(state.ee_contact_, ee_pos);
   msg.markers.insert(msg.markers.begin(), support.begin(), support.end());
 
-  Marker ip = CreatePendulum(state.base_.lin.p_, state.ee_forces_,state.GetEEPos());
+  Marker ip = CreatePendulum(state.base_.lin.p_, state.ee_forces_, ee_pos);
   msg.markers.push_back(ip);
 
   msg.markers.push_back(CreateGravityForce(state.base_.lin.p_));
@@ -85,11 +86,11 @@ RvizRobotBuilder::CreateEEPositions (const EEPos& ee_pos,
   MarkerVec vec;
 
   for (auto ee : ee_pos.GetEEsOrdered()) {
-    Marker m = CreateSphere(ee_pos.At(ee), 0.04);
+    Marker m = CreateSphere(ee_pos.at(ee), 0.04);
     m.ns     = "endeffector_pos";
     m.color  = color.blue;//GetLegColor(ee);
 
-    if (in_contact.At(ee))
+    if (in_contact.at(ee))
       m.lifetime = ::ros::DURATION_MAX; // keep showing footholds
 
     vec.push_back(m);
@@ -118,8 +119,8 @@ RvizRobotBuilder::CreateEEForces (const EEForces& ee_forces,
   MarkerVec vec;
 
   for (auto ee : ee_forces.GetEEsOrdered()) {
-    Vector3d p = ee_pos.At(ee);
-    Vector3d f = ee_forces.At(ee);
+    Vector3d p = ee_pos.at(ee);
+    Vector3d f = ee_forces.at(ee);
 
 
     Marker m = CreateForceArrow(f, p);
@@ -139,15 +140,15 @@ RvizRobotBuilder::CreateFrictionCones (const EEPos& ee_pos,
   MarkerVec vec;
 
   // only draw cones if terrain_msg and robot state correspond
-  if (ee_pos.GetCount() == terrain_msg_.surface_normals.size()) {
+  if (ee_pos.GetEECount() == terrain_msg_.surface_normals.size()) {
 
     auto normals = Convert::ToXpp(terrain_msg_.surface_normals);
     for (auto ee : normals.GetEEsOrdered()) {
       Marker m;
-      Vector3d n = normals.At(ee);
-      m = CreateFrictionCone(ee_pos.At(ee), -n, terrain_msg_.friction_coeff);
+      Vector3d n = normals.at(ee);
+      m = CreateFrictionCone(ee_pos.at(ee), -n, terrain_msg_.friction_coeff);
       m.color   = color.red;
-      m.color.a = contact_state.At(ee)? 0.25 : 0.0;
+      m.color.a = contact_state.at(ee)? 0.25 : 0.0;
       m.ns      = "friction_cone";
       vec.push_back(m);
     }
@@ -166,7 +167,7 @@ RvizRobotBuilder::CreateBasePose (const Vector3d& pos,
 
   m.color = color.black;
   for (auto ee : contact_state.GetEEsOrdered())
-    if (contact_state.At(ee))
+    if (contact_state.at(ee))
       m.color = color.black;
 
 
@@ -187,8 +188,8 @@ RvizRobotBuilder::CreateCopPos (const EEForces& ee_forces,
   Vector3d cop = Vector3d::Zero();
   if (z_sum > 0.0) {
     for (auto ee : ee_forces.GetEEsOrdered()) {
-      double p = ee_forces.At(ee).z()/z_sum;
-      cop += p*ee_pos.At(ee);
+      double p = ee_forces.at(ee).z()/z_sum;
+      cop += p*ee_pos.at(ee);
     }
   }
 
@@ -235,7 +236,6 @@ RvizRobotBuilder::CreateRangeOfMotion (const State3d& base) const
 
   auto w_R_b = base.ang.q.toRotationMatrix();
 
-  int ee = E0;
   for (const auto& pos_B : params_msg_.nominal_ee_pos) {
     Vector3d pos_W = base.lin.p_ + w_R_b*Convert::ToXpp(pos_B);
 
@@ -335,8 +335,8 @@ RvizRobotBuilder::CreateSupportArea (const ContactState& contact_state,
   m.scale.x = m.scale.y = m.scale.z = 1.0;
 
   for (auto ee : contact_state.GetEEsOrdered()) {
-    if (contact_state.At(ee)) { // endeffector in contact
-      auto p = Convert::ToRos<geometry_msgs::Point>(ee_pos.At(ee));
+    if (contact_state.at(ee)) { // endeffector in contact
+      auto p = Convert::ToRos<geometry_msgs::Point>(ee_pos.at(ee));
       m.points.push_back(p);
       m.color = color.black;
       m.color.a = 0.2;
