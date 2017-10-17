@@ -21,6 +21,11 @@ public:
    */
 	Joints GetAllJointAngles(const EndeffectorsPos& pos_B) const override;
 
+  /**
+   * @brief Number of endeffectors (feet, hands) this implementation expects.
+   */
+  int GetEECount() const override { return 2; };
+
 private:
 	HyqlegInverseKinematics leg;
 };

@@ -59,8 +59,8 @@ public:
   void SetOptimizationParameters(const xpp_msgs::OptParameters& msg);
 
   /**
-   * @brief Additional information that can be used for visualization.
-   * @param msg  The ROS message.
+   * @brief  Additional information that can be used for visualization.
+   * @param  msg  The ROS message.
    *
    * This information is related to the terrain, such as the current terrain
    * normals at the endeffectors and friction coefficient
@@ -79,6 +79,8 @@ private:
   MarkerVec CreateEEForces(const EEForces& f_W,
                            const EEPos& pos_W,
                            const ContactState& c) const;
+  MarkerVec CreateFrictionCones(const EEPos& pos_W,
+                                const ContactState& c) const;
   MarkerVec CreateSupportArea(const ContactState& c,
                               const EEPos& pos_W) const;
   MarkerVec CreateRangeOfMotion(const State3d& base) const;
@@ -92,7 +94,8 @@ private:
                            const EEForces& f_W,
                            const EEPos& pos_W) const;
   Marker    CreateFrictionCone(const Vector3d& pos_W,
-                               const Vector3d& terrain_normal) const;
+                               const Vector3d& terrain_normal,
+                               double friction_coeff) const;
   Marker    CreateForceArrow(const Vector3d& f,
                              const Vector3d& pos) const;
   Marker    CreateSphere(const Vector3d& pos,

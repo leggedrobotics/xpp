@@ -44,7 +44,4 @@ InverseKinematicsHyq4::~InverseKinematicsHyq4 ()
 {
 }
 
-
 } /* namespace xpp */
-
-

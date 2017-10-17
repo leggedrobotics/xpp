@@ -86,29 +86,46 @@ Visualization Manager:
         cop: true
         ee_force: true
         endeffector_pos: true
-        friction_cone: true
         gravity_force: false
         inverted_pendulum: false
-        range_of_motion: true
         support_polygons: true
-        terrain: false
       Queue Size: 100
       Value: true
     - Alpha: 1
       Class: rviz/RobotModel
       Collision Enabled: false
-      Enabled: false
+      Enabled: true
       Links:
         All Links Enabled: true
         Expand Joint Details: false
         Expand Link Details: false
         Expand Tree: false
         Link Tree Style: Links in Alphabetic Order
+        base:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        hipassembly:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        lowerleg:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        upperleg:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
       Name: MonopedURDF
       Robot Description: /monoped_rviz_urdf_robot_description
       TF Prefix: monoped
       Update Interval: 0
-      Value: false
+      Value: true
       Visual Enabled: true
     - Alpha: 1
       Class: rviz/RobotModel
@@ -129,214 +146,34 @@ Visualization Manager:
     - Alpha: 1
       Class: rviz/RobotModel
       Collision Enabled: false
-      Enabled: true
+      Enabled: false
       Links:
         All Links Enabled: true
         Expand Joint Details: false
         Expand Link Details: false
         Expand Tree: false
         Link Tree Style: Links in Alphabetic Order
-        base:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        lf_foot:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        lf_hipassembly:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        lf_lowerleg:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        lf_upperleg:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        lh_foot:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        lh_hipassembly:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        lh_lowerleg:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        lh_upperleg:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        rf_foot:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        rf_hipassembly:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        rf_lowerleg:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        rf_upperleg:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        rh_foot:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        rh_hipassembly:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        rh_lowerleg:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        rh_upperleg:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        trunk:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
       Name: HyqURDFcurrent
       Robot Description: /hyq_rviz_urdf_robot_description
       TF Prefix: hyq_curr
       Update Interval: 0
-      Value: true
+      Value: false
       Visual Enabled: true
     - Alpha: 0.5
       Class: rviz/RobotModel
       Collision Enabled: false
-      Enabled: true
+      Enabled: false
       Links:
         All Links Enabled: true
         Expand Joint Details: false
         Expand Link Details: false
         Expand Tree: false
         Link Tree Style: Links in Alphabetic Order
-        base:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        lf_foot:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        lf_hipassembly:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        lf_lowerleg:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        lf_upperleg:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        lh_foot:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        lh_hipassembly:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        lh_lowerleg:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        lh_upperleg:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        rf_foot:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        rf_hipassembly:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        rf_lowerleg:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        rf_upperleg:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        rh_foot:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        rh_hipassembly:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        rh_lowerleg:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        rh_upperleg:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        trunk:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
       Name: HyqURDFdesired
       Robot Description: /hyq_rviz_urdf_robot_description
       TF Prefix: hyq_des
       Update Interval: 0
-      Value: true
+      Value: false
       Visual Enabled: true
     - Alpha: 0.1
       Class: rviz/RobotModel
@@ -436,10 +273,10 @@ Visualization Manager:
         Z: -0.579997
       Name: Current View
       Near Clip Distance: 0.01
-      Pitch: 0.214797
+      Pitch: 0.289797
       Target Frame: <Fixed Frame>
       Value: ThirdPersonFollower (rviz)
-      Yaw: 1.76398
+      Yaw: 1.52898
     Saved:
       - Angle: 3.14
         Class: rviz/TopDownOrtho

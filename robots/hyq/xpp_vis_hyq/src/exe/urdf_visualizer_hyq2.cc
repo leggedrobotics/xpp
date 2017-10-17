@@ -14,10 +14,12 @@ int main(int argc, char *argv[])
 {
 	::ros::init(argc, argv, "biped_urdf_visualizer");
 
+	const std::string joint_desired_biped = "xpp/joint_biped_des";
+
 	auto ik = std::make_shared<InverseKinematicsHyq2>();
   CartesianJointConverter inv_kin_converter(ik,
                                             xpp_msgs::robot_state_desired,
-                                            xpp_msgs::joint_desired);
+                                            joint_desired_biped);
 
   int n_ee = biped::kMapIDToEE.size();
   int n_j  = HyqlegJointCount;
@@ -31,7 +33,7 @@ int main(int argc, char *argv[])
 
 	std::string urdf = "biped_rviz_urdf_robot_description";
 	UrdfVisualizer node(urdf, joint_names, "base", "world",
-	                    xpp_msgs::joint_desired, "biped");
+	                    joint_desired_biped, "biped");
 
 	::ros::spin();
 

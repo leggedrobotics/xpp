@@ -13,7 +13,7 @@
 namespace xpp {
 
 /**
- * @briefs Converts between xpp-states types and xpp-messages.
+ * @brief Converts between xpp-states types and xpp-messages.
  *
  * ToXpp() : Convert from ROS message (xpp_msgs) to state (xpp_states).
  * ToRos() : Convert from state (xpp_states) to ROS message (xpp_msgs).

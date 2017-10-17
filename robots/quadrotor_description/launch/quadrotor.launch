@@ -1,0 +1,9 @@
+<launch>
+   
+  <!-- Launch the general part of visualization -->
+  <include file="$(find xpp_vis)/launch/xpp_vis.launch"></include>
+
+   <!-- No IK needed, just need base state, so use one of the above -->
+   <param name="quadrotor_rviz_urdf_robot_description" command="$(find xacro)/xacro.py '$(find quadrotor_description)/urdf/quadrotor.urdf'"/> 
+    
+</launch>

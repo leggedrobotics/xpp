@@ -1,9 +1,7 @@
 
 #include <xpp_vis/rviz_robot_builder.h>
 
-#include <../../xpp_ros_conversions/include/xpp_ros_conversions/convert.h>
-#include <xpp_states/terrain_types.h>
-
+#include <xpp_ros_conversions/convert.h>
 #include <xpp_vis/rviz_colors.h>
 
 namespace xpp {
@@ -59,10 +57,10 @@ RvizRobotBuilder::BuildRobotState (const xpp_msgs::RobotStateCartesian& state_ms
 
   static const int state_ids_start_ = 10;
   static const int trajectory_ids_start_ = 70;
-  static int trajectory_id_;
+  static int unique_id; // in case marker should remain forever
 
   if (state.t_global_ < 0.01) // first state in trajectory
-    trajectory_id_ = trajectory_ids_start_;
+    unique_id = trajectory_ids_start_;
 
   int id = state_ids_start_; // earlier IDs filled by terrain
   for (Marker& m : msg.markers) {
@@ -70,7 +68,7 @@ RvizRobotBuilder::BuildRobotState (const xpp_msgs::RobotStateCartesian& state_ms
 
     // use unique ID that doesn't get overwritten in next state.
     if (m.lifetime == ::ros::DURATION_MAX)
-      m.id = trajectory_id_++;
+      m.id = unique_id++;
     else
       m.id = id;
 
@@ -114,8 +112,8 @@ RvizRobotBuilder::CreateGravityForce (const Vector3d& base_pos) const
 
 RvizRobotBuilder::MarkerVec
 RvizRobotBuilder::CreateEEForces (const EEForces& ee_forces,
-                                   const EEPos& ee_pos,
-                                   const ContactState& contact_state) const
+                                  const EEPos& ee_pos,
+                                  const ContactState& contact_state) const
 {
   MarkerVec vec;
 
@@ -131,15 +129,28 @@ RvizRobotBuilder::CreateEEForces (const EEForces& ee_forces,
     vec.push_back(m);
   }
 
-  auto normals = Convert::ToXpp(terrain_msg_.surface_normals);
-  for (auto ee : normals.GetEEsOrdered()) {
-    Marker m;
-    Vector3d n = normals.At(ee);
-    m = CreateFrictionCone(ee_pos.At(ee), -n);
-    m.color  = color.red;
-    m.color.a = contact_state.At(ee)? 0.25 : 0.0;
-    m.ns     = "friction_cone";
-    vec.push_back(m);
+  return vec;
+}
+
+RvizRobotBuilder::MarkerVec
+RvizRobotBuilder::CreateFrictionCones (const EEPos& ee_pos,
+                                       const ContactState& contact_state) const
+{
+  MarkerVec vec;
+
+  // only draw cones if terrain_msg and robot state correspond
+  if (ee_pos.GetCount() == terrain_msg_.surface_normals.size()) {
+
+    auto normals = Convert::ToXpp(terrain_msg_.surface_normals);
+    for (auto ee : normals.GetEEsOrdered()) {
+      Marker m;
+      Vector3d n = normals.At(ee);
+      m = CreateFrictionCone(ee_pos.At(ee), -n, terrain_msg_.friction_coeff);
+      m.color   = color.red;
+      m.color.a = contact_state.At(ee)? 0.25 : 0.0;
+      m.ns      = "friction_cone";
+      vec.push_back(m);
+    }
   }
 
   return vec;
@@ -291,7 +302,8 @@ RvizRobotBuilder::CreateForceArrow (const Vector3d& force,
 
 RvizRobotBuilder::Marker
 RvizRobotBuilder::CreateFrictionCone (const Vector3d& pos,
-                                       const Vector3d& normal) const
+                                      const Vector3d& normal,
+                                      double mu) const
 {
   Marker m;
   m.type = Marker::ARROW;
@@ -300,7 +312,7 @@ RvizRobotBuilder::CreateFrictionCone (const Vector3d& pos,
   double friction = 0.5;
 
   m.scale.x = 0.00; // [shaft diameter] hide arrow shaft to generate cone
-  m.scale.y = 2.0 * cone_height * terrain_msg_.friction_coeff; // arrow-head diameter
+  m.scale.y = 2.0 * cone_height * mu; // arrow-head diameter
   m.scale.z = cone_height; // arrow head length
 
   auto start = Convert::ToRos<geometry_msgs::Point>(pos + normal);

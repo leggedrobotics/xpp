@@ -31,6 +31,11 @@ public:
     * @return Joints angles of the robot.
     */
   virtual Joints GetAllJointAngles(const EndeffectorsPos& pos_b) const = 0;
+
+  /**
+   * @brief Number of endeffectors (feet, hands) this implementation expects.
+   */
+  virtual int GetEECount() const = 0;
 };
 
 } /* namespace xpp */
