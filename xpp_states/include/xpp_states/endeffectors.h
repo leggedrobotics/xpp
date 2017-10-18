@@ -22,7 +22,7 @@ using EndeffectorID = uint;
  * constructors, define addition and subtraction of all endeffectors and
  * other convenience functions associated specifically to endeffectors.
  *
- * The idea is that this class is a enhanced STL container, but complies to the
+ * The idea is that this class is an enhanced STL container, but complies to the
  * same interface, (e.g at()). However, in case this unified interface is
  * burdensome, you can always access the underlying STL-deque container directly.
  */

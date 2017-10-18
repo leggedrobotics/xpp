@@ -2,7 +2,6 @@
 #ifndef _XPP_STATES_JOINTS_H_
 #define _XPP_STATES_JOINTS_H_
 
-#include <map>
 #include <vector>
 #include <Eigen/Dense>
 
@@ -16,7 +15,7 @@ namespace xpp {
  * The idea is that every joint affects only one specific endeffector, so the
  * joints are grouped in this fashion. They can also be transformed to or set
  * from an undiscriminative Eigen::VectorXd. This however is not recommended,
- * as this Cartesian <->joint relationship is
+ * as this Cartesian <->joint relationship is then lost/hidden.
  */
 class Joints : public Endeffectors<VectorXd> {
 public:
@@ -31,6 +30,11 @@ public:
    * @param  n_ee             total number of endeffectors.
    * @param  n_joints_per_ee  number of joints for each endeffector.
    * @param  value            same joint value set for each joint.
+   *
+   * Constructing joints just from the number of joints is not permitted,
+   * as we enforce every joint to be assigned to an endeffector. This is
+   * restrictive, however it helps to avoid bugs and makes later computations
+   * easier.
    */
   explicit Joints (int n_ee, int n_joints_per_ee, double value = 0.0);
 
