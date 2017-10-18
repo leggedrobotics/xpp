@@ -5,9 +5,10 @@
   <version>1.0.0</version>
   <description>
     The URDF file for HyQ from the Italian Institute of Technology (IIT).
+    https://www.iit.it/research/lines/dynamic-legged-systems.
   </description>
   
-  <author email="alexander.w.winkler@gmail.com">Alexander W. Winkler</author>
+  <author email="carlos.mastalli@iit.it">Carlos Mastalli</author>
   <maintainer email="alexander.w.winkler@gmail.com">Alexander W. Winkler</maintainer>
   <license>BSD</license>
   

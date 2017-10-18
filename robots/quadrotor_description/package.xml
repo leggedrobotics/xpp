@@ -4,10 +4,13 @@
   <name>quadrotor_description</name>
   <version>1.0.0</version>
   <description>
-    The URDF file for a quadrotor.
+    The URDF file for a quadrotor. 
+    Adapted from Daniel Mellinger, Nathan Michael, Vijay Kumar, 
+    "Trajectory Generation and Control for Precise Aggressive Maneuvers
+    with Quadrotors"
   </description>
   
-  <author email="alexander.w.winkler@gmail.com">Alexander W. Winkler</author>
+  <author email="depardo@ethz.ch">Diego Pardo.</author>
   <maintainer email="alexander.w.winkler@gmail.com">Alexander W. Winkler</maintainer>
   <license>BSD</license>
   

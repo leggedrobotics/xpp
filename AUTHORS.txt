@@ -1,0 +1,10 @@
+Xpp was mainly developed by 
+Alexander W. Winkler at
+(1) Agile and Dexterous Robotics Lab
+(2) Robotics Systems Lab
+ETH Zurich
+
+Further contributors:
+* Diego Pardo, ETH Zurich
+* Carlos Mastalli, Italian Institute of Technology
+* Michael Neunert, ETH Zurich
