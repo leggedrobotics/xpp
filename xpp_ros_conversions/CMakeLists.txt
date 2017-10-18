@@ -18,6 +18,6 @@ find_package(catkin REQUIRED)
 catkin_package(
    INCLUDE_DIRS include
 #  LIBRARIES xpp_ros_conversions
-   CATKIN_DEPENDS xpp_msgs xpp_states
+#  CATKIN_DEPENDS 
 #  DEPENDS system_lib
 )
