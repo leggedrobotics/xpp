@@ -40,5 +40,4 @@ TEST(XppVis, testCase2)
 {
   bool test = true;
   EXPECT_TRUE(test);
-  EXPECT_FALSE(test);
 }
