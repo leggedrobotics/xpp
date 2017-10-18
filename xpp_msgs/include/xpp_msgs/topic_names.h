@@ -30,8 +30,9 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * Defines ROS topic names to be used to more reliably connect publisher and
  * subscriber nodes.
  */
-#ifndef XPP_MSGS_INCLUDE_XPP_MSGS_TOPIC_NAMES_H_
-#define XPP_MSGS_INCLUDE_XPP_MSGS_TOPIC_NAMES_H_
+
+#ifndef XPP_MSGS_TOPIC_NAMES_H_
+#define XPP_MSGS_TOPIC_NAMES_H_
 
 #include <string>
 
@@ -58,40 +59,12 @@ static const std::string user_command("xpp/user_command");
 // information about terrain normals and friction coefficients
 static const std::string terrain_info("xpp/terrain_info");
 
-//// command that tells the walking controller to start executing
-//static const std::string start_walking_topic("xpp/start_walking");
-
-// the robot state sent from actual robot/simulation(SL).
-//static const std::string curr_robot_state_real("xpp/state_real");
-
-
 // iterations the nlp took to solve the problem. Used when processing rosbags
 static const std::string nlp_iterations_count("xpp/nlp_iterations_count");
 
 // the base topic names of each nlp iteration
 static const std::string nlp_iterations_name("xpp/nlp_iterations_name");
 
-
-//// the current position of the robot as a ros pose marker
-//static const std::string curr_base_pose("current_base_pose");
-//
-//// initial velocity (force vector)
-//static const std::string init_velocity("initial_velocity");
-//
-//
-//// sequence of full body hyq states as reference for a walking controller
-//static const std::string robot_trajectory_joints("hyq_joint_state_trajectory");
-//
-//// sequence of full body hyq states as reference for a walking controller
-//static const std::string contact_vector("contact_vector");
-//
-//
-//// rviz marker topic for NLP's optimized variables (spline coefficients, footholds,...)
-//static const std::string rviz_optimized_single("/optimization_variables_single");
-//
-//
-//// gains for hyq
-//static const std::string controller_pd_gains("hyq_pd_gains");
 }
 
-#endif /* XPP_MSGS_INCLUDE_XPP_MSGS_TOPIC_NAMES_H_ */
+#endif /* XPP_MSGS_TOPIC_NAMES_H_ */
