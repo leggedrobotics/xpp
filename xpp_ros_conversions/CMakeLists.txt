@@ -21,3 +21,14 @@ catkin_package(
 #  CATKIN_DEPENDS 
 #  DEPENDS system_lib
 )
+
+#############
+## Install ##
+#############
+
+# Mark header files for installation
+install(
+  DIRECTORY include/${PROJECT_NAME}/
+  DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
+  FILES_MATCHING PATTERN "*.h"
+)

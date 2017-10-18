@@ -20,3 +20,8 @@ catkin_package(
 #  DEPENDS system_lib
 )
 
+# Mark other files for installation
+install(
+  DIRECTORY urdf meshes
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+)

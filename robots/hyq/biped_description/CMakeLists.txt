@@ -19,3 +19,9 @@ catkin_package(
 #  CATKIN_DEPENDS roscpp std_msgs
 #  DEPENDS system_lib
 )
+
+# Mark other files for installation
+install(
+  DIRECTORY urdf meshes
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+)

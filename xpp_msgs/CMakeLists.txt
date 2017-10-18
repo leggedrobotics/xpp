@@ -51,3 +51,14 @@ catkin_package(
      sensor_msgs 
 #  DEPENDS system_lib
 )
+
+#############
+## Install ##
+#############
+
+# Mark topic names header files for installation
+install(
+  DIRECTORY include/${PROJECT_NAME}/
+  DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
+  FILES_MATCHING PATTERN "*.h"
+)

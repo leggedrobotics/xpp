@@ -75,11 +75,44 @@ target_link_libraries(monped_bag_builder
 
 
 #############
+## Install ##
+#############
+
+# Mark library for installation
+install(
+  TARGETS ${PROJECT_NAME} rviz_marker_node monped_publisher monped_bag_builder
+  ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+  LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
+
+# Mark header files for installation
+install(
+  DIRECTORY include/${PROJECT_NAME}/
+  DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
+  FILES_MATCHING PATTERN "*.h"
+)
+
+# Mark other files for installation
+install(
+  DIRECTORY launch rviz
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+)
+
+
+
+#############
 ## Testing ##
 #############
 
+if (CATKIN_ENABLE_TESTING)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
 catkin_add_gtest(${PROJECT_NAME}_test
   test/test_xpp_vis.cc 
   test/utest.cc
 )
+endif()
+
+if(TARGET ${PROJECT_NAME}_test)
+  target_link_libraries(${PROJECT_NAME}_test ${PROJECT_NAME})
+endif()

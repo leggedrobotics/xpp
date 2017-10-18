@@ -32,13 +32,13 @@ TEST(XppVis, testCase1)
 {
   int i = 3;
   ASSERT_EQ(i,3);
-  ASSERT_EQ(i,3);
+  EXPECT_EQ(i,3);
 }
 
 // Declare another test
 TEST(XppVis, testCase2)
 {
-  int i = 3;
-  EXPECT_EQ(i,3);
-  EXPECT_EQ(i,4);
+  bool test = true;
+  EXPECT_TRUE(test);
+  EXPECT_FALSE(test);
 }
