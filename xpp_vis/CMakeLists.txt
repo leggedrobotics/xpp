@@ -5,11 +5,12 @@ set(CMAKE_CXX_FLAGS "-std=c++11 ${CMAKE_CXX_FLAGS}")
 
 ## Find catkin macros and libraries
 find_package(catkin REQUIRED COMPONENTS
+  roscpp
+  rosbag
   keyboard
   tf
   kdl_parser
   robot_state_publisher
-  rosbag
   xpp_ros_conversions
 )
 
@@ -25,7 +26,7 @@ find_package(catkin REQUIRED COMPONENTS
 catkin_package(
    INCLUDE_DIRS include
    LIBRARIES ${PROJECT_NAME}
-   CATKIN_DEPENDS xpp_ros_conversions
+   CATKIN_DEPENDS xpp_ros_conversions roscpp
 #   DEPENDS system_lib
 )
 

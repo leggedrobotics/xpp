@@ -5,11 +5,10 @@ project(xpp_msgs)
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
-  roscpp
+  message_generation
   std_msgs
   geometry_msgs
   sensor_msgs
-  message_generation
 )
 
 ## Generate messages in the 'msg' folder
@@ -45,6 +44,10 @@ generate_messages(
 catkin_package(
    INCLUDE_DIRS include
 #   LIBRARIES
-   CATKIN_DEPENDS message_runtime sensor_msgs geometry_msgs roscpp
+   CATKIN_DEPENDS
+     message_runtime
+     std_msgs
+     geometry_msgs
+     sensor_msgs 
 #  DEPENDS system_lib
 )

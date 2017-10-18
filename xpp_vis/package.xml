@@ -16,6 +16,7 @@
   
   <buildtool_depend>catkin</buildtool_depend>
   
+  <depend>roscpp</depend>
   <depend>rosbag</depend>
   <depend>keyboard</depend>
   <depend>tf</depend>
