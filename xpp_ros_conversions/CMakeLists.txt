@@ -4,10 +4,7 @@ project(xpp_ros_conversions)
 set(CMAKE_CXX_FLAGS "-std=c++11 ${CMAKE_CXX_FLAGS}")
 
 ## Find catkin macros and libraries
-find_package(catkin REQUIRED COMPONENTS
-#  xpp_msgs
-#  xpp_states
-)
+find_package(catkin REQUIRED)
 
 ###################################
 ## catkin specific configuration ##

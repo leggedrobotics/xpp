@@ -7,13 +7,5 @@
    <!-- Launch rviz with specific configuration -->
    <node name="rviz_xpp" pkg="rviz" type="rviz"  args="-d $(find xpp_vis)/rviz/xpp.rviz">
    </node>
-   
-   <!-- for commanding goal positions and tasks -->
-   <node name="user_interface_node" pkg="xpp_vis" type="user_interface_node" output="screen" cwd="node" >  
-   </node>
-   
-   <!-- for commanding goal positions and tasks -->
-   <node name="keyboard" pkg="keyboard" type="keyboard" output="screen" cwd="node" >  
-   </node>
-    
+       
 </launch>

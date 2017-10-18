@@ -7,7 +7,6 @@ set(CMAKE_CXX_FLAGS "-std=c++11 ${CMAKE_CXX_FLAGS}")
 find_package(catkin REQUIRED COMPONENTS
   roscpp
   rosbag
-  keyboard
   tf
   kdl_parser
   robot_state_publisher
@@ -47,7 +46,6 @@ add_library(${PROJECT_NAME}
   src/cartesian_joint_converter.cc
   src/rviz_robot_builder.cc
   src/rviz_terrain_builder.cc
-  src/user_interface.cc
 )
 target_link_libraries(${PROJECT_NAME}
   ${catkin_LIBRARIES}
@@ -55,12 +53,6 @@ target_link_libraries(${PROJECT_NAME}
 
 
 # some executable nodes
-add_executable(user_interface_node src/exe/user_interface_node.cc)
-target_link_libraries(user_interface_node 
-  ${PROJECT_NAME}
-  ${catkin_LIBRARIES}
-)
-
 add_executable(rviz_marker_node src/exe/rviz_marker_node.cc)
 target_link_libraries(rviz_marker_node
   ${PROJECT_NAME}

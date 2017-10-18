@@ -18,7 +18,6 @@
   
   <depend>roscpp</depend>
   <depend>rosbag</depend>
-  <depend>keyboard</depend>
   <depend>tf</depend>
   <depend>kdl_parser</depend>
   <depend>robot_state_publisher</depend>
