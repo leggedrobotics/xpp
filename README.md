@@ -3,8 +3,9 @@
 
 Xpp is a package for the visualization of motion plans for legged robots. Apart from drawing support areas, contact forces and motion trajectories in RVIZ, it also displays these plans for specific robots.  Current robots include a one-legged, a two-legged hopper and [HyQ].
 
-| ![](https://i.imgur.com/NkL8Haw.gif)| ![](https://i.imgur.com/wzydvHl.gif?1)  |
-:-------------------------:|:-------------------------:
+| ![](https://i.imgur.com/NkL8Haw.gif) | ![](https://i.imgur.com/wzydvHl.gif?1)  |
+|:-------------------------:|:-------------------------:|
+|||
 
 The source code is released under a [BSD 3-Clause license](ros_package_template/LICENSE).
 
