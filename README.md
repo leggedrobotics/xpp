@@ -1,9 +1,10 @@
 # XPP
 ![Logo](doc/logo.jpg)
 
-Xpp is a package for the visualization of motion plans for legged robots. Apart from drawing support areas, contact forces and motion trajectories in RVIZ, it also displays these plans for specific robots. Current robots include:
+Xpp is a package for the visualization of motion plans for legged robots. Apart from drawing support areas, contact forces and motion trajectories in RVIZ, it also displays these plans for specific robots.  Current robots include a one-legged, a two-legged hopper and [HyQ].
 
-- [HyQ] - Italian Institute of Technology
+| ![](https://i.imgur.com/NkL8Haw.gif)| ![](https://i.imgur.com/wzydvHl.gif?1)  |
+:-------------------------:|:-------------------------:
 
 The source code is released under a [BSD 3-Clause license](ros_package_template/LICENSE).
 
@@ -16,16 +17,19 @@ See the [list of contributors](AUTHORS.txt) for further contributors.
 [![Build Status](https://ci.leggedrobotics.com/buildStatus/icon?job=github_leggedrobotics/xpp/master)](https://ci.leggedrobotics.com/job/github_leggedrobotics/job/xpp/job/master/)
 
 
+
+
+
 ### Dependencies
 
-- [ROS] (middleware for robotics)  
-   Packages: catkin, roscpp, tf, kdl_parser, robot_state_publisher, message_runtime, message_generation, std_msgs, geometry_msgs, sensor_msgs, rviz, rosbag
+[ROS]  
+Packages: catkin, roscpp, tf, kdl_parser, robot_state_publisher, message_runtime, message_generation, std_msgs, geometry_msgs, sensor_msgs, rviz, rosbag
       
-      sudo apt-get install ros-[ros_distro_name]-[pkg_name]
+    sudo apt-get install ros-[ros_distro_name]-[pkg_name]
  
-- [Eigen] (linear algebra library)
+[Eigen] (linear algebra library)
 
-      sudo apt-get install libeigen3-dev
+    sudo apt-get install libeigen3-dev
 
 ### Building
 
@@ -63,26 +67,6 @@ These scripts actually executes the following steps:
  
 4. Finally, motions plans must be published for the specific robots. Rosbags of sample motions plans can be found at `xpp_examples/bags/` and can be run using `rosbag play`. To see some examples of how to generate these
 bag files or messages, check out `xpp_examples/src/monoped_bag_builder.cc` and `xpp_examples/src/monoped_publisher.cc`.
-
-### Publications
-
-If you use this work in an academic context, please cite the following publication(s):
-
-A. Winkler, F. Farshidian, D. Pardo, M. Neunert, and B. Jonas: **Fast Trajectory Optimization for Legged Robots using Vertex-based ZMP Constraints**. IEEE Robotics and Automation Letters (RA-L), 2017. ([PDF](http://dx.doi.org/10.1109/LRA.2017.2723931))
-
-    @article{winkler17b,
-        author    = {Winkler, Alexander W and 
-                     Farshidian, Farbod and 
-                     Pardo, Diego and 
-                     Neunert, Michael and 
-                     Buchli, Jonas},
-        title     = {Fast Trajectory Optimization for Legged Robots 
-                     using Vertex-based ZMP Constraints},
-        journal   = {IEEE Robotics and Automation Letters (RA-L)},
-        year      = {2017},
-        month     = {oct},
-        pages     = {2201-2208},
-        doi       = {10.1109/LRA.2017.2723931},
 
 
 ### Bugs & Feature Requests
