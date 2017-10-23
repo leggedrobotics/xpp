@@ -33,7 +33,7 @@ namespace xpp {
 
 RvizRobotBuilder::RvizRobotBuilder()
 {
-  terrain_msg_.friction_coeff = 1.0;
+  terrain_msg_.friction_coeff = 0.0;
 }
 
 void
@@ -79,6 +79,11 @@ RvizRobotBuilder::BuildRobotState (const xpp_msgs::RobotStateCartesian& state_ms
   msg.markers.push_back(ip);
 
   msg.markers.push_back(CreateGravityForce(state.base_.lin.p_));
+
+  if (terrain_msg_.friction_coeff > 0) {
+    MarkerVec friction = CreateFrictionCones(ee_pos, state.ee_contact_);
+    msg.markers.insert(msg.markers.begin(), friction.begin(), friction.end());
+  }
 
 
   static const int state_ids_start_ = 10;

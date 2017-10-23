@@ -95,8 +95,8 @@ install(
 if (CATKIN_ENABLE_TESTING)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
 catkin_add_gtest(${PROJECT_NAME}_test
-  test/test_xpp_vis.cc 
-  test/utest.cc
+  test/gtest_main.cc 
+  test/rviz_robot_builder_test.cc
 )
 endif()
 

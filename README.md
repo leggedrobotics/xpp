@@ -18,7 +18,7 @@ See the [list of contributors](AUTHORS.txt) for further contributors.
 
 ### Dependencies
 
-- [ROS] (middleware for robotics)
+- [ROS] (middleware for robotics)  
    Packages: catkin, roscpp, tf, kdl_parser, robot_state_publisher, message_runtime, message_generation, std_msgs, geometry_msgs, sensor_msgs, rviz, rosbag
       
       sudo apt-get install ros-[ros_distro_name]-[pkg_name]
@@ -27,7 +27,7 @@ See the [list of contributors](AUTHORS.txt) for further contributors.
 
       sudo apt-get install libeigen3-dev
 
-#### Building
+### Building
 
 To build from source, clone the latest version from this repository into your catkin workspace and compile the package using
 
