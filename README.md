@@ -2,12 +2,13 @@
 ![Logo](doc/logo.jpg)
 
 Xpp is a package for the visualization of motion plans for legged robots. Apart from drawing support areas, contact forces and motion trajectories in RVIZ, it also displays these plans for specific robots. Current robots include:
+
 - [HyQ] - Italian Institute of Technology
 
 The source code is released under a [BSD 3-Clause license](ros_package_template/LICENSE).
 
 **Author: [Alexander W. Winkler](https://awinkler.github.io/)  
-Maintainer: [Alexander W. Winkler](https://awinkler.github.io/)
+Maintainer: [Alexander W. Winkler](https://awinkler.github.io/)  
 Affiliation: [Robotics Systems Lab](http://www.rsl.ethz.ch/), ETH Zurich**
 
 See the [list of contributors](AUTHORS.txt) for further contributors.
@@ -18,7 +19,7 @@ See the [list of contributors](AUTHORS.txt) for further contributors.
 ### Dependencies
 
 - [ROS] (middleware for robotics)
-      Packages: catkin, roscpp, tf, kdl_parser, robot_state_publisher, message_runtime, message_generation, std_msgs, geometry_msgs, sensor_msgs, rviz, rosbag
+   Packages: catkin, roscpp, tf, kdl_parser, robot_state_publisher, message_runtime, message_generation, std_msgs, geometry_msgs, sensor_msgs, rviz, rosbag
       
       sudo apt-get install ros-[ros_distro_name]-[pkg_name]
  
@@ -53,9 +54,13 @@ A few examples for different robots are provided in the `xpp_examples` package. 
     roslaunch xpp_examples monoped_ex_bag.launch  // or biped_ex.launch, hyq_ex.launch
 
 These scripts actually executes the following steps:
-1. Start the visualization nodes, launch rviz with the correct config and wait for robot messages using `roslaunch xpp_vis xpp_vis.launch`. 
-2. Now robot messages of type `xpp_msgs/RobotStateCartesian.msg` can be sent and visualized. Since we also want to display the URDF of a specific robot, the URDF file of the robot (e.g `monoped_description)/urdf/monoped.urdf` must be uploaded to the ROS parameter server.  
-3. Next a node must be created that transforms `xpp_msgs/RobotStateJoints.msg` into rviz TFs. If we also want to display Cartesian messages `xpp_msgs/RobotStateCartesian.msg`, Inverse Kinematics are neccessary for the specific robots. 
+
+1. Start the visualization nodes, launch rviz with the correct config and wait for robot messages using `roslaunch xpp_vis xpp_vis.launch`.
+ 
+2. Now robot messages of type `xpp_msgs/RobotStateCartesian.msg` can be sent and visualized. Since we also want to display the URDF of a specific robot, the URDF file of the robot (e.g `monoped_description)/urdf/monoped.urdf` must be uploaded to the ROS parameter server.
+  
+3. Next a node must be created that transforms `xpp_msgs/RobotStateJoints.msg` into rviz TFs. If we also want to display Cartesian messages `xpp_msgs/RobotStateCartesian.msg`, Inverse Kinematics are neccessary for the specific robots.
+ 
 4. Finally, motions plans must be published for the specific robots. Rosbags of sample motions plans can be found at `xpp_examples/bags/` and can be run using `rosbag play`. To see some examples of how to generate these
 bag files or messages, check out `xpp_examples/src/monoped_bag_builder.cc` and `xpp_examples/src/monoped_publisher.cc`.
 
