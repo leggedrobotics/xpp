@@ -9,9 +9,9 @@ Xpp is a package for the visualization of motion plans for legged robots. Apart 
 
 The source code is released under a [BSD 3-Clause license](ros_package_template/LICENSE).
 
-**Author: [Alexander W. Winkler](https://awinkler.github.io/)  
-Maintainer: [Alexander W. Winkler](https://awinkler.github.io/)  
-Affiliation: [Robotics Systems Lab](http://www.rsl.ethz.ch/), ETH Zurich**
+**Author: [Alexander W. Winkler](https://awinkler.github.io/)**
+**Maintainer: [Alexander W. Winkler](https://awinkler.github.io/)** 
+**Affiliation: [Robotics Systems Lab](http://www.rsl.ethz.ch/), ETH Zurich**
 
 See the [list of contributors](AUTHORS.txt) for further contributors.
 
@@ -21,7 +21,7 @@ See the [list of contributors](AUTHORS.txt) for further contributors.
 
 
 
-### Dependencies
+### <i class="icon-link"></i> Dependencies
 
 [ROS]  
 Packages: catkin, roscpp, tf, kdl_parser, robot_state_publisher, message_runtime, message_generation, std_msgs, geometry_msgs, sensor_msgs, rviz, rosbag
@@ -32,7 +32,7 @@ Packages: catkin, roscpp, tf, kdl_parser, robot_state_publisher, message_runtime
 
     sudo apt-get install libeigen3-dev
 
-### Building
+### <i class="icon-wrench"></i> Building
 
 To build from source, clone the latest version from this repository into your catkin workspace and compile the package using
 
@@ -42,7 +42,7 @@ To build from source, clone the latest version from this repository into your ca
     catkin_make -DCMAKE_BUILD_TYPE=Release
 
 
-### Unit Tests
+### <i class="icon-cog"></i> Unit Tests
 
 Make sure everything installed correctly by running the unit tests through
 
@@ -52,7 +52,7 @@ or if you are using [catkin tools].
 
     catkin build xpp_vis --no-deps --verbose --catkin-make-args run_tests
 
-### Usage
+### <i class="icon-play"></i> Usage
 
 A few examples for different robots are provided in the `xpp_examples` package. For starters, run
 
@@ -70,7 +70,7 @@ These scripts actually executes the following steps:
 bag files or messages, check out `xpp_examples/src/monoped_bag_builder.cc` and `xpp_examples/src/monoped_publisher.cc`.
 
 
-### Bugs & Feature Requests
+### <i class="icon-bug"></i> Bugs & Feature Requests
 
 Please report bugs and request features using the [Issue Tracker](https://github.com/leggedrobotics/xpp/issues).
 
