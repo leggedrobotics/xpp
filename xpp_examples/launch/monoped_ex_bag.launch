@@ -1,0 +1,15 @@
+<launch>
+   
+  <!-- Launch the general part of visualization -->
+  <include file="$(find xpp_vis)/launch/xpp_vis.launch"></include>
+  
+  <!-- Upload monoped URDF file to ros parameter server for rviz to find  --> 
+  <param name="monoped_rviz_urdf_robot_description" command="$(find xacro)/xacro.py '$(find monoped_description)/urdf/monoped.urdf'"/>
+  
+  <!-- Converts Cartesian state to joint state and publish TFs to rviz  --> 
+  <node name="urdf_visualizer_hyq1" pkg="xpp_vis_hyq" type="urdf_visualizer_hyq1" output="screen"/>
+   
+  <!-- Publish robot states from rosbag  --> 
+  <node pkg="rosbag" type="play" name="rosbag" args="'$(find xpp_examples)/bags/monoped.bag'"/>
+  
+</launch>

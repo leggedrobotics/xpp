@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 
 <package format="2">
-  <name>xpp_vis</name>
+  <name>xpp_examples</name>
   <version>1.0.0</version>
   <description>
-    Visualization for the XPP Motion Framework.
+    Examples of how to use the xpp framework.
   </description>
   
   <author email="alexander.w.winkler@gmail.com">Alexander W. Winkler</author>
@@ -17,11 +17,10 @@
   <buildtool_depend>catkin</buildtool_depend>
   
   <depend>roscpp</depend>
-  <depend>tf</depend>
-  <depend>kdl_parser</depend>
-  <depend>robot_state_publisher</depend>
 
   <depend>xpp_states</depend>
   <depend>xpp_msgs</depend>
   <depend>xpp_ros_conversions</depend>
+  <depend>xpp_vis</depend>
+  <depend>xpp_vis_hyq</depend>
 </package>

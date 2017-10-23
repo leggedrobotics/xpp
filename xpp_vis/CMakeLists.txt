@@ -6,7 +6,6 @@ set(CMAKE_CXX_FLAGS "-std=c++11 ${CMAKE_CXX_FLAGS}")
 ## Find catkin macros and libraries
 find_package(catkin REQUIRED COMPONENTS
   roscpp
-  rosbag
   tf
   kdl_parser
   robot_state_publisher
@@ -61,18 +60,6 @@ target_link_libraries(rviz_marker_node
   ${catkin_LIBRARIES}
 )
 
-add_executable(monped_publisher demo/monoped_pub.cc)
-target_link_libraries(monped_publisher
-  ${PROJECT_NAME}
-  ${catkin_LIBRARIES}
-)
-
-add_executable(monped_bag_builder demo/monoped_bag_builder.cc)
-target_link_libraries(monped_bag_builder
-  ${PROJECT_NAME}
-  ${catkin_LIBRARIES}
-)
-
 
 #############
 ## Install ##
@@ -80,7 +67,7 @@ target_link_libraries(monped_bag_builder
 
 # Mark library for installation
 install(
-  TARGETS ${PROJECT_NAME} rviz_marker_node monped_publisher monped_bag_builder
+  TARGETS ${PROJECT_NAME} rviz_marker_node
   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}

@@ -1,0 +1,15 @@
+<launch>
+   
+  <!-- Launch the general part of visualization -->
+  <include file="$(find xpp_vis)/launch/xpp_vis.launch"></include>
+  
+  <!-- Upload HyQ URDF file to ros parameter server for rviz to find  --> 
+  <param name="hyq_rviz_urdf_robot_description" command="$(find xacro)/xacro.py '$(find hyqb_description)/urdf/hyqb.urdf.xacro'"/>
+  
+  <!-- Converts Cartesian state to joint state and publish TFs to rviz  --> 
+  <node name="urdf_visualizer_hyq4" pkg="xpp_vis_hyq" type="urdf_visualizer_hyq4" output="screen"/>
+   
+  <!-- Publish robot states from rosbag  --> 
+  <node pkg="rosbag" type="play" name="rosbag" args="'$(find xpp_examples)/bags/hyq.bag'"/>
+  
+</launch>
