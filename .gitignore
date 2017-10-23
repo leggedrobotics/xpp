@@ -1,3 +1,4 @@
 xpp_msgs/bags/*
-*/doc/*
+*/doc/html/*
+*/doc/manifest.yaml
 

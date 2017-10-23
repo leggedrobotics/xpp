@@ -48,7 +48,7 @@ public:
   /**
    * @brief Creates a converter initializing the subscriber and publisher.
    * @param  ik  The %InverseKinematics to use for conversion.
-   * @param  cart_topic  The ROS topic containing the cartesian robot state.
+   * @param  cart_topic  The ROS topic containing the Cartesian robot state.
    * @param  joint_topic The ROS topic to publish for the URDF visualization.
    */
   CartesianJointConverter (const InverseKinematics::Ptr& ik,

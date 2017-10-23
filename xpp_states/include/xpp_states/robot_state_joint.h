@@ -36,7 +36,7 @@ namespace xpp {
 /**
  * @brief Defines a complete robot state in joint space.
  *
- * This is the alternative representation to defining the robot by it's
+ * This is the alternative representation to defining the robot by its
  * endeffector state.
  *
  * see also robot_state_joint.h.
