@@ -4,10 +4,12 @@
   <name>hyqb_description</name>
   <version>1.0.0</version>
   <description>
-    The URDF file for HyQ from the Italian Institute of Technology (IIT).
-    https://www.iit.it/research/lines/dynamic-legged-systems.
+    The URDF file for HyQ from the Italian Institute of Technology (IIT) taken
+    from https://github.com/iit-DLSLab/hyq-description. The Lab website can
+    be found here: https://www.iit.it/research/lines/dynamic-legged-systems.
   </description>
   
+  <author email="ioannis@robots.ox.ac.uk">Ioannis Havoutis</author>
   <author email="carlos.mastalli@iit.it">Carlos Mastalli</author>
   <maintainer email="alexander.w.winkler@gmail.com">Alexander W. Winkler</maintainer>
   <license>BSD</license>
