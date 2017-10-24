@@ -17,7 +17,7 @@ See the [list of contributors](AUTHORS.txt) for further contributors.
 
 
 
-### <img align="center" src="https://i.imgur.com/fjS3xIe.png"/> Dependencies
+### <img align="center" height="20" src="https://i.imgur.com/fjS3xIe.png"/> Dependencies
 
 [ROS]  
 Packages: catkin, roscpp, tf, kdl_parser, robot_state_publisher, message_runtime, message_generation, std_msgs, geometry_msgs, sensor_msgs, rviz, rosbag
@@ -29,7 +29,7 @@ Packages: catkin, roscpp, tf, kdl_parser, robot_state_publisher, message_runtime
     sudo apt-get install libeigen3-dev
 
 
-### <img align="center" src="https://i.imgur.com/x1morBF.png"/> Building
+### <img align="center" height="20" src="https://i.imgur.com/x1morBF.png"/> Building
 
 To build from source, clone the latest version from this repository into your catkin workspace and compile the package using
 
@@ -39,7 +39,7 @@ To build from source, clone the latest version from this repository into your ca
     catkin_make -DCMAKE_BUILD_TYPE=Release
 
 
-### <img align="center" src="https://i.imgur.com/026nVBV.png"/> Unit Tests
+### <img align="center" height="20" src="https://i.imgur.com/026nVBV.png"/> Unit Tests
 
 Make sure everything installed correctly by running the unit tests through
 
@@ -50,7 +50,7 @@ or if you are using [catkin tools].
     catkin build xpp_vis --no-deps --verbose --catkin-make-args run_tests
 
 
-### <img align="center" src="https://i.imgur.com/vAYeCzC.png"/>) Usage
+### <img align="center" height="20" src="https://i.imgur.com/vAYeCzC.png"/> Usage
 
 A few examples for different robots are provided in the `xpp_examples` package. For starters, run
 
@@ -68,7 +68,7 @@ These scripts actually executes the following steps:
 bag files or messages, check out `xpp_examples/src/monoped_bag_builder.cc` and `xpp_examples/src/monoped_publisher.cc`.
 
 
-###  <img align="center" src="https://i.imgur.com/H4NwgMg.png"/> Bugs & Feature Requests
+###  <img align="center" height="20" src="https://i.imgur.com/H4NwgMg.png"/> Bugs & Feature Requests
 
 Please report bugs and request features using the [Issue Tracker](https://github.com/leggedrobotics/xpp/issues).
 
