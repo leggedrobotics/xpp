@@ -2,7 +2,7 @@
 
 <package format="2">
   <name>biped_description</name>
-  <version>1.0.0</version>
+  <version>0.1.0</version>
   <description>
     The URDF file for a biped comprised of two HyQ legs.
   </description>
