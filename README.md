@@ -1,4 +1,5 @@
 ### <img src="https://i.imgur.com/erKszlO.png?1" height="100" />
+[![Build Status](https://ci.leggedrobotics.com/buildStatus/icon?job=github_leggedrobotics/xpp/master)](https://ci.leggedrobotics.com/job/github_leggedrobotics/job/xpp/job/master/)
 
 Xpp is a package for the visualization of motion plans for legged robots. Apart from drawing support areas, contact forces and motion trajectories in RVIZ, it also displays these plans for specific robots.  Current robots include a one-legged, a two-legged hopper and [HyQ].
 
@@ -13,7 +14,6 @@ The source code is released under a [BSD 3-Clause license](LICENSE).
 
 See the [list of contributors](AUTHORS.txt) for further contributors.
 
-[![Build Status](https://ci.leggedrobotics.com/buildStatus/icon?job=github_leggedrobotics/xpp/master)](https://ci.leggedrobotics.com/job/github_leggedrobotics/job/xpp/job/master/)
 
 
 
