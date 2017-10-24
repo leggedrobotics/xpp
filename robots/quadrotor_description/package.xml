@@ -2,7 +2,7 @@
 
 <package format="2">
   <name>quadrotor_description</name>
-  <version>1.0.0</version>
+  <version>0.1.0</version>
   <description>
     The URDF file for a quadrotor. 
     Adapted from Daniel Mellinger, Nathan Michael, Vijay Kumar, 
