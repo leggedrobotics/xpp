@@ -1,4 +1,4 @@
-### <img src="https://i.imgur.com/erKszlO.png?1" height="100" />
+### <img src="https://i.imgur.com/ct8e7T4.png" height="100" />
 
 [![Build Status](https://ci.leggedrobotics.com/buildStatus/icon?job=github_leggedrobotics/xpp/master)](https://ci.leggedrobotics.com/job/github_leggedrobotics/job/xpp/job/master/)
 
