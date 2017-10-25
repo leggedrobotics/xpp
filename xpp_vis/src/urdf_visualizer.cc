@@ -67,7 +67,7 @@ UrdfVisualizer::StateCallback(const xpp_msgs::RobotStateJoint& msg)
   auto W_X_B_message   = GetBaseFromRos(::ros::Time::now(), msg.base.pose);
 
   tf_broadcaster_.sendTransform(W_X_B_message);
-  robot_publisher->publishTransforms(joint_positions, ::ros::Time::now(),tf_prefix_);
+  robot_publisher->publishTransforms(joint_positions, ::ros::Time::now(), tf_prefix_);
   robot_publisher->publishFixedTransforms(tf_prefix_);
 }
 

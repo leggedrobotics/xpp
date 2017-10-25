@@ -1,14 +1,17 @@
 <?xml version="1.0"?>
 
 <package format="2">
-  <name>biped_description</name>
+  <name>xpp_quadrotor_description</name>
   <version>0.1.0</version>
   <description>
-    The URDF file for a biped comprised of two HyQ legs.
+    The URDF file for a quadrotor to be used with the xpp packages.
+     
+    Adapted from Daniel Mellinger, Nathan Michael, Vijay Kumar, 
+    "Trajectory Generation and Control for Precise Aggressive Maneuvers
+    with Quadrotors".
   </description>
   
   <author email="depardo@ethz.ch">Diego Pardo.</author>
-  <author email="alexander.w.winkler@gmail.com">Alexander W. Winkler</author>
   <maintainer email="alexander.w.winkler@gmail.com">Alexander W. Winkler</maintainer>
   <license>BSD</license>
   

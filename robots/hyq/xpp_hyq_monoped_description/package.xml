@@ -1,10 +1,11 @@
 <?xml version="1.0"?>
 
 <package format="2">
-  <name>monoped_description</name>
+  <name>xpp_hyq_monoped_description</name>
   <version>0.1.0</version>
   <description>
-    The URDF file for a one-legged hopper with one HyQ leg.
+    A purely kinematic URDF for a one-legged hopper with one HyQ leg to be 
+    used with the xpp packages.
   </description>
   
   <author email="depardo@ethz.ch">Diego Pardo.</author>

@@ -63,7 +63,7 @@ public:
    * @param joint_names_in_urdf  The names of the joints in the URDF file
    *        ordered in the same way as in the xpp convention
    *        (see inverse kinematics).
-   * @param base_joint_in_urdf  The name of the base_link in the URDF file.
+   * @param base_link_in_urdf  The name of the base_link in the URDF file.
    * @param rviz_fixed_frame  The Fixed Frame name specified in RVIZ.
    * @param state_topic  The topic of the xpp_msgs::RobotStateJoint ROS message
    *        to subscribe to.
@@ -72,7 +72,7 @@ public:
    */
   UrdfVisualizer(const std::string& urdf_name,
                  const std::vector<URDFName>& joint_names_in_urdf,
-                 const URDFName& base_joint_in_urdf,
+                 const URDFName& base_link_in_urdf,
                  const std::string& rviz_fixed_frame,
                  const std::string& state_topic,
                  const std::string& tf_prefix = "");
