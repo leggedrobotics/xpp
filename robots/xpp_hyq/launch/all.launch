@@ -1,0 +1,7 @@
+<launch>
+  <!--  Launches all visualizers that use HyQ legs  --> 
+  <include file="$(find xpp_hyq)/launch/monoped.launch"></include>
+  <include file="$(find xpp_hyq)/launch/biped.launch"></include>
+  <include file="$(find xpp_hyq)/launch/hyq.launch"></include>
+  
+</launch>

@@ -2,7 +2,7 @@
 
 [![Build Status](https://ci.leggedrobotics.com/buildStatus/icon?job=github_leggedrobotics/xpp/master)](https://ci.leggedrobotics.com/job/github_leggedrobotics/job/xpp/job/master/)
 
-Xpp is a package for the visualization of motion plans for legged robots. Apart from drawing support areas, contact forces and motion trajectories in RVIZ, it also displays these plans for specific robots.  Current robots include a one-legged, a two-legged hopper and [HyQ].
+Xpp is a package for the visualization of motion plans for legged robots. Apart from drawing support areas, contact forces and motion trajectories in RVIZ, it also displays these plans for specific robots.  Current robots include a one-legged, a two-legged hopper, [HyQ] and a quadrotor.
 
 | ![](https://i.imgur.com/NkL8Haw.gif) | ![](https://i.imgur.com/RrEc2Cd.gif) 
 |:-------------------------:|:-------------------------:|
@@ -55,7 +55,7 @@ or if you are using [catkin tools].
 
 A few examples for different robots are provided in the `xpp_examples` package. For starters, run
 
-    roslaunch xpp_examples monoped_ex_bag.launch  // or biped_ex.launch, hyq_ex.launch
+    roslaunch xpp_examples hyq_ex.launch  // or monoped_ex_bag.launch, biped_ex.launch, quadrotor_ex.launch
 
 These scripts actually executes the following steps:
 

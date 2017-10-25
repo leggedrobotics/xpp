@@ -3,11 +3,8 @@
   <!-- Launch the general part of visualization -->
   <include file="$(find xpp_vis)/launch/xpp_vis.launch"></include>
   
-  <!-- Upload monoped URDF file to ros parameter server for rviz to find  --> 
-  <param name="monoped_rviz_urdf_robot_description" command="$(find xacro)/xacro.py '$(find xpp_hyq)/urdf/monoped.urdf'"/>
-  
-  <!-- Converts Cartesian state to joint state and publish TFs to rviz  --> 
-  <node name="urdf_visualizer_hyq1" pkg="xpp_hyq" type="urdf_visualizer_hyq1" output="screen"/>
+  <!-- Upload biped urdf and inverse tf publisher -->
+  <include file="$(find xpp_hyq)/launch/monoped.launch"></include>
    
   <!-- Publish robot states from rosbag  --> 
   <node pkg="rosbag" type="play" name="rosbag" args="'$(find xpp_examples)/bags/monoped.bag'"/>
