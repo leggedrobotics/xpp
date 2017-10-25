@@ -1,12 +1,18 @@
 <?xml version="1.0"?>
 
 <package format="2">
-  <name>xpp_ros_conversions</name>
+  <name>xpp_quadrotor</name>
   <version>0.1.0</version>
   <description>
-    Conversions between ROS messages and the XPP Motion Framework.
+    The URDF file for a quadrotor to be used with the xpp packages and a 
+    simple rviz publisher of quadrotor tfs.
+     
+    Adapted from Daniel Mellinger, Nathan Michael, Vijay Kumar, 
+    "Trajectory Generation and Control for Precise Aggressive Maneuvers
+    with Quadrotors".
   </description>
   
+  <author email="depardo@ethz.ch">Diego Pardo.</author>
   <author email="alexander.w.winkler@gmail.com">Alexander W. Winkler</author>
   <maintainer email="alexander.w.winkler@gmail.com">Alexander W. Winkler</maintainer>
   <license>BSD</license>
@@ -15,8 +21,6 @@
   <url type="bugtracker">http://github.com/leggedrobotics/xpp/issues</url>
   
   <buildtool_depend>catkin</buildtool_depend>
-  
-  <depend>xpp_msgs</depend>
-  <depend>xpp_states</depend>
-  
+  <depend>roscpp</depend>
+  <depend>xpp_vis</depend>
 </package>

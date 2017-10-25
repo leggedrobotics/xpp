@@ -1,0 +1,62 @@
+<robot name="monoped">
+    <link name="base">
+	    <visual>
+	      <geometry>
+	        <box size="0.20 0.20 0.30"/>
+	      </geometry>
+	      <material name="blue">
+	        <color rgba="0.3 0.3 0.3 1.0"/>
+	      </material>
+	    </visual>        
+    </link>
+    
+    <link name="hipassembly">
+	    <visual>
+	      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+	      <geometry>
+	        <mesh filename="package://xpp_hyq/meshes/leg/hipassembly.dae" scale="1 1 1"/>
+	      </geometry>
+	      <material name="white"/>
+	    </visual>        
+    </link>
+    <link name="upperleg">
+	    <visual>
+	      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+	      <geometry>
+	        <mesh filename="package://xpp_hyq/meshes/leg/upperleg.dae" scale="1 1 1"/>
+	      </geometry>
+	      <material name="blue"/>
+	    </visual>
+    </link>
+    <link name="lowerleg">
+	    <visual>
+	      <geometry>
+	        <mesh filename="package://xpp_hyq/meshes/leg/lowerleg.dae" scale="1 1 1"/>
+	      </geometry>
+	      <material name="blue"/>
+	    </visual>        
+    </link>
+    
+    <joint name="haa_joint" type="revolute">
+        <origin xyz="0.0 0.0 -0.15000" rpy="2.0344439357957036 1.5707962290814481 -1.1071487177940917"/>
+        <parent link="base"/>
+        <child  link="hipassembly"/>
+        <limit effort="200" lower="-1.6" upper="1.6" velocity="1.0"/>
+        <axis xyz="0 0 1"/>
+    </joint>
+    <joint name="hfe_joint" type="revolute">
+        <origin xyz="0.08000 0.00000 0.00000" rpy="1.5707963705062866 -0.0 0.0"/>
+        <parent link="hipassembly"/>
+        <child  link="upperleg"/>
+        <limit effort="200" lower="-1.6" upper="1.6" velocity="1.0"/>
+        <axis xyz="0 0 1"/>
+    </joint>
+    <joint name="kfe_joint" type="revolute">
+        <origin xyz="0.35000 0.00000 0.00000" rpy="0.0 0.0 0.0"/>
+        <parent link="upperleg"/>
+        <child  link="lowerleg"/>
+        <limit effort="200" lower="-1.6" upper="1.6" velocity="1.0"/>
+        <axis xyz="0 0 1"/>
+    </joint>
+</robot>
+

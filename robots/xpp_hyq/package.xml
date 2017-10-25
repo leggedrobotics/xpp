@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+
+<package format="2">
+  <name>xpp_hyq</name>
+  <version>0.1.0</version>
+  <description>
+    HyQ-robot specific functions for visualization in the  XPP Motion Framework.
+    
+    These include inverse kinematics as well as urdf files for a one-legged,
+    two-legged and four legged robot with HyQ legs.
+    
+    Extracted from https://github.com/iit-DLSLab/hyq-description.
+    See also https://dls.iit.it.
+  </description>
+  
+  <author email="ioannis@robots.ox.ac.uk">Ioannis Havoutis</author>
+  <author email="carlos.mastalli@iit.it">Carlos Mastalli</author>
+  <author email="depardo@ethz.ch">Diego Pardo.</author>
+  <author email="alexander.w.winkler@gmail.com">Alexander W. Winkler</author>
+  <maintainer email="alexander.w.winkler@gmail.com">Alexander W. Winkler</maintainer>
+  <license>BSD</license>
+  
+  <url type="website">http://github.com/leggedrobotics/xpp</url>
+  <url type="bugtracker">http://github.com/leggedrobotics/xpp/issues</url>
+  
+  <buildtool_depend>catkin</buildtool_depend>
+  <depend>roscpp</depend>
+  
+  <depend>xpp_vis</depend>
+</package>

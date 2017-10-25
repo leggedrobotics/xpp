@@ -17,10 +17,9 @@
   <buildtool_depend>catkin</buildtool_depend>
   
   <depend>roscpp</depend>
+  <depend>rosbag</depend>
 
-  <depend>xpp_states</depend>
-  <depend>xpp_msgs</depend>
-  <depend>xpp_ros_conversions</depend>
   <depend>xpp_vis</depend>
-  <depend>xpp_vis_hyq</depend>
+  <depend>xpp_hyq</depend>
+  <depend>xpp_quadrotor</depend>
 </package>

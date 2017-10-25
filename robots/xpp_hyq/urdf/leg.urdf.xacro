@@ -1,0 +1,89 @@
+<?xml version="1.0"?>
+
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+	<!-- ================================== Leg ================================== -->
+	<!-- The xacro macro xacro:hyq_leg contains: hip assembly, upper and lower leg -->
+	<xacro:macro name="hyq_leg" params="name parent *origin reflect_hip reflect_upper reflect_front">
+		<!-- Joints -->
+		<!-- Hip assembly joint -->
+		<joint name="${name}_haa_joint" type="revolute">
+			<insert_block name="origin"/>
+			<parent link="${parent}"/>
+			<child  link="${name}_hipassembly"/>
+			<axis xyz="0 0 1"/>
+			<limit effort="150.0" velocity="12.0" lower="${-7*PI/18}" upper="${PI/6}"/>
+
+		</joint>
+		<!-- Upper leg joint -->
+		<joint name="${name}_hfe_joint" type="revolute">
+			<origin xyz="${d_tbb} 0 0" rpy="${reflect_upper*PI/2} 0 0"/>
+			<parent link="${name}_hipassembly"/>
+			<child  link="${name}_upperleg"/>
+			<axis xyz="0 0 1"/>
+			<limit effort="150.0" velocity="12.0"
+          lower="${-(1+reflect_front)*5*PI/36-(1-reflect_front)*7*PI/36}"
+          upper="${(1-reflect_front)*5*PI/36+(1+reflect_front)*7*PI/36}"/>
+
+		</joint>
+		<!-- Lower leg joint -->
+		<joint name="${name}_kfe_joint" type="revolute">
+			<origin xyz="${d_p1p2} 0 0" rpy="0 0 0"/>
+			<parent link="${name}_upperleg"/>
+			<child  link="${name}_lowerleg"/>
+			<axis xyz="0 0 1"/>
+			<limit effort="150.0" velocity="12.0"
+          lower="${-(1+reflect_front)*7*PI/18+(1-reflect_front)*PI/18}"
+          upper="${(1-reflect_front)*7*PI/18-(1+reflect_front)*PI/18}"/>
+
+		<!-- Foot joint -->
+		</joint>
+		<joint name="${name}_foot_joint" type="fixed">
+			<origin xyz="0.35 0 0" rpy="${PI/2} 0 ${-PI/2}"/>
+			<parent link="${name}_lowerleg"/>
+			<child  link="${name}_foot"/>
+		</joint>
+
+
+		<!-- Links -->
+		<!-- Hip assembly link -->
+		<link name="${name}_hipassembly">
+			<visual>
+				<origin xyz="0 0 0" rpy="${(1-reflect_hip)*PI/2} 0 0"/>
+				<geometry>
+					<mesh filename="package://xpp_hyq/meshes/leg/hipassembly.dae" scale="1 1 1"/>
+				</geometry>
+			</visual>
+		</link>
+		<!-- Upper leg link -->
+		<link name="${name}_upperleg">
+			<visual> 
+				<origin xyz="0 0 0" rpy="${(1-reflect_front)*PI/2} 0 0"/>
+				<geometry>
+					<mesh filename="package://xpp_hyq/meshes/leg/upperleg.dae" scale="1 1 1"/>
+				</geometry>
+			</visual>
+		</link>
+		<!-- Lower leg link -->
+		<link name="${name}_lowerleg">
+			<visual>
+				<geometry>
+					<mesh filename="package://xpp_hyq/meshes/leg/lowerleg.dae" scale="1 1 1"/>
+				</geometry>
+				<material name="white"/>
+			</visual>
+		</link>
+		<!-- Foot link -->
+		<link name="${name}_foot">
+			<!--<visual>
+				<origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+				<geometry>
+					<sphere radius="0.021"/>
+				</geometry>
+			</visual>-->
+
+		</link>
+		
+	</xacro:macro>
+
+</robot>
