@@ -23,26 +23,17 @@
 		</link>
 		<!-- Trunk link -->
 		<link name="trunk">
-			<inertial>
-				<origin xyz="${xcom_trunk} ${ycom_trunk} ${zcom_trunk}"/>
-				<mass value="${m_trunk}"/>
-				<inertia ixx="${ixx_trunk}" iyy="${iyy_trunk}" izz="${izz_trunk}"
-						 ixy="${ixy_trunk}" ixz="${ixz_trunk}" iyz="${iyz_trunk}"/>
-			</inertial>
 			<visual>
 				<geometry>
-					<mesh filename="package://hyqb_description/meshes/trunk/trunk.dae" scale="1 1 1"/>
+					<mesh filename="package://xpp_hyq_description/meshes/trunk/trunk.dae" scale="1 1 1"/>
 				</geometry>
 			</visual>
 			<collision>
 				<geometry>
-					<mesh filename="package://hyqb_description/meshes/trunk/trunk.dae" scale="1 1 1"/>
+					<mesh filename="package://xpp_hyq_description/meshes/trunk/trunk.dae" scale="1 1 1"/>
 				</geometry>
 			</collision>
 		</link>
-
-		<!-- Extensions -->
-		<xacro:trunk_gazebo name="trunk"/>
 
 	</xacro:macro>
 

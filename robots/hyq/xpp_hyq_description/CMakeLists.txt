@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(monoped_description)
+project(xpp_hyq_description)
 
 ## Find catkin macros and libraries
 find_package(catkin REQUIRED)
@@ -15,8 +15,8 @@ find_package(catkin REQUIRED)
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
 #  INCLUDE_DIRS include
-#  LIBRARIES quadrotor_description
-#  CATKIN_DEPENDS roscpp std_msgs
+#  LIBRARIES hyqb_description
+#  CATKIN_DEPENDS other_catkin_pkg
 #  DEPENDS system_lib
 )
 

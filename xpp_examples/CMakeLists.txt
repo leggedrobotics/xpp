@@ -48,7 +48,12 @@ target_link_libraries(monoped_publisher
   ${catkin_LIBRARIES}
 )
 
-add_executable(monoped_bag_builder src/monoped_bag_builder.cc)
-target_link_libraries(monoped_bag_builder
+add_executable(quadrotor_bag_builder src/quadrotor_bag_builder.cc)
+target_link_libraries(quadrotor_bag_builder
+  ${catkin_LIBRARIES}
+)
+
+add_executable(urdf_visualizer_quadrotor src/urdf_visualizer_quadrotor.cc)
+target_link_libraries(urdf_visualizer_quadrotor
   ${catkin_LIBRARIES}
 )

@@ -14,7 +14,7 @@
 	    <visual>
 	      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
 	      <geometry>
-	        <mesh filename="package://monoped_description/meshes/leg/hip.dae" scale="1 1 1"/>
+	        <mesh filename="package://xpp_hyq_monoped_description/meshes/leg/hip.dae" scale="1 1 1"/>
 	      </geometry>
 	      <material name="white"/>
 	    </visual>        
@@ -23,7 +23,7 @@
 	    <visual>
 	      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
 	      <geometry>
-	        <mesh filename="package://monoped_description/meshes/leg/upper.dae" scale="1 1 1"/>
+	        <mesh filename="package://xpp_hyq_monoped_description/meshes/leg/upper.dae" scale="1 1 1"/>
 	      </geometry>
 	      <material name="blue"/>
 	    </visual>
@@ -31,7 +31,7 @@
     <link name="lowerleg">
 	    <visual>
 	      <geometry>
-	        <mesh filename="package://monoped_description/meshes/leg/lower.dae" scale="1 1 1"/>
+	        <mesh filename="package://xpp_hyq_monoped_description/meshes/leg/lower.dae" scale="1 1 1"/>
 	      </geometry>
 	      <material name="blue"/>
 	    </visual>        

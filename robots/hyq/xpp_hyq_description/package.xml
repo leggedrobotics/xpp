@@ -1,11 +1,12 @@
 <?xml version="1.0"?>
 
 <package format="2">
-  <name>hyqb_description</name>
+  <name>xpp_hyq_description</name>
   <version>0.1.0</version>
   <description>
-    A minimal URDF file for HyQ from the Italian Institute of Technology (IIT) 
-    extracted from https://github.com/iit-DLSLab/hyq-description.
+    A minimal kinematic URDF for the robot HyQ to be used with the xpp packages.
+    
+    Extracted from https://github.com/iit-DLSLab/hyq-description.
     See also https://www.iit.it/research/lines/dynamic-legged-systems.
   </description>
   

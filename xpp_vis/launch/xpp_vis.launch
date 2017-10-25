@@ -5,7 +5,7 @@
    </node>
 
    <!-- Launch rviz with specific configuration -->
-   <node name="rviz_xpp" pkg="rviz" type="rviz"  args="-d $(find xpp_vis)/rviz/xpp.rviz">
+   <node name="rviz_xpp" pkg="rviz" type="rviz"  args="-d $(find xpp_vis)/rviz/xpp_core.rviz">
    </node>
        
 </launch>
