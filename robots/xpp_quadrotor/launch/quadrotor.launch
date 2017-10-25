@@ -1,0 +1,9 @@
+<launch>
+   
+   <!-- Upload quadrotor URDF to ros parameter server for rviz to find  --> 
+   <param name="quadrotor_rviz_urdf_robot_description" command="$(find xacro)/xacro.py '$(find xpp_quadrotor)/urdf/quadrotor.urdf'"/>
+   
+  <!-- Start tf visualizer  --> 
+  <node name="urdf_visualizer_quadrotor" pkg="xpp_quadrotor" type="urdf_visualizer_quadrotor" output="screen"/>
+   
+</launch>
