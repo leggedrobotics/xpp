@@ -1,15 +1,12 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(xpp_vis)
+project(xpp_hyq)
 
 set(CMAKE_CXX_FLAGS "-std=c++11 ${CMAKE_CXX_FLAGS}")
 
 ## Find catkin macros and libraries
 find_package(catkin REQUIRED COMPONENTS
   roscpp
-  tf
-  kdl_parser
-  robot_state_publisher
-  xpp_ros_conversions
+  xpp_vis
 )
 
 ###################################
@@ -22,12 +19,11 @@ find_package(catkin REQUIRED COMPONENTS
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-   INCLUDE_DIRS include
-   LIBRARIES ${PROJECT_NAME}
-   CATKIN_DEPENDS xpp_ros_conversions
-#   DEPENDS system_lib
+#  INCLUDE_DIRS include
+#  LIBRARIES xpp_vis_hyq
+#  CATKIN_DEPENDS other_catkin_pkg
+#  DEPENDS system_lib
 )
-
 
 ###########
 ## Build ##
@@ -41,23 +37,30 @@ include_directories(
 
 # Declare a C++ library
 add_library(${PROJECT_NAME}
-  src/urdf_visualizer.cc
-  src/cartesian_joint_converter.cc
-  src/rviz_robot_builder.cc
-  src/rviz_terrain_builder.cc
-)
-target_link_libraries(${PROJECT_NAME}
-  ${catkin_LIBRARIES}
+  src/hyqleg_inverse_kinematics.cc
+  src/inverse_kinematics_hyq1.cc
+  src/inverse_kinematics_hyq2.cc
+  src/inverse_kinematics_hyq4.cc
 )
 
-
-# some executable nodes
-add_executable(rviz_marker_node src/exe/rviz_marker_node.cc)
-target_link_libraries(rviz_marker_node
+## URDF visualizers for all HyQ variants
+add_executable(urdf_visualizer_hyq1 src/exe/urdf_visualizer_hyq1.cc)
+target_link_libraries(urdf_visualizer_hyq1
   ${PROJECT_NAME}
   ${catkin_LIBRARIES}
 )
 
+add_executable(urdf_visualizer_hyq2 src/exe/urdf_visualizer_hyq2.cc)
+target_link_libraries(urdf_visualizer_hyq2
+  ${PROJECT_NAME}
+  ${catkin_LIBRARIES}
+)
+
+add_executable(urdf_visualizer_hyq4 src/exe/urdf_visualizer_hyq4.cc)
+target_link_libraries(urdf_visualizer_hyq4
+  ${PROJECT_NAME}
+  ${catkin_LIBRARIES}
+)
 
 #############
 ## Install ##
@@ -65,7 +68,7 @@ target_link_libraries(rviz_marker_node
 
 # Mark library for installation
 install(
-  TARGETS ${PROJECT_NAME} rviz_marker_node
+  TARGETS ${PROJECT_NAME} urdf_visualizer_hyq1 urdf_visualizer_hyq2 urdf_visualizer_hyq4
   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
@@ -80,24 +83,6 @@ install(
 
 # Mark other files for installation
 install(
-  DIRECTORY launch rviz
+  DIRECTORY launch meshes urdf
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
 )
-
-
-
-#############
-## Testing ##
-#############
-
-if (CATKIN_ENABLE_TESTING)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
-catkin_add_gtest(${PROJECT_NAME}_test
-  test/gtest_main.cc 
-  test/rviz_robot_builder_test.cc
-)
-endif()
-
-if(TARGET ${PROJECT_NAME}_test)
-  target_link_libraries(${PROJECT_NAME}_test ${PROJECT_NAME})
-endif()

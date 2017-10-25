@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+
+<robot name="hyq" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <property name="PI" value="3.1415926535897931"/>
+  - <!-- standard distances -->
+- <property name="d_lr" value="0.414"/>
+- <property name="d_fh" value="0.747"/>
+- <property name="d_tbb" value="0.082"/>
+- <property name="d_p1p2" value="0.35"/>
+
+	<!-- HyQ trunk -->
+	<xacro:include filename="$(find xpp_hyq)/urdf/trunk.urdf.xacro"/>
+
+	<!-- HyQ legs -->
+	<xacro:include filename="$(find xpp_hyq)/urdf/leg.urdf.xacro"/>
+
+
+	<!-- Using the macros defined above -->
+
+	<!-- body -->
+	<!-- trunk -->
+	<xacro:hyq_trunk name="base">
+		<origin xyz="-0.443 -0.191 -0.276" rpy="0 0 0"/>
+	</xacro:hyq_trunk>
+
+	<!-- LF leg -->
+	<xacro:hyq_leg
+		name="lf"
+		parent="trunk"
+		reflect_hip="1"
+		reflect_upper="1"
+		reflect_front="1">
+		<origin xyz="${d_fh/2} ${d_lr/2} 0" rpy="0 ${PI/2} ${PI}"/>
+	</xacro:hyq_leg>
+
+	<!-- RF leg -->
+	<xacro:hyq_leg
+		name="rf"
+		parent="trunk"
+		reflect_hip="-1"
+		reflect_upper="-1"
+		reflect_front="1">
+		<origin xyz="${d_fh/2} ${-d_lr/2} 0" rpy="0 ${PI/2} 0"/>
+	</xacro:hyq_leg>
+
+	<!-- LH leg -->
+	<xacro:hyq_leg
+		name="lh"
+		parent="trunk"
+		reflect_hip="-1"
+		reflect_upper="1"
+		reflect_front="-1">
+		<origin xyz="${-d_fh/2} ${d_lr/2} 0" rpy="0 ${PI/2} ${PI}"/>
+	</xacro:hyq_leg>
+
+	<!-- RH leg -->
+	<xacro:hyq_leg
+		name="rh"
+		parent="trunk"
+		reflect_hip="1"
+		reflect_upper="-1"
+		reflect_front="-1">
+		<origin xyz="${-d_fh/2} ${-d_lr/2} 0" rpy="0 ${PI/2} 0"/>
+	</xacro:hyq_leg>
+
+</robot>

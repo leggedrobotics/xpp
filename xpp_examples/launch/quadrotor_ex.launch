@@ -4,12 +4,12 @@
   <include file="$(find xpp_vis)/launch/xpp_vis.launch"></include>
 
    <!-- Upload quadrotor URDF to ros parameter server for rviz to find  --> 
-   <param name="quadrotor_rviz_urdf_robot_description" command="$(find xacro)/xacro.py '$(find xpp_quadrotor_description)/urdf/quadrotor.urdf'"/>
+   <param name="quadrotor_rviz_urdf_robot_description" command="$(find xacro)/xacro.py '$(find xpp_quadrotor)/urdf/quadrotor.urdf'"/>
    
+  <!-- Start tf visualizer  --> 
+  <node name="urdf_visualizer_quadrotor" pkg="xpp_quadrotor" type="urdf_visualizer_quadrotor" output="screen"/>
+  
   <!-- Generate bag and publish  --> 
   <node name="quadrotor_bag_builder" pkg="xpp_examples" type="quadrotor_bag_builder" output="screen"/>
-  
-  <!-- Start tf visualizer  --> 
-  <node name="urdf_visualizer_quadrotor" pkg="xpp_examples" type="urdf_visualizer_quadrotor" output="screen"/>
   
 </launch>
