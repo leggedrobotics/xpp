@@ -2,8 +2,8 @@
 Changelog for package xpp_ros_conversions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.0.0 (2017-10-26)
+------------------
 * included install space in CMakeLists.txt
 * explicitly listing ros dependencies (not through catkin_package macro)
 * removed user interface node and deprecated keyboard dependency.

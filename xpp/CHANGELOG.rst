@@ -2,8 +2,8 @@
 Changelog for package xpp
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.0.0 (2017-10-26)
+------------------
 * changed email adresse to winklera@ethz.ch
 * added xpp metapackage
 * Contributors: Alexander Winkler

@@ -2,8 +2,8 @@
 Changelog for package xpp_states
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.0.0 (2017-10-26)
+------------------
 * removed robot specific bag files from xpp_msgs
 * included install space in CMakeLists.txt
 * changed catkin pkg dependencies to roscpp
