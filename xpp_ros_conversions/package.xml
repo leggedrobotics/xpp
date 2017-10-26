@@ -7,8 +7,8 @@
     Conversions between ROS messages and the XPP Motion Framework.
   </description>
   
-  <author email="alexander.w.winkler@gmail.com">Alexander W. Winkler</author>
-  <maintainer email="alexander.w.winkler@gmail.com">Alexander W. Winkler</maintainer>
+  <author email="winklera@ethz.ch">Alexander W. Winkler</author>
+  <maintainer email="winklera@ethz.ch">Alexander W. Winkler</maintainer>
   <license>BSD</license>
   
   <url type="website">http://github.com/leggedrobotics/xpp</url>
