@@ -3,7 +3,13 @@
 <package format="2">
   <name>xpp</name>
   <version>1.0.0</version>
-  <description>Meta-package for the Xpp framework.</description>
+  <description>
+    Xpp is a package for the visualization of motion plans for floating-base 
+    robots. Apart from drawing support areas, contact forces and motion 
+    trajectories in RVIZ, it also displays these plans for specific robots. 
+    Current robots include a one-legged, a two-legged hopper, 
+    <a href="http://dls.iit.it/">HyQ</a> and a quadrotor.
+  </description>
   
   <author email="winklera@ethz.ch">Alexander W. Winkler</author>
   <maintainer email="winklera@ethz.ch">Alexander W. Winkler</maintainer>

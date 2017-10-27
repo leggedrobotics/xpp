@@ -9,6 +9,7 @@ find_package(catkin REQUIRED COMPONENTS
   tf
   kdl_parser
   robot_state_publisher
+  visualization_msgs
   xpp_ros_conversions
 )
 
