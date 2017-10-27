@@ -27,6 +27,9 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #ifndef XPP_VIS_RVIZ_ROBOT_BUILDER_H_
 #define XPP_VIS_RVIZ_ROBOT_BUILDER_H_
 
+#include <string>
+#include <vector>
+
 #include <visualization_msgs/MarkerArray.h>
 
 #include <xpp_msgs/OptParameters.h>

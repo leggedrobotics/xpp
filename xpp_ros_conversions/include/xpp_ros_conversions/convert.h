@@ -27,6 +27,8 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #ifndef XPP_ROS_CONVERSIONS_H_
 #define XPP_ROS_CONVERSIONS_H_
 
+#include <vector>
+
 #include <xpp_msgs/StateLin3d.h>
 #include <xpp_msgs/State6d.h>
 #include <xpp_msgs/RobotStateCartesian.h>

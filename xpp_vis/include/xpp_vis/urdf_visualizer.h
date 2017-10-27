@@ -29,8 +29,10 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include <cstdlib>
 #include <iostream>
-#include <string>
+#include <map>
 #include <memory>
+#include <string>
+#include <vector>
 
 #include <ros/ros.h>
 #include <tf/transform_broadcaster.h>

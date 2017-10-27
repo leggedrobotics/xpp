@@ -27,6 +27,8 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #ifndef XPP_VIS_CARTESIAN_JOINT_CONVERTER_H_
 #define XPP_VIS_CARTESIAN_JOINT_CONVERTER_H_
 
+#include <string>
+
 #include <ros/publisher.h>
 #include <ros/subscriber.h>
 
