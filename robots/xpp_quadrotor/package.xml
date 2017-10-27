@@ -2,7 +2,7 @@
 
 <package format="2">
   <name>xpp_quadrotor</name>
-  <version>1.0.0</version>
+  <version>1.0.1</version>
   <description>
     The URDF file for a quadrotor to be used with the xpp packages and a 
     simple rviz publisher of quadrotor tfs.

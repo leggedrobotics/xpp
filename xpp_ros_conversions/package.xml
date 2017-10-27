@@ -2,7 +2,7 @@
 
 <package format="2">
   <name>xpp_ros_conversions</name>
-  <version>1.0.0</version>
+  <version>1.0.1</version>
   <description>
     Conversions between ROS messages and the XPP Motion Framework.
   </description>
