@@ -27,8 +27,9 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #ifndef _XPP_STATES_ENDEFFECTORS_H_
 #define _XPP_STATES_ENDEFFECTORS_H_
 
-#include <iostream>
 #include <deque>
+#include <iostream>
+#include <vector>
 
 #include <xpp_states/state.h>
 
