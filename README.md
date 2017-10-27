@@ -1,6 +1,6 @@
 ### <img src="https://i.imgur.com/ct8e7T4.png" height="100" />
 
-[![Build Status](https://ci.leggedrobotics.com/buildStatus/icon?job=github_leggedrobotics/xpp/master)](https://ci.leggedrobotics.com/job/github_leggedrobotics/job/xpp/job/master/)
+[![Build Status](https://ci.leggedrobotics.com/buildStatus/icon?job=github_leggedrobotics/xpp/master)](https://ci.leggedrobotics.com/job/github_leggedrobotics/job/xpp/job/master/) [![DOI](https://zenodo.org/badge/108095932.svg)](https://zenodo.org/badge/latestdoi/108095932)
 
 Xpp is a package for the visualization of motion plans for floating-base robots. Apart from drawing support areas, contact forces and motion trajectories in RVIZ, it also displays these plans for specific robots.  Current robots include a one-legged, a two-legged hopper, [HyQ] and a quadrotor.
 
