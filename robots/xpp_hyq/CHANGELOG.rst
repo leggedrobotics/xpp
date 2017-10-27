@@ -2,6 +2,9 @@
 Changelog for package xpp_vis_hyq
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 1.0.0 (2017-10-26)
 ------------------
 * added separate xpp_example package and Readme.md
