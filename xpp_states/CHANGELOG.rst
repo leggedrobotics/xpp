@@ -2,8 +2,8 @@
 Changelog for package xpp_states
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.0.2 (2017-10-28)
+------------------
 * Merge pull request `#1 <https://github.com/leggedrobotics/xpp/issues/1>`_ from mikaelarguedas/missing_includes
   add missing std includes
 * add missing std includes

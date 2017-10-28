@@ -2,7 +2,7 @@
 
 <package format="2">
   <name>xpp_hyq</name>
-  <version>1.0.1</version>
+  <version>1.0.2</version>
   <description>
     HyQ-robot specific functions for visualization in the  XPP Motion Framework.
     

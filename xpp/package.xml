@@ -2,7 +2,7 @@
 
 <package format="2">
   <name>xpp</name>
-  <version>1.0.1</version>
+  <version>1.0.2</version>
   <description>
     Xpp is a package for the visualization of motion plans for floating-base 
     robots. Apart from drawing support areas, contact forces and motion 
