@@ -2,6 +2,9 @@
 Changelog for package quadrotor_description
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 1.0.1 (2017-10-27)
 ------------------
 
