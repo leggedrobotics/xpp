@@ -2,7 +2,7 @@
 
 <package format="2">
   <name>xpp_vis</name>
-  <version>1.0.1</version>
+  <version>1.0.2</version>
   <description>
     Visualization for the XPP Motion Framework.
   </description>
