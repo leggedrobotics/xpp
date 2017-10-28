@@ -2,6 +2,13 @@
 Changelog for package xpp_vis
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Merge pull request `#1 <https://github.com/leggedrobotics/xpp/issues/1>`_ from mikaelarguedas/missing_includes
+  add missing std includes
+* add missing std includes
+* Contributors: Alexander W Winkler, Mikael Arguedas
+
 1.0.1 (2017-10-27)
 ------------------
 * xpp_vis: add visualization_msg dependency
