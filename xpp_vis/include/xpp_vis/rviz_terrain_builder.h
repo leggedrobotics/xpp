@@ -27,6 +27,8 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #ifndef XPP_RVIZ_TERRAIN_BUILDER_H_
 #define XPP_RVIZ_TERRAIN_BUILDER_H_
 
+#include <string>
+
 #include <Eigen/Dense>
 
 #include <visualization_msgs/MarkerArray.h>
