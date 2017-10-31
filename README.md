@@ -1,4 +1,4 @@
-### <img src="https://i.imgur.com/ct8e7T4.png" height="100" />
+### <img src="https://i.imgur.com/ct8e7T4.png" height="80" />
 
 [![Build Status](https://ci.leggedrobotics.com/buildStatus/icon?job=github_leggedrobotics/xpp/master)](https://ci.leggedrobotics.com/job/github_leggedrobotics/job/xpp/job/master/) [![DOI](https://zenodo.org/badge/108095932.svg)](https://zenodo.org/badge/latestdoi/108095932)
 
@@ -6,19 +6,17 @@
 |:-------------------------:|:-------------------------:|
 |||
 
-Xpp is a collection of ROS-packages (see http://wiki.ros.org/xpp) for the visualization of motion plans for floating-base robots. Apart from drawing support areas, contact forces and motion trajectories in RVIZ, it also displays these plans for specific robots.  Current robots include a one-legged, a two-legged hopper, [HyQ] and a quadrotor.
+Xpp is a collection of ROS-packages (http://wiki.ros.org/xpp) for the visualization of motion plans for floating-base robots. Apart from drawing support areas, contact forces and motion trajectories in RVIZ, it also displays these plans for specific robots.  Current robots include a one-legged, a two-legged hopper, [HyQ] and a quadrotor.
 
-**Author/Maintainer: [Alexander W. Winkler](https://awinkler.github.io/)**   
-**Affiliation: [Robotics Systems Lab, ETH Zurich](http://www.rsl.ethz.ch/)**    
+**Author/Maintainer: [Alexander W. Winkler](https://awinkler.github.io/)** 
 
-See the [list of contributors](AUTHORS.txt) for further contributors.
+This code was developed mainly at the [Agile and Dexterous Robotics Lab](http://www.adrl.ethz.ch/doku.php), ETH Zurich. Current affiliation: [Robotics Systems Lab](http://www.rsl.ethz.ch/), ETH Zurich. See the [list of contributors](AUTHORS.txt) for further contributors.
 
-The source code is released under a [BSD 3-Clause license](LICENSE).
-
+ [<img src="https://i.imgur.com/uCvLs2j.png" height="60" />](http://www.adrl.ethz.ch/doku.php) [<img src="https://i.imgur.com/gYxWH9p.png" height="50" />](http://www.rsl.ethz.ch/)
 
 
 
-### <img align="center" height="20" src="https://i.imgur.com/fjS3xIe.png"/> Dependencies
+## <img align="center" height="20" src="https://i.imgur.com/fjS3xIe.png"/> Dependencies
 
 [ROS]  
 Packages: catkin, roscpp, tf, kdl_parser, robot_state_publisher, message_runtime, message_generation, std_msgs, geometry_msgs, sensor_msgs, rviz, rosbag
@@ -30,7 +28,7 @@ Packages: catkin, roscpp, tf, kdl_parser, robot_state_publisher, message_runtime
     sudo apt-get install libeigen3-dev
 
 
-### <img align="center" height="20" src="https://i.imgur.com/x1morBF.png"/> Building
+## <img align="center" height="20" src="https://i.imgur.com/x1morBF.png"/> Building
 
 To build from source, clone the latest version from this repository into your catkin workspace and compile the package using
 
@@ -40,7 +38,7 @@ To build from source, clone the latest version from this repository into your ca
     catkin_make -DCMAKE_BUILD_TYPE=Release
 
 
-### <img align="center" height="20" src="https://i.imgur.com/026nVBV.png"/> Unit Tests
+## <img align="center" height="20" src="https://i.imgur.com/026nVBV.png"/> Unit Tests
 
 Make sure everything installed correctly by running the unit tests through
 
@@ -51,7 +49,7 @@ or if you are using [catkin tools].
     catkin build xpp_vis --no-deps --verbose --catkin-make-args run_tests
 
 
-### <img align="center" height="20" src="https://i.imgur.com/vAYeCzC.png"/> Usage
+## <img align="center" height="20" src="https://i.imgur.com/vAYeCzC.png"/> Usage
 
 A few examples for different robots are provided in the `xpp_examples` package. For starters, run
 
@@ -69,7 +67,7 @@ These scripts actually executes the following steps:
 bag files or messages, check out `xpp_examples/src/monoped_bag_builder.cc` and `xpp_examples/src/monoped_publisher.cc`.
 
 
-###  <img align="center" height="20" src="https://i.imgur.com/H4NwgMg.png"/> Bugs & Feature Requests
+##  <img align="center" height="20" src="https://i.imgur.com/H4NwgMg.png"/> Bugs & Feature Requests
 
 Please report bugs and request features using the [Issue Tracker](https://github.com/leggedrobotics/xpp/issues).
 
