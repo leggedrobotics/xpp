@@ -5,6 +5,13 @@ Changelog for package xpp
 1.0.2 (2017-10-28)
 ------------------
 
+Forthcoming
+-----------
+* removed xpp_ros_conversions (now in xpp_states)
+* 1.0.2
+* update changelog
+* Contributors: Alexander Winkler
+
 1.0.1 (2017-10-27)
 ------------------
 * xpp_vis: add visualization_msg dependency
