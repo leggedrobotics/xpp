@@ -9,6 +9,17 @@ Changelog for package xpp_vis
 * add missing std includes
 * Contributors: Alexander W Winkler, Mikael Arguedas
 
+Forthcoming
+-----------
+* changed rviz default config name
+* removed xpp_ros_conversions (now in xpp_states)
+* 1.0.2
+* update changelog
+* Merge pull request #1 from mikaelarguedas/missing_includes
+  add missing std includes
+* add missing std includes
+* Contributors: Alexander W Winkler, Alexander Winkler, Mikael Arguedas
+
 1.0.1 (2017-10-27)
 ------------------
 * xpp_vis: add visualization_msg dependency
