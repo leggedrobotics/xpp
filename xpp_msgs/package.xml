@@ -2,7 +2,7 @@
 
 <package format="2">
   <name>xpp_msgs</name>
-  <version>1.0.2</version>
+  <version>1.0.3</version>
   <description>
     ROS messages used in the XPP framework.
   </description>
