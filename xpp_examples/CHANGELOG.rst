@@ -5,8 +5,8 @@ Changelog for package xpp_examples
 1.0.2 (2017-10-28)
 ------------------
 
-Forthcoming
------------
+1.0.3 (2017-11-03)
+------------------
 * removed xpp_ros_conversions (now in xpp_states)
 * xpp_examples: removed installation of examples lib
 * xpp_examples: Install bags and launch files

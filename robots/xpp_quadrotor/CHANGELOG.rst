@@ -5,8 +5,8 @@ Changelog for package quadrotor_description
 1.0.2 (2017-10-28)
 ------------------
 
-Forthcoming
------------
+1.0.3 (2017-11-03)
+------------------
 * 1.0.2
 * update changelog
 * Contributors: Alexander Winkler
