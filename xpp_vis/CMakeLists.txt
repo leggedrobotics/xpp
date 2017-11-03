@@ -10,7 +10,8 @@ find_package(catkin REQUIRED COMPONENTS
   kdl_parser
   robot_state_publisher
   visualization_msgs
-  xpp_ros_conversions
+  xpp_states
+  xpp_msgs
 )
 
 ###################################
@@ -25,7 +26,7 @@ find_package(catkin REQUIRED COMPONENTS
 catkin_package(
    INCLUDE_DIRS include
    LIBRARIES ${PROJECT_NAME}
-   CATKIN_DEPENDS xpp_ros_conversions
+   CATKIN_DEPENDS xpp_states xpp_msgs
 #   DEPENDS system_lib
 )
 

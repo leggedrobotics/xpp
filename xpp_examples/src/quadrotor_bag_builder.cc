@@ -28,7 +28,7 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <rosbag/bag.h>
 
 #include <xpp_msgs/RobotStateJoint.h>
-#include <xpp_ros_conversions/convert.h>
+#include <xpp_states/convert.h>
 #include <xpp_states/state.h>
 
 
