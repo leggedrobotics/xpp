@@ -8,10 +8,9 @@
 #include <ros/ros.h>
 
 #include <xpp_msgs/RobotStateCartesian.h>
-
-#include <xpp_ros_conversions/convert.h>
 #include <xpp_msgs/topic_names.h>
 
+#include <xpp_states/convert.h>
 #include <xpp_states/robot_state_cartesian.h>
 
 

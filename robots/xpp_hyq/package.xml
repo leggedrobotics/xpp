@@ -7,10 +7,13 @@
     HyQ-robot specific functions for visualization in the  XPP Motion Framework.
     
     These include inverse kinematics as well as urdf files for a one-legged,
-    two-legged and four legged robot with HyQ legs.
+    two-legged and four legged robot with <a href="http://dls.iit.it/">HyQ</a>
+    legs.
+        
+    The dynamic model can be found 
+    <a href="https://github.com/iit-DLSLab/hyq-description">here</a>.  
     
-    Extracted from https://github.com/iit-DLSLab/hyq-description.
-    See also https://dls.iit.it.
+    See also <a href="https://dls.iit.it">IIT</a>.  
   </description>
   
   <author email="winklera@ethz.ch">Alexander W. Winkler</author>

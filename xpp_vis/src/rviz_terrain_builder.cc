@@ -30,7 +30,7 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <string>
 #include <vector>
 
-#include <xpp_ros_conversions/convert.h>
+#include <xpp_states/convert.h>
 #include <xpp_states/state.h>
 #include <xpp_states/terrain_types.h>
 #include <xpp_vis/rviz_colors.h>
