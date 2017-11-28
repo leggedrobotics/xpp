@@ -120,8 +120,8 @@ RvizRobotBuilder::CreateEEPositions (const EEPos& ee_pos,
     m.ns     = "endeffector_pos";
     m.color  = color.blue;//GetLegColor(ee);
 
-    if (in_contact.at(ee))
-      m.lifetime = ::ros::DURATION_MAX; // keep showing footholds
+//    if (in_contact.at(ee))
+//      m.lifetime = ::ros::DURATION_MAX; // keep showing footholds
 
     vec.push_back(m);
   }
