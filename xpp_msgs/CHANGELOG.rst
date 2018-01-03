@@ -2,14 +2,24 @@
 Changelog for package xpp_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-1.0.2 (2017-10-28)
-------------------
+Forthcoming
+-----------
+* Merge pull request #3 from leggedrobotics/devel
+  Fix xacro bug and remove terrain and optimization specific classes.
+* removed optimization related topic names
+* rename OptParameters.msg to more concise RobotParameters.msg
+* removed UserCommand msg and terrain_builder class
+* renamed some launch files
+* Contributors: Alexander W Winkler
 
 1.0.3 (2017-11-03)
 ------------------
 * 1.0.2
 * update changelog
 * Contributors: Alexander Winkler
+
+1.0.2 (2017-10-28)
+------------------
 
 1.0.1 (2017-10-27)
 ------------------
