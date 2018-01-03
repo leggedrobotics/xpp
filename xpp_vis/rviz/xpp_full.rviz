@@ -7,9 +7,11 @@ Panels:
         - /Global Options1
         - /Status1
         - /Grid1
+        - /TerrainMarkers1
         - /Desired Goal1
-        - /Optimization Result1
-        - /Optimization Result1/Namespaces1
+        - /RobotMarkers1
+        - /RobotMarkers1/Status1
+        - /RobotMarkers1/Namespaces1
         - /ANYmalURDFdesired1
         - /ANYmalURDFcurrent1
         - /MonopedURDF1
@@ -62,6 +64,14 @@ Visualization Manager:
       Plane Cell Count: 100
       Reference Frame: <Fixed Frame>
       Value: true
+    - Class: rviz/MarkerArray
+      Enabled: true
+      Marker Topic: /xpp/terrain
+      Name: TerrainMarkers
+      Namespaces:
+        terrain: true
+      Queue Size: 100
+      Value: true
     - Alpha: 1
       Axes Length: 0.1
       Axes Radius: 0.01
@@ -80,7 +90,7 @@ Visualization Manager:
     - Class: rviz/MarkerArray
       Enabled: true
       Marker Topic: /xpp/rviz_markers
-      Name: Optimization Result
+      Name: RobotMarkers
       Namespaces:
         base_pose: true
         cop: true
@@ -91,7 +101,6 @@ Visualization Manager:
         inverted_pendulum: true
         range_of_motion: true
         support_polygons: true
-        terrain: true
       Queue Size: 100
       Value: true
     - Alpha: 1
