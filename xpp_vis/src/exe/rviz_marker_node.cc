@@ -61,7 +61,7 @@ int main(int argc, char *argv[])
   NodeHandle n;
 
   Subscriber parameters_sub;
-  parameters_sub = n.subscribe(xpp_msgs::opt_parameters, 1, ParamsCallback);
+  parameters_sub = n.subscribe(xpp_msgs::robot_parameters, 1, ParamsCallback);
 
   Subscriber state_sub_curr, state_sub_des, terrain_info_sub;
   state_sub_des     = n.subscribe(xpp_msgs::robot_state_desired, 1, StateCallback);

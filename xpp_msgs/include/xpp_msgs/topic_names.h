@@ -51,20 +51,10 @@ static const std::string joint_desired("/xpp/joint_des");
 static const std::string robot_trajectory_desired("/xpp/trajectory_des");
 
 // the fixed parameters used for the optimization
-static const std::string opt_parameters("/xpp/params");
-
-// position of the desired goal to reach
-static const std::string user_command("/xpp/user_command");
+static const std::string robot_parameters("/xpp/params");
 
 // information about terrain normals and friction coefficients
 static const std::string terrain_info("/xpp/terrain_info");
-
-// iterations the nlp took to solve the problem. Used when processing rosbags
-static const std::string nlp_iterations_count("/xpp/nlp_iterations_count");
-
-// the base topic names of each nlp iteration
-static const std::string nlp_iterations_name("/xpp/nlp_iterations_name");
-
 }
 
 #endif /* XPP_MSGS_TOPIC_NAMES_H_ */
