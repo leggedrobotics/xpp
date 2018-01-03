@@ -2,12 +2,16 @@
 Changelog for package xpp_vis
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-1.0.2 (2017-10-28)
-------------------
-* Merge pull request `#1 <https://github.com/leggedrobotics/xpp/issues/1>`_ from mikaelarguedas/missing_includes
-  add missing std includes
-* add missing std includes
-* Contributors: Alexander W Winkler, Mikael Arguedas
+Forthcoming
+-----------
+* Merge pull request #3 from leggedrobotics/devel
+  Fix xacro bug and remove terrain and optimization specific classes.
+* removed optimization related topic names
+* rename OptParameters.msg to more concise RobotParameters.msg
+* removed UserCommand msg and terrain_builder class
+* use =default for empty c'tor/d'tor.
+* [smell] removed quiet return function that gives no warning.
+* Contributors: Alexander W Winkler
 
 1.0.3 (2017-11-03)
 ------------------
@@ -18,12 +22,19 @@ Changelog for package xpp_vis
 * Merge pull request #1 from mikaelarguedas/missing_includes
   add missing std includes
 * add missing std includes
-* Contributors: Alexander W Winkler, Alexander Winkler, Mikael Arguedas
+* Contributors: Alexander W Winkler, Mikael Arguedas
+
+1.0.2 (2017-10-28)
+------------------
+* Merge pull request `#1 <https://github.com/leggedrobotics/xpp/issues/1>`_ from mikaelarguedas/missing_includes
+  add missing std includes
+* add missing std includes
+* Contributors: Alexander W Winkler, Mikael Arguedas
 
 1.0.1 (2017-10-27)
 ------------------
 * xpp_vis: add visualization_msg dependency
-* Contributors: Alexander Winkler
+* Contributors: Alexander W Winkler
 
 1.0.0 (2017-10-26)
 ------------------
@@ -44,4 +55,4 @@ Changelog for package xpp_vis
 * removed biped and quadruped joint identifier
 * moved includes into subfolder xpp_vis
 * added xpp_vis
-* Contributors: Alexander Winkler
+* Contributors: Alexander W Winkler

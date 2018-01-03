@@ -2,12 +2,8 @@
 Changelog for package xpp_states
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-1.0.2 (2017-10-28)
-------------------
-* Merge pull request `#1 <https://github.com/leggedrobotics/xpp/issues/1>`_ from mikaelarguedas/missing_includes
-  add missing std includes
-* add missing std includes
-* Contributors: Alexander W Winkler, Mikael Arguedas
+Forthcoming
+-----------
 
 1.0.3 (2017-11-03)
 ------------------
@@ -17,7 +13,14 @@ Changelog for package xpp_states
 * Merge pull request #1 from mikaelarguedas/missing_includes
   add missing std includes
 * add missing std includes
-* Contributors: Alexander W Winkler, Alexander Winkler, Mikael Arguedas
+* Contributors: Alexander W Winkler, Mikael Arguedas
+
+1.0.2 (2017-10-28)
+------------------
+* Merge pull request `#1 <https://github.com/leggedrobotics/xpp/issues/1>`_ from mikaelarguedas/missing_includes
+  add missing std includes
+* add missing std includes
+* Contributors: Alexander W Winkler, Mikael Arguedas
 
 1.0.1 (2017-10-27)
 ------------------
