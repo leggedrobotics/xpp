@@ -16,11 +16,10 @@ add_message_files(
   FILES
   StateLin3d.msg
   State6d.msg
-  UserCommand.msg
-  OptParameters.msg
   RobotStateCartesianTrajectory.msg
   RobotStateCartesian.msg
   RobotStateJoint.msg
+  RobotParameters.msg
   TerrainInfo.msg
 )
 
