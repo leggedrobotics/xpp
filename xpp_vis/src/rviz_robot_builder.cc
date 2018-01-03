@@ -37,7 +37,7 @@ RvizRobotBuilder::RvizRobotBuilder()
 }
 
 void
-RvizRobotBuilder::SetOptimizationParameters (const xpp_msgs::OptParameters& msg)
+RvizRobotBuilder::SetRobotParameters (const xpp_msgs::RobotParameters& msg)
 {
   params_msg_ = msg;
 }
