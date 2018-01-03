@@ -32,7 +32,7 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include <visualization_msgs/MarkerArray.h>
 
-#include <xpp_msgs/OptParameters.h>
+#include <xpp_msgs/RobotParameters.h>
 #include <xpp_msgs/RobotStateCartesian.h>
 #include <xpp_msgs/TerrainInfo.h>
 
@@ -67,7 +67,7 @@ public:
    * @brief  Builds an uninitialized visualizer.
    */
   RvizRobotBuilder();
-  virtual ~RvizRobotBuilder () {};
+  virtual ~RvizRobotBuilder () = default;
 
   /**
    * @brief  Constructs the RVIZ markers from the ROS message.
@@ -84,7 +84,7 @@ public:
    * (for gravity force visualization), the robots nominal endeffector
    * configuration, etc (see %OptParameters).
    */
-  void SetOptimizationParameters(const xpp_msgs::OptParameters& msg);
+  void SetRobotParameters(const xpp_msgs::RobotParameters& msg);
 
   /**
    * @brief  Additional information that can be used for visualization.
@@ -131,7 +131,7 @@ private:
   Marker    CreateBox(const Vector3d& pos, Eigen::Quaterniond ori,
                       const Vector3d& edge_length) const;
 
-  xpp_msgs::OptParameters params_msg_;
+  xpp_msgs::RobotParameters params_msg_;
   xpp_msgs::TerrainInfo terrain_msg_;
 
   const std::string frame_id_ = "world";

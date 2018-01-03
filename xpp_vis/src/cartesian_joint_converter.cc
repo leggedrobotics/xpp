@@ -50,9 +50,6 @@ CartesianJointConverter::CartesianJointConverter (const InverseKinematics::Ptr& 
 void
 CartesianJointConverter::StateCallback (const xpp_msgs::RobotStateCartesian& cart_msg)
 {
-  if (cart_msg.ee_motion.size() != inverse_kinematics_->GetEECount())
-    return; // message is not meant for this robot
-
   auto cart = Convert::ToXpp(cart_msg);
 
   // transform feet from world -> base frame

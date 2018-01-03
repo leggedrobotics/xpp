@@ -2,12 +2,11 @@
 
 <robot name="hyq" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-  <property name="PI" value="3.1415926535897931"/>
-  - <!-- standard distances -->
-- <property name="d_lr" value="0.414"/>
-- <property name="d_fh" value="0.747"/>
-- <property name="d_tbb" value="0.082"/>
-- <property name="d_p1p2" value="0.35"/>
+  <xacro:property name="PI" value="3.1415926535897931"/>
+  <xacro:property name="d_lr" value="0.414"/>
+  <xacro:property name="d_fh" value="0.747"/>
+  <xacro:property name="d_tbb" value="0.082"/>
+  <xacro:property name="d_p1p2" value="0.35"/>
 
 	<!-- HyQ trunk -->
 	<xacro:include filename="$(find xpp_hyq)/urdf/trunk.urdf.xacro"/>
@@ -17,12 +16,8 @@
 
 
 	<!-- Using the macros defined above -->
-
-	<!-- body -->
 	<!-- trunk -->
-	<xacro:hyq_trunk name="base">
-		<origin xyz="-0.443 -0.191 -0.276" rpy="0 0 0"/>
-	</xacro:hyq_trunk>
+	<xacro:hyq_trunk name="base"/>
 
 	<!-- LF leg -->
 	<xacro:hyq_leg

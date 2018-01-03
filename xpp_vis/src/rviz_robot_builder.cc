@@ -37,7 +37,7 @@ RvizRobotBuilder::RvizRobotBuilder()
 }
 
 void
-RvizRobotBuilder::SetOptimizationParameters (const xpp_msgs::OptParameters& msg)
+RvizRobotBuilder::SetRobotParameters (const xpp_msgs::RobotParameters& msg)
 {
   params_msg_ = msg;
 }
@@ -120,8 +120,8 @@ RvizRobotBuilder::CreateEEPositions (const EEPos& ee_pos,
     m.ns     = "endeffector_pos";
     m.color  = color.blue;//GetLegColor(ee);
 
-    if (in_contact.at(ee))
-      m.lifetime = ::ros::DURATION_MAX; // keep showing footholds
+//    if (in_contact.at(ee))
+//      m.lifetime = ::ros::DURATION_MAX; // keep showing footholds
 
     vec.push_back(m);
   }

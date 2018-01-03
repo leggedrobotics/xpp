@@ -35,10 +35,10 @@ TEST(RvizRobotBuilder, BuildRobotState)
   RvizRobotBuilder builder;
 
   // defines the robot state
-  xpp_msgs::OptParameters params_msg;
+  xpp_msgs::RobotParameters params_msg;
   params_msg.base_mass = 30.0; // [kg]
   params_msg.ee_max_dev.x = params_msg.ee_max_dev.x = params_msg.ee_max_dev.z = 0.1;
-  builder.SetOptimizationParameters(params_msg);
+  builder.SetRobotParameters(params_msg);
 
   // create a biped robot standing 0.6m tall
   xpp_msgs::RobotStateCartesian state_msg;
