@@ -1,0 +1,25 @@
+<launch>
+
+  <!-- so the logging print the node name -->
+  <env name="ROSCONSOLE_FORMAT" value="[${severity}] [${node}]: ${message}" />
+
+  <!-- Launch rviz with specific configuration -->
+  <node name="rviz_xpp" pkg="rviz" type="rviz"  args="-d $(find xpp_vis)/rviz/xpp_full.rviz">
+  </node>
+   
+  <!-- Upload anymal URDF and IK-->
+  <include file="$(find xpp_anymal_ik)/launch/load.launch"></include>
+   
+  <!-- visualizes goal, opt. parameters and cartesian base state, endeffector positions and forces -->
+  <node name="rviz_marker_node" pkg="xpp_vis" type="rviz_marker_node" output="screen">
+  </node>
+
+  <!-- for commanding goal positions and tasks -->
+  <node name="user_interface_node" pkg="xpp_opt_ros" type="user_interface_node" output="screen" cwd="node" >  
+  </node>
+   
+  <!-- for commanding goal positions and tasks -->
+  <node name="keyboard" pkg="keyboard" type="keyboard" output="screen" cwd="node" >  
+  </node>
+       
+</launch>

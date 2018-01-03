@@ -1,7 +1,7 @@
 <launch>
    
   <!-- Launch the general part of visualization -->
-  <include file="$(find xpp_vis)/launch/xpp_vis.launch"></include>
+  <include file="$(find xpp_vis)/launch/xpp.launch"></include>
   
   <!-- Upload biped urdf and inverse tf publisher -->
   <include file="$(find xpp_hyq)/launch/monoped.launch"></include>

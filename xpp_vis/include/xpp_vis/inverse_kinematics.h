@@ -47,8 +47,8 @@ public:
   using Ptr      = std::shared_ptr<InverseKinematics>;
   using Vector3d = Eigen::Vector3d;
 
-  InverseKinematics () {};
-  virtual ~InverseKinematics () {};
+  InverseKinematics () = default;
+  virtual ~InverseKinematics () = default;
 
   /**
     * @brief  Calculates the joint angles to reach a position @ pos_b.

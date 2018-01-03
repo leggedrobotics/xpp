@@ -46,7 +46,6 @@ add_library(${PROJECT_NAME}
   src/urdf_visualizer.cc
   src/cartesian_joint_converter.cc
   src/rviz_robot_builder.cc
-  src/rviz_terrain_builder.cc
 )
 target_link_libraries(${PROJECT_NAME}
   ${catkin_LIBRARIES}
