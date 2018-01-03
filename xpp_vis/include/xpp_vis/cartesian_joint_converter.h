@@ -56,7 +56,7 @@ public:
   CartesianJointConverter (const InverseKinematics::Ptr& ik,
                            const std::string& cart_topic,
                            const std::string& joint_topic);
-  virtual ~CartesianJointConverter () {};
+  virtual ~CartesianJointConverter () = default;
 
 private:
   void StateCallback(const xpp_msgs::RobotStateCartesian& msg);

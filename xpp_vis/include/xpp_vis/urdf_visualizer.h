@@ -78,7 +78,7 @@ public:
                  const std::string& rviz_fixed_frame,
                  const std::string& state_topic,
                  const std::string& tf_prefix = "");
-  virtual ~UrdfVisualizer();
+  virtual ~UrdfVisualizer() = default;
 
 private:
   ros::Subscriber state_sub_des_;
