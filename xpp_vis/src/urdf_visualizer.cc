@@ -92,20 +92,16 @@ UrdfVisualizer::GetBaseFromRos(const ::ros::Time& stamp,
   W_X_B_message.header.frame_id = rviz_fixed_frame_;
   W_X_B_message.child_frame_id  = tf_prefix_ + "/" + base_joint_in_urdf_;
 
-	W_X_B_message.transform.translation.x =  msg.position.x;
-	W_X_B_message.transform.translation.y =  msg.position.y;
-	W_X_B_message.transform.translation.z =  msg.position.z;
+  W_X_B_message.transform.translation.x =  msg.position.x;
+  W_X_B_message.transform.translation.y =  msg.position.y;
+  W_X_B_message.transform.translation.z =  msg.position.z;
 
-	W_X_B_message.transform.rotation.w = msg.orientation.w;
-	W_X_B_message.transform.rotation.x = msg.orientation.x;
-	W_X_B_message.transform.rotation.y = msg.orientation.y;
-	W_X_B_message.transform.rotation.z = msg.orientation.z;
+  W_X_B_message.transform.rotation.w = msg.orientation.w;
+  W_X_B_message.transform.rotation.x = msg.orientation.x;
+  W_X_B_message.transform.rotation.y = msg.orientation.y;
+  W_X_B_message.transform.rotation.z = msg.orientation.z;
 
-	return W_X_B_message;
-}
-
-UrdfVisualizer::~UrdfVisualizer()
-{
+  return W_X_B_message;
 }
 
 } // namespace xpp
