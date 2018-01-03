@@ -2,8 +2,8 @@
 Changelog for package xpp_vis_hyq
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.0.4 (2018-01-03)
+------------------
 * Merge pull request #3 from leggedrobotics/devel
   Fix xacro bug and remove terrain and optimization specific classes.
 * xpp_hyq: add --inorder when processing xacro files
