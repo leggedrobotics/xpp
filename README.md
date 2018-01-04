@@ -1,6 +1,6 @@
 ### <img src="https://i.imgur.com/ct8e7T4.png" height="80" />
 
-[![Build Status](https://ci.leggedrobotics.com/buildStatus/icon?job=github_leggedrobotics/xpp/master)](https://ci.leggedrobotics.com/job/github_leggedrobotics/job/xpp/job/master/) [![DOI](https://zenodo.org/badge/108095932.svg)](https://zenodo.org/badge/latestdoi/108095932)
+[![Build Status](https://ci.leggedrobotics.com/buildStatus/icon?job=github_leggedrobotics/xpp/master)](https://ci.leggedrobotics.com/job/github_leggedrobotics/job/xpp/job/master/) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1037901.svg)](https://doi.org/10.5281/zenodo.1037901)
 
 | ![](https://i.imgur.com/NkL8Haw.gif) | ![](https://i.imgur.com/RrEc2Cd.gif) 
 |:-------------------------:|:-------------------------:|
@@ -69,15 +69,7 @@ bag files or messages, check out `xpp_examples/src/monoped_bag_builder.cc` and `
 
 ## <img align="center" height="20" src="https://i.imgur.com/dHQx91Q.png"/> Citation
 
-If you use this work in an academic context, please cite the DOI [10.5281/zenodo.1037901](https://doi.org/10.5281/zenodo.1037901) using 
-
-      @misc{winkler_xpp,
-        author = {Alexander W Winkler},
-        title  = {{Xpp - A collection of ROS packages for the visualization of legged robots}},
-        howpublished = "\url{https://doi.org/10.5281/zenodo.1037901}",
-        url= "\url{http://wiki.ros.org/xpp}",
-        year = {2017},
-      }
+If you use this work in an academic context, please cite the current release [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1135005.svg)](https://doi.org/10.5281/zenodo.1135005) as shown [here](https://zenodo.org/record/1135005/export/hx#.Wk3szDCGPmF).
 
 
 ##  <img align="center" height="20" src="https://i.imgur.com/H4NwgMg.png"/> Bugs & Feature Requests
