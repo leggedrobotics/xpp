@@ -67,6 +67,19 @@ These scripts actually executes the following steps:
 bag files or messages, check out `xpp_examples/src/monoped_bag_builder.cc` and `xpp_examples/src/monoped_publisher.cc`.
 
 
+## <img align="center" height="20" src="https://i.imgur.com/dHQx91Q.png"/> Citation
+
+If you use this work in an academic context, please cite the DOI [10.5281/zenodo.1037901](https://doi.org/10.5281/zenodo.1037901) using 
+
+      @misc{winkler_xpp,
+        author = {Alexander W Winkler},
+        title  = {{Xpp - A collection of ROS packages for the visualization of legged robots}},
+        howpublished = "\url{https://doi.org/10.5281/zenodo.1037901}",
+        url= "\url{http://wiki.ros.org/xpp}",
+        year = {2017},
+      }
+
+
 ##  <img align="center" height="20" src="https://i.imgur.com/H4NwgMg.png"/> Bugs & Feature Requests
 
 Please report bugs and request features using the [Issue Tracker](https://github.com/leggedrobotics/xpp/issues).
