@@ -50,7 +50,7 @@ static const std::string joint_desired("/xpp/joint_des");
 // sequence of desired states coming from the optimizer
 static const std::string robot_trajectory_desired("/xpp/trajectory_des");
 
-// the fixed parameters used for the optimization
+// parameters describing the robot kinematics
 static const std::string robot_parameters("/xpp/params");
 
 // information about terrain normals and friction coefficients

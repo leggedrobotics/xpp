@@ -73,7 +73,7 @@ int main(int argc, char *argv[])
   // can now also use all the tools from rosbag to pause, speed-up, inspect,
   // debug the trajectory.
   // e.g. rosbag -play -r 0.2 /path/to/bag.bag
-  system(("rosbag play " + bag_file).c_str());
+  int success = system(("rosbag play " + bag_file).c_str());
 
   return 0;
 }
