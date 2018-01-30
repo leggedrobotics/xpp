@@ -1,9 +1,8 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(xpp_hyq)
 
-set(CMAKE_CXX_FLAGS "-std=c++11 ${CMAKE_CXX_FLAGS}")
+add_compile_options(-std=c++11)
 
-## Find catkin macros and libraries
 find_package(catkin REQUIRED COMPONENTS
   roscpp
   xpp_vis
@@ -12,23 +11,12 @@ find_package(catkin REQUIRED COMPONENTS
 ###################################
 ## catkin specific configuration ##
 ###################################
-## The catkin_package macro generates cmake config files for your package
-## Declare things to be passed to dependent projects
-## INCLUDE_DIRS: uncomment this if you package contains header files
-## LIBRARIES: libraries you create in this project that dependent projects also need
-## CATKIN_DEPENDS: catkin_packages dependent projects also need
-## DEPENDS: system dependencies of this project that dependent projects also need
-catkin_package(
-#  INCLUDE_DIRS include
-#  LIBRARIES xpp_vis_hyq
-#  CATKIN_DEPENDS other_catkin_pkg
-#  DEPENDS system_lib
-)
+catkin_package()
+
 
 ###########
 ## Build ##
 ###########
-
 ## Specify additional locations of header files
 include_directories(
   include
@@ -65,7 +53,6 @@ target_link_libraries(urdf_visualizer_hyq4
 #############
 ## Install ##
 #############
-
 # Mark library for installation
 install(
   TARGETS ${PROJECT_NAME} urdf_visualizer_hyq1 urdf_visualizer_hyq2 urdf_visualizer_hyq4

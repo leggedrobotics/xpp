@@ -1,35 +1,23 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(xpp_states)
 
-set(CMAKE_CXX_FLAGS "-std=c++11 ${CMAKE_CXX_FLAGS}")
+add_compile_options(-std=c++11)
 
-## Find catkin macros and libraries
 find_package(catkin REQUIRED)
-
-## System dependencies are found with CMake's conventions
 find_package(Eigen3 REQUIRED)
 
 
 ###################################
 ## catkin specific configuration ##
 ###################################
-## The catkin_package macro generates cmake config files for your package
-## Declare things to be passed to dependent projects
-## INCLUDE_DIRS: uncomment this if you package contains header files
-## LIBRARIES: libraries you create in this project that dependent projects also need
-## CATKIN_DEPENDS: catkin_packages dependent projects also need
-## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
    INCLUDE_DIRS include ${EIGEN3_INCLUDE_DIR}
    LIBRARIES ${PROJECT_NAME}
-#  CATKIN_DEPENDS other_catkin_pkg
-#  DEPENDS system_lib
 )
 
 ###########
 ## Build ##
 ###########
-
 ## Specify additional locations of header files
 include_directories(
   include
@@ -49,7 +37,6 @@ target_link_libraries(${PROJECT_NAME}
 #############
 ## Install ##
 #############
-
 # Mark library for installation
 install(
   TARGETS ${PROJECT_NAME}
