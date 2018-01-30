@@ -34,10 +34,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 namespace xpp {
 
-InverseKinematicsHyq1::InverseKinematicsHyq1 ()
-{
-}
-
 Joints
 InverseKinematicsHyq1::GetAllJointAngles(const EndeffectorsPos& x_B) const
 {
@@ -47,9 +43,6 @@ InverseKinematicsHyq1::GetAllJointAngles(const EndeffectorsPos& x_B) const
   return Joints({q0});
 }
 
-InverseKinematicsHyq1::~InverseKinematicsHyq1 ()
-{
-}
 
 } /* namespace xpp */
 

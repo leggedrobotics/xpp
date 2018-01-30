@@ -111,8 +111,4 @@ Joints::GetJoint (JointID joint) const
   return ToVec()[joint];
 }
 
-Joints::~Joints ()
-{
-}
-
 } /* namespace xpp */

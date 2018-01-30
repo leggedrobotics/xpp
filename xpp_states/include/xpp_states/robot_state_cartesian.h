@@ -52,7 +52,7 @@ public:
    * @param  n_ee  Number of endeffectors.
    */
   RobotStateCartesian(int n_ee);
-  ~RobotStateCartesian() {};
+  ~RobotStateCartesian() = default;
 
   State3d base_;
   EndeffectorsMotion ee_motion_;

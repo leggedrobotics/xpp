@@ -52,7 +52,7 @@ public:
    * @param  n_joints_per_ee  Number of joints for each endeffector.
    */
   RobotStateJoint (int n_ee, int n_joints_per_ee);
-  virtual ~RobotStateJoint ();
+  virtual ~RobotStateJoint () = default;
 
   State3d base_;
   Joints q_, qd_, qdd_;

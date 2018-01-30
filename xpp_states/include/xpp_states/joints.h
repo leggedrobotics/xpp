@@ -73,7 +73,7 @@ public:
    * Attention: Each endeffector must have the same number of joints.
    */
   explicit Joints (const std::vector<VectorXd>& joints);
-  virtual ~Joints ();
+  virtual ~Joints () = default;
 
   /**
    * @brief Converts joint values to Eigen vector.

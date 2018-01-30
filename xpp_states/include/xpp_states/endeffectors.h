@@ -62,7 +62,7 @@ public:
   using EndeffectorsT = Endeffectors<T>;
 
   Endeffectors (int n_ee = 0);
-  virtual ~Endeffectors ();
+  virtual ~Endeffectors () = default;
 
   /**
    * @brief Sets the number of endeffectors.
@@ -183,11 +183,6 @@ void
 Endeffectors<T>::SetCount (int n_ee)
 {
   ee_.resize(n_ee);
-}
-
-template<typename T>
-Endeffectors<T>::~Endeffectors ()
-{
 }
 
 template<typename T>

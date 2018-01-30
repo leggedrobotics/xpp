@@ -37,9 +37,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 namespace xpp {
 
-HyqlegInverseKinematics::HyqlegInverseKinematics ()
-{
-}
 
 HyqlegInverseKinematics::Vector3d
 HyqlegInverseKinematics::GetJointAngles (const Vector3d& ee_pos_B, KneeBend bend) const

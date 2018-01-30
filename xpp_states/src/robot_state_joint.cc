@@ -42,8 +42,4 @@ RobotStateJoint::RobotStateJoint (int n_ee, int n_joints_per_ee)
   t_global_ = 0.0;
 }
 
-RobotStateJoint::~RobotStateJoint ()
-{
-}
-
 } /* namespace xpp */

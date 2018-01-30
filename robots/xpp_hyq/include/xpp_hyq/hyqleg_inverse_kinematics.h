@@ -47,8 +47,8 @@ public:
   /**
    * @brief Default c'tor initializing leg lengths with standard values.
    */
-  HyqlegInverseKinematics ();
-  virtual ~HyqlegInverseKinematics () {};
+  HyqlegInverseKinematics () = default;
+  virtual ~HyqlegInverseKinematics () = default;
 
   /**
    * @brief Returns the joint angles to reach a Cartesian foot position.

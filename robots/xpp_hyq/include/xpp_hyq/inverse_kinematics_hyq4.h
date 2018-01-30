@@ -40,14 +40,14 @@ namespace xpp {
  */
 class InverseKinematicsHyq4 : public InverseKinematics {
 public:
-	InverseKinematicsHyq4();
-	virtual ~InverseKinematicsHyq4();
+  InverseKinematicsHyq4() = default;
+  virtual ~InverseKinematicsHyq4() = default;
 
   /**
    * @brief Returns joint angles to reach for a specific foot position.
    * @param pos_B  3D-position of the foot expressed in the base frame (B).
    */
-	Joints GetAllJointAngles(const EndeffectorsPos& pos_b) const override;
+  Joints GetAllJointAngles(const EndeffectorsPos& pos_b) const override;
 
   /**
    * @brief Number of endeffectors (feet, hands) this implementation expects.
@@ -55,8 +55,8 @@ public:
   int GetEECount() const override { return 4; };
 
 private:
-	Vector3d base2hip_LF_ = Vector3d(0.3735, 0.207, 0.0);
-	HyqlegInverseKinematics leg;
+  Vector3d base2hip_LF_ = Vector3d(0.3735, 0.207, 0.0);
+  HyqlegInverseKinematics leg;
 };
 
 } /* namespace xpp */

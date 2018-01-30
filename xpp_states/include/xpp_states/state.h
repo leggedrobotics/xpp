@@ -81,7 +81,7 @@ public:
    * @brief Constructs object with position p, zeroing velocity and acc.
    */
   StateLinXd(const VectorXd& p);
-  virtual ~StateLinXd() {};
+  virtual ~StateLinXd() = default;
 
   /**
    * @brief  Read either position, velocity of acceleration by index.
