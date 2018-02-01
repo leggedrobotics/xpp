@@ -64,7 +64,7 @@ int main(int argc, char *argv[])
 
     xpp_msgs::RobotStateJoint msg;
     msg.base = Convert::ToRos(base);
-    bag.write("xpp/joint_des", timestamp, msg);
+    bag.write("xpp/joint_quadrotor_des", timestamp, msg);
 
     t += dt;
   }

@@ -89,23 +89,13 @@ RvizRobotBuilder::BuildRobotState (const xpp_msgs::RobotStateCartesian& state_ms
   }
 
 
+  // don't overwrite earlier IDs filled by terrain markers
   static const int state_ids_start_ = 10;
-  static const int trajectory_ids_start_ = 70;
-  static int unique_id; // in case marker should remain forever
+  int id = state_ids_start_;
 
-  if (state.t_global_ < 0.01) // first state in trajectory
-    unique_id = trajectory_ids_start_;
-
-  int id = state_ids_start_; // earlier IDs filled by terrain
   for (Marker& m : msg.markers) {
     m.header.frame_id = frame_id_;
-
-    // use unique ID that doesn't get overwritten in next state.
-    if (m.lifetime == ::ros::DURATION_MAX)
-      m.id = unique_id++;
-    else
-      m.id = id;
-
+    m.id = id;
     id++;
   }
 
@@ -121,10 +111,7 @@ RvizRobotBuilder::CreateEEPositions (const EEPos& ee_pos,
   for (auto ee : ee_pos.GetEEsOrdered()) {
     Marker m = CreateSphere(ee_pos.at(ee), 0.04);
     m.ns     = "endeffector_pos";
-    m.color  = color.blue;//GetLegColor(ee);
-
-//    if (in_contact.at(ee))
-//      m.lifetime = ::ros::DURATION_MAX; // keep showing footholds
+    m.color  = color.blue;
 
     vec.push_back(m);
   }
@@ -217,6 +204,7 @@ RvizRobotBuilder::CreateCopPos (const EEForces& ee_forces,
   for (Vector3d ee : ee_forces.ToImpl())
     z_sum += ee.z();
 
+  Marker m;
   // only then can the Center of Pressure be calculated
   Vector3d cop = Vector3d::Zero();
   if (z_sum > 0.0) {
@@ -224,9 +212,11 @@ RvizRobotBuilder::CreateCopPos (const EEForces& ee_forces,
       double p = ee_forces.at(ee).z()/z_sum;
       cop += p*ee_pos.at(ee);
     }
+    m = CreateSphere(cop);
+  } else {
+    m = CreateSphere(cop, 0.001); // no CoP exists b/c flight phase
   }
 
-  Marker m = CreateSphere(cop);
   m.color = color.red;
   m.ns = "cop";
 
