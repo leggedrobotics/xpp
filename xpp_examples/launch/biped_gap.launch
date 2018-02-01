@@ -12,6 +12,6 @@
   <include file="$(find xpp_hyq)/launch/biped.launch"></include>
   
   <!-- Publish robot states from rosbag  --> 
-  <node pkg="rosbag" type="play" name="rosbag" args="'$(find xpp_examples)/bags/biped_gap.bag' --loop"/>
+  <node pkg="rosbag" type="play" name="rosbag" args="'$(find xpp_examples)/bags/gap.bag' --loop"/>
   
 </launch>
