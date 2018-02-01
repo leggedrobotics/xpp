@@ -1,6 +1,6 @@
 ### <img src="https://i.imgur.com/ct8e7T4.png" height="80" />
 
-[![Build Status](https://ci.leggedrobotics.com/buildStatus/icon?job=github_leggedrobotics/xpp/master)](https://ci.leggedrobotics.com/job/github_leggedrobotics/job/xpp/job/master/) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1037901.svg)](https://doi.org/10.5281/zenodo.1037901)
+[![Build Status](http://build.ros.org/buildStatus/icon?job=Lsrc_uX__xpp__ubuntu_xenial__source)](http://build.ros.org/view/Lsrc_uX/job/Lsrc_uX__xpp__ubuntu_xenial__source/) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1037901.svg)](https://doi.org/10.5281/zenodo.1037901)
 
 | ![](https://i.imgur.com/NkL8Haw.gif) | ![](https://i.imgur.com/RrEc2Cd.gif) 
 |:-------------------------:|:-------------------------:|
