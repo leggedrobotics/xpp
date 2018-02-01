@@ -2,6 +2,12 @@
 Changelog for package xpp_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* modernize CMake files
+* use default BSD license
+* Contributors: Alexander Winkler
+
 1.0.4 (2018-01-03)
 ------------------
 * Merge pull request #3 from leggedrobotics/devel

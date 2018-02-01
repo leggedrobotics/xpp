@@ -2,6 +2,13 @@
 Changelog for package xpp_vis_hyq
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* modernize CMake files
+* use default keyword for empty destructors
+* use default BSD license
+* Contributors: Alexander Winkler
+
 1.0.4 (2018-01-03)
 ------------------
 * Merge pull request #3 from leggedrobotics/devel

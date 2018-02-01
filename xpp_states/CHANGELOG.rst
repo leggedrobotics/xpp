@@ -2,6 +2,14 @@
 Changelog for package xpp_states
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* modernize CMake files
+* use default keyword for empty destructors
+* use default BSD license
+* move terrain types to towr_ros
+* Contributors: Alexander Winkler
+
 1.0.4 (2018-01-03)
 ------------------
 

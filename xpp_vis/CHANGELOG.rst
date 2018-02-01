@@ -2,6 +2,14 @@
 Changelog for package xpp_vis
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* update launch scripts
+* cleaned-up some cmake files
+* modernize CMake files
+* move terrain types to towr_ros
+* Contributors: Alexander Winkler
+
 1.0.4 (2018-01-03)
 ------------------
 * Merge pull request #3 from leggedrobotics/devel
