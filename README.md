@@ -53,18 +53,17 @@ or if you are using [catkin tools].
 
 A few examples for different robots are provided in the `xpp_examples` package. For starters, run
 
-    roslaunch xpp_examples hyq_ex.launch  // or monoped_ex_bag.launch, biped_ex.launch, quadrotor_ex.launch
+    roslaunch xpp_examples hyq_bag.launch  // or any other launch file in this package
 
 These scripts actually executes the following steps:
 
-1. Start the visualization nodes, launch rviz with the correct config and wait for robot messages using `roslaunch xpp_vis xpp_vis.launch`.
+1. Start the visualization nodes, launch rviz with the correct config and wait for robot messages using `roslaunch xpp_vis xpp.launch`.
  
-2. Now robot messages of type `xpp_msgs/RobotStateCartesian.msg` can be sent and visualized. Since we also want to display the URDF of a specific robot, the URDF file of the robot (e.g `monoped_description)/urdf/monoped.urdf` must be uploaded to the ROS parameter server.
+2. Now robot messages of type `xpp_msgs/RobotStateCartesian.msg` can be sent and visualized. Since we also want to display the URDF of a specific robot, the URDF file of the robot (e.g `xpp_hyq/urdf/monoped.urdf` must be uploaded to the ROS parameter server.
   
 3. Next a node must be created that transforms `xpp_msgs/RobotStateJoints.msg` into rviz TFs. If we also want to display Cartesian messages `xpp_msgs/RobotStateCartesian.msg`, Inverse Kinematics are neccessary for the specific robots.
  
-4. Finally, motions plans must be published for the specific robots. Rosbags of sample motions plans can be found at `xpp_examples/bags/` and can be run using `rosbag play`. To see some examples of how to generate these
-bag files or messages, check out `xpp_examples/src/monoped_bag_builder.cc` and `xpp_examples/src/monoped_publisher.cc`.
+4. Finally, motions plans must be published for the specific robots. Rosbags of sample motions plans can be found at `xpp_examples/bags/` and can be run using `rosbag play [bagname]`. To see some examples of how to generate these bag files or messages, check out `xpp_examples/src/monoped_bag_builder.cc` and `xpp_examples/src/monoped_publisher.cc`. For a more sophisticated way we used to generate these bags files , see [towr].
 
 
 ## <img align="center" height="20" src="https://i.imgur.com/dHQx91Q.png"/> Citation
@@ -78,6 +77,7 @@ Please report bugs and request features using the [Issue Tracker](https://github
 
 [HyQ]: https://www.iit.it/research/lines/dynamic-legged-systems
 [ROS]: http://www.ros.org
+[towr]: http://wiki.ros.org/towr
 [rviz]: http://wiki.ros.org/rviz
 [catkin tools]: http://catkin-tools.readthedocs.org/
 [Eigen]: http://eigen.tuxfamily.org

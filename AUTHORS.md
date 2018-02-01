@@ -4,7 +4,7 @@ Systems Lab, ETH Zurich.
 
 Initial contributors/input from:
     * Diego Pardo,       Amazon Robotics
-    * Carlos Mastalli,   Italian Institute of Technology
     * Michael Neunert,   Google Deepmind
+    * Carlos Mastalli,   Italian Institute of Technology
 
 See [github contributors](https://github.com/leggedrobotics/xpp/graphs/contributors) for further code contributors.
