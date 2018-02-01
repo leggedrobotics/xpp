@@ -2,8 +2,8 @@
 Changelog for package quadrotor_description
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.0.5 (2018-02-01)
+------------------
 * update launch scripts
 * modernize CMake files
 * use default BSD license

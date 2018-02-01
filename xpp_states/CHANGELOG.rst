@@ -2,8 +2,8 @@
 Changelog for package xpp_states
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.0.5 (2018-02-01)
+------------------
 * modernize CMake files
 * use default keyword for empty destructors
 * use default BSD license

@@ -2,8 +2,8 @@
 Changelog for package xpp_examples
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.0.5 (2018-02-01)
+------------------
 * add new example bags generated with towr
 * update launch scripts
 * Contributors: Alexander Winkler
