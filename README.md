@@ -33,7 +33,7 @@ Packages: catkin, roscpp, tf, kdl_parser, robot_state_publisher, message_runtime
 To build from source, clone the latest version from this repository into your catkin workspace and compile the package using
 
     cd catkin_workspace/src
-    git clone https://github.com/legged_robotics/xpp.git
+    git clone https://github.com/leggedrobotics/xpp.git
     cd ..
     catkin_make -DCMAKE_BUILD_TYPE=Release
 
