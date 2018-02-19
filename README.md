@@ -36,6 +36,7 @@ To build from source, clone the latest version from this repository into your ca
     git clone https://github.com/leggedrobotics/xpp.git
     cd ..
     catkin_make -DCMAKE_BUILD_TYPE=Release
+    source ./devel/setup.bash
 
 
 ## <img align="center" height="20" src="https://i.imgur.com/026nVBV.png"/> Unit Tests
