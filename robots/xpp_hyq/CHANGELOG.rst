@@ -2,6 +2,11 @@
 Changelog for package xpp_vis_hyq
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* add missing libxpp_hyq.so library to catkin install
+* Contributors: Alexander Winkler
+
 1.0.5 (2018-02-01)
 ------------------
 * modernize CMake files

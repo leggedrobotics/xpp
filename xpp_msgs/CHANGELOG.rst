@@ -2,6 +2,9 @@
 Changelog for package xpp_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 1.0.5 (2018-02-01)
 ------------------
 * modernize CMake files
