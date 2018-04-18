@@ -2,8 +2,8 @@
 Changelog for package xpp_vis_hyq
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.0.6 (2018-04-18)
+------------------
 * add missing libxpp_hyq.so library to catkin install
 * Contributors: Alexander Winkler
 
