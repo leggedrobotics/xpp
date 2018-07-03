@@ -36,18 +36,29 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #ifndef XPP_STATES_ENDEFFECTOR_MAPPINGS_H_
 #define XPP_STATES_ENDEFFECTOR_MAPPINGS_H_
 
+#include <map>
+#include <string>
+
 namespace xpp {
 
 namespace biped {
 enum FootIDs { L=0, R };
+static std::map<FootIDs, std::string> foot_to_name =
+{
+  {L, "Left" },
+  {R, "Right"}
+};
 }
 
 namespace quad {
 enum FootIDs { LF=0, RF, LH, RH };
-}
-
-namespace quad_rotor {
-enum RotoIDs { L=0, R, F, H };
+static std::map<FootIDs, std::string> foot_to_name =
+{
+  {LF, "Left-Front" },
+  {RF, "Right-Front"},
+  {LH, "Left-Hind"  },
+  {RH, "Right-Hind" }
+};
 }
 
 } // namespace xpp
