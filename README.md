@@ -10,9 +10,9 @@ Xpp is a collection of ROS-packages (http://wiki.ros.org/xpp) for the visualizat
 
 **Author/Maintainer: [Alexander W. Winkler](https://awinkler.github.io/)** 
 
-This code was mostly developed at the [Agile and Dexterous Robotics Lab](http://www.adrl.ethz.ch/doku.php), ETH Zurich. It is currently maintained by the [Robotics Systems Lab](http://www.rsl.ethz.ch/), ETH Zurich. See the [list of contributors](AUTHORS.md) for further contributors.
+[<img src="https://i.imgur.com/uCvLs2j.png" height="50" />](http://www.adrl.ethz.ch/doku.php "Agile and Dexterous Robotics Lab")  &nbsp; &nbsp; &nbsp; &nbsp;[<img src="https://i.imgur.com/gYxWH9p.png" height="50" />](http://www.rsl.ethz.ch/ "Robotic Systems Lab")           &nbsp; &nbsp; &nbsp; &nbsp; [<img src="https://i.imgur.com/aGOnNTZ.png" height="50" />](https://www.ethz.ch/en.html "ETH Zurich")
 
- [<img src="https://i.imgur.com/uCvLs2j.png" height="60" />](http://www.adrl.ethz.ch/doku.php)  &nbsp; &nbsp; &nbsp; &nbsp;    [<img src="https://i.imgur.com/aGOnNTZ.png" height="50" />](https://www.ethz.ch/en.html)
+This code was mostly developed at the [Agile and Dexterous Robotics Lab](http://www.adrl.ethz.ch/doku.php), ETH Zurich. It is currently maintained by the [Robotics Systems Lab](http://www.rsl.ethz.ch/), ETH Zurich. See [AUTHORS.md](AUTHORS.md) for more information on development and contributors.
 
 
 
@@ -21,39 +21,40 @@ This code was mostly developed at the [Agile and Dexterous Robotics Lab](http://
 [ROS]  
 Packages: catkin, roscpp, tf, kdl_parser, robot_state_publisher, message_runtime, message_generation, std_msgs, geometry_msgs, sensor_msgs, rviz, rosbag
       
-    sudo apt-get install ros-[ros_distro_name]-[pkg_name]
+    $ sudo apt-get install ros-[ros_distro_name]-[pkg_name]
  
 [Eigen]
 
-    sudo apt-get install libeigen3-dev
+    $ sudo apt-get install libeigen3-dev
 
 
 ## <img align="center" height="20" src="https://i.imgur.com/x1morBF.png"/> Building
 
 To build from source, clone the latest version from this repository into your catkin workspace and compile the package using
 
-    cd catkin_workspace/src
-    git clone https://github.com/legged_robotics/xpp.git
-    cd ..
-    catkin_make -DCMAKE_BUILD_TYPE=Release
+    $ cd catkin_workspace/src
+    $ git clone https://github.com/leggedrobotics/xpp.git
+    $ cd ..
+    $ catkin_make -DCMAKE_BUILD_TYPE=Release
+    $ source ./devel/setup.bash
 
 
 ## <img align="center" height="20" src="https://i.imgur.com/026nVBV.png"/> Unit Tests
 
 Make sure everything installed correctly by running the unit tests through
 
-    catkin_make run_tests
+    $ catkin_make run_tests
     
 or if you are using [catkin tools].
 
-    catkin build xpp_vis --no-deps --verbose --catkin-make-args run_tests
+    $ catkin build xpp_vis --no-deps --verbose --catkin-make-args run_tests
 
 
 ## <img align="center" height="20" src="https://i.imgur.com/vAYeCzC.png"/> Usage
 
 A few examples for different robots are provided in the `xpp_examples` package. For starters, run
 
-    roslaunch xpp_examples hyq_bag.launch  // or any other launch file in this package
+    $ roslaunch xpp_examples hyq_bag.launch  // or any other launch file in this package
 
 These scripts actually executes the following steps:
 

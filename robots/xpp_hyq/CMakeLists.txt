@@ -55,7 +55,7 @@ target_link_libraries(urdf_visualizer_hyq4
 #############
 # Mark library for installation
 install(
-  TARGETS urdf_visualizer_hyq1 urdf_visualizer_hyq2 urdf_visualizer_hyq4
+  TARGETS ${PROJECT_NAME} urdf_visualizer_hyq1 urdf_visualizer_hyq2 urdf_visualizer_hyq4
   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
