@@ -2,8 +2,8 @@
 Changelog for package xpp_states
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.0.7 (2018-07-03)
+------------------
 * add names to biped and quadruped ids
 * Contributors: Alexander Winkler
 
