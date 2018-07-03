@@ -57,7 +57,7 @@ Visualization Manager:
       Marker Topic: /xpp/terrain
       Name: Terrain
       Namespaces:
-        {}
+        terrain: true
       Queue Size: 100
       Value: true
     - Alpha: 1
@@ -80,9 +80,167 @@ Visualization Manager:
       Marker Topic: /xpp/rviz_markers
       Name: CartesianVisualization
       Namespaces:
-        {}
+        base_pose: false
+        cop: true
+        ee_force: true
+        endeffector_pos: true
+        friction_cone: true
+        gravity_force: false
+        inverted_pendulum: false
+        range_of_motion: true
+        support_polygons: true
       Queue Size: 100
       Value: true
+    - Alpha: 0.5
+      Class: rviz/RobotModel
+      Collision Enabled: false
+      Enabled: false
+      Links:
+        All Links Enabled: true
+        Expand Joint Details: false
+        Expand Link Details: false
+        Expand Tree: false
+        Link Tree Style: Links in Alphabetic Order
+      Name: Monoped
+      Robot Description: /monoped_rviz_urdf_robot_description
+      TF Prefix: monoped
+      Update Interval: 0
+      Value: false
+      Visual Enabled: true
+    - Alpha: 0.5
+      Class: rviz/RobotModel
+      Collision Enabled: false
+      Enabled: false
+      Links:
+        All Links Enabled: true
+        Expand Joint Details: false
+        Expand Link Details: false
+        Expand Tree: false
+        Link Tree Style: Links in Alphabetic Order
+      Name: Biped
+      Robot Description: /biped_rviz_urdf_robot_description
+      TF Prefix: biped
+      Update Interval: 0
+      Value: false
+      Visual Enabled: true
+    - Alpha: 0.5
+      Class: rviz/RobotModel
+      Collision Enabled: false
+      Enabled: true
+      Links:
+        All Links Enabled: true
+        Expand Joint Details: false
+        Expand Link Details: false
+        Expand Tree: false
+        Link Tree Style: Links in Alphabetic Order
+        base:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        lf_foot:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        lf_hipassembly:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        lf_lowerleg:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        lf_upperleg:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        lh_foot:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        lh_hipassembly:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        lh_lowerleg:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        lh_upperleg:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rf_foot:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        rf_hipassembly:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rf_lowerleg:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rf_upperleg:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rh_foot:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        rh_hipassembly:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rh_lowerleg:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rh_upperleg:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        trunk:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+      Name: Hyq
+      Robot Description: /hyq_rviz_urdf_robot_description
+      TF Prefix: hyq_des
+      Update Interval: 0
+      Value: true
+      Visual Enabled: true
+    - Alpha: 0.5
+      Class: rviz/RobotModel
+      Collision Enabled: false
+      Enabled: false
+      Links:
+        All Links Enabled: true
+        Expand Joint Details: false
+        Expand Link Details: false
+        Expand Tree: false
+        Link Tree Style: Links in Alphabetic Order
+      Name: ANYmal (proprietary)
+      Robot Description: /anymal_rviz_urdf_robot_description
+      TF Prefix: anymal_des
+      Update Interval: 0
+      Value: false
+      Visual Enabled: true
   Enabled: true
   Global Options:
     Background Color: 255; 255; 255

@@ -83,44 +83,13 @@ Visualization Manager:
         cop: true
         ee_force: true
         endeffector_pos: true
+        friction_cone: true
         gravity_force: true
         inverted_pendulum: false
         range_of_motion: true
         support_polygons: true
       Queue Size: 100
       Value: true
-    - Alpha: 0.5
-      Class: rviz/RobotModel
-      Collision Enabled: false
-      Enabled: false
-      Links:
-        All Links Enabled: true
-        Expand Joint Details: false
-        Expand Link Details: false
-        Expand Tree: false
-        Link Tree Style: Links in Alphabetic Order
-      Name: Monoped
-      Robot Description: /monoped_rviz_urdf_robot_description
-      TF Prefix: monoped
-      Update Interval: 0
-      Value: false
-      Visual Enabled: true
-    - Alpha: 0.5
-      Class: rviz/RobotModel
-      Collision Enabled: false
-      Enabled: false
-      Links:
-        All Links Enabled: true
-        Expand Joint Details: false
-        Expand Link Details: false
-        Expand Tree: false
-        Link Tree Style: Links in Alphabetic Order
-      Name: Biped
-      Robot Description: /biped_rviz_urdf_robot_description
-      TF Prefix: biped
-      Update Interval: 0
-      Value: false
-      Visual Enabled: true
     - Alpha: 0.5
       Class: rviz/RobotModel
       Collision Enabled: false
@@ -222,38 +191,6 @@ Visualization Manager:
       TF Prefix: hyq_des
       Update Interval: 0
       Value: true
-      Visual Enabled: true
-    - Alpha: 0.6
-      Class: rviz/RobotModel
-      Collision Enabled: false
-      Enabled: false
-      Links:
-        All Links Enabled: true
-        Expand Joint Details: false
-        Expand Link Details: false
-        Expand Tree: false
-        Link Tree Style: Links in Alphabetic Order
-      Name: Quadrotor
-      Robot Description: quadrotor_rviz_urdf_robot_description
-      TF Prefix: quadrotor
-      Update Interval: 0
-      Value: false
-      Visual Enabled: true
-    - Alpha: 0.5
-      Class: rviz/RobotModel
-      Collision Enabled: false
-      Enabled: false
-      Links:
-        All Links Enabled: true
-        Expand Joint Details: false
-        Expand Link Details: false
-        Expand Tree: false
-        Link Tree Style: Links in Alphabetic Order
-      Name: ANYmal
-      Robot Description: /anymal_rviz_urdf_robot_description
-      TF Prefix: anymal_des
-      Update Interval: 0
-      Value: false
       Visual Enabled: true
   Enabled: true
   Global Options:
