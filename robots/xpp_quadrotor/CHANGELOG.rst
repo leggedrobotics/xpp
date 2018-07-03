@@ -5,6 +5,14 @@ Changelog for package quadrotor_description
 1.0.6 (2018-04-18)
 ------------------
 
+Forthcoming
+-----------
+* modified default rviz launch scripts
+* Merge branch 'master' of github.com:leggedrobotics/xpp
+* 1.0.6
+* update changelogs
+* Contributors: Alexander Winkler
+
 1.0.5 (2018-02-01)
 ------------------
 * update launch scripts

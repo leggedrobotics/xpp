@@ -2,6 +2,11 @@
 Changelog for package xpp_examples
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* only show urdfs from current examples in rviz
+* Contributors: Alexander Winkler
+
 1.0.6 (2018-04-18)
 ------------------
 

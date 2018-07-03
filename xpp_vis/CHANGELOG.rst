@@ -2,6 +2,11 @@
 Changelog for package xpp_vis
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* modified default rviz launch scripts
+* Contributors: Alexander Winkler
+
 1.0.6 (2018-04-18)
 ------------------
 
