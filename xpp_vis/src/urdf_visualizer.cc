@@ -45,7 +45,7 @@ UrdfVisualizer::UrdfVisualizer(const std::string& urdf_name,
 
   ::ros::NodeHandle nh;
   state_sub_des_ = nh.subscribe(state_topic, 1, &UrdfVisualizer::StateCallback, this);
-  ROS_INFO("Subscribed to: %s", state_sub_des_.getTopic().c_str());
+  ROS_DEBUG("Subscribed to: %s", state_sub_des_.getTopic().c_str());
 
   // Load model from file
   KDL::Tree my_kdl_tree;
@@ -56,9 +56,9 @@ UrdfVisualizer::UrdfVisualizer(const std::string& urdf_name,
     ROS_ERROR("Invalid URDF File");
     exit(EXIT_FAILURE);
   }
-  ROS_INFO("URDF successfully parsed");
+  ROS_DEBUG("URDF successfully parsed");
   kdl_parser::treeFromUrdfModel(my_urdf_model, my_kdl_tree);
-  ROS_INFO("Robot tree is ready");
+  ROS_DEBUG("Robot tree is ready");
 
   robot_publisher = std::make_shared<robot_state_publisher::RobotStatePublisher>(my_kdl_tree);
 }

@@ -44,10 +44,10 @@ CartesianJointConverter::CartesianJointConverter (const InverseKinematics::Ptr& 
 
   ::ros::NodeHandle n;
   cart_state_sub_ = n.subscribe(cart_topic, 1, &CartesianJointConverter::StateCallback, this);
-  ROS_INFO("Subscribed to: %s", cart_state_sub_.getTopic().c_str());
+  ROS_DEBUG("Subscribed to: %s", cart_state_sub_.getTopic().c_str());
 
   joint_state_pub_  = n.advertise<xpp_msgs::RobotStateJoint>(joint_topic, 1);
-  ROS_INFO("Publishing to: %s", joint_state_pub_.getTopic().c_str());
+  ROS_DEBUG("Publishing to: %s", joint_state_pub_.getTopic().c_str());
 }
 
 void
