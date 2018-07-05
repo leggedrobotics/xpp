@@ -118,15 +118,15 @@ HyqlegInverseKinematics::GetJointAngles (const Vector3d& ee_pos_B, KneeBend bend
 void
 HyqlegInverseKinematics::EnforceLimits (double& val, HyqJointID joint) const
 {
-  // real joint angle limits
-  const static double haa_min = -90;
-  const static double haa_max = +30;
+  // totally exaggerated joint angle limits
+  const static double haa_min = -180;
+  const static double haa_max =  90;
 
-  const static double hfe_min = -50;
-  const static double hfe_max =  70;
+  const static double hfe_min = -90;
+  const static double hfe_max =  90;
 
-  const static double kfe_min = -140;
-  const static double kfe_max =  -20;
+  const static double kfe_min = -180;
+  const static double kfe_max =  0;
 
   // reduced joint angles for optimization
   static const std::map<HyqJointID, double> max_range {
