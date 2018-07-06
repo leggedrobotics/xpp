@@ -105,9 +105,9 @@ public:
   bool operator!=(const Endeffectors& other) const;
 
   /**
-   * @returns a returns a read-only copy of the underlying STL-deque container.
+   * @returns a returns a copy(!) of the underlying STL-deque container.
    */
-  const Container ToImpl() const;
+  Container ToImpl() const;
 
 private:
   Container ee_;
@@ -214,7 +214,7 @@ Endeffectors<T>::GetEECount () const
 }
 
 template<typename T>
-const typename Endeffectors<T>::Container
+typename Endeffectors<T>::Container
 Endeffectors<T>::ToImpl () const
 {
   return ee_;
