@@ -138,6 +138,14 @@ private:
   xpp_msgs::TerrainInfo terrain_msg_;
 
   const std::string frame_id_ = "world";
+
+  /**
+   * Makes sure no artifacts remain from previous visualization.
+   * @param max_size  Number of marker for this rviz vector, should be constant.
+   * @param vec       The vector of rviz markers.
+   */
+  void FillWithInvisible(int max_size, MarkerVec& vec) const;
+  const static int max_ee_ = 10; // maximum number of endeffectors
 };
 
 } /* namespace xpp */
