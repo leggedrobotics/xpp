@@ -2,7 +2,7 @@
 
 <package format="2">
   <name>xpp</name>
-  <version>1.0.7</version>
+  <version>1.0.8</version>
   <description>
     Visualization of motion-plans for legged robots. It draws support areas, 
     contact forces and motion trajectories in RVIZ and displays URDFs for 

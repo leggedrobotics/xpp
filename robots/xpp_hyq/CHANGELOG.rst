@@ -2,8 +2,8 @@
 Changelog for package xpp_vis_hyq
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.0.8 (2018-07-07)
+------------------
 * avoid IK segfault for biped/hyq when not enough ee positions sent
 * removed limits on hyqleg joint angles
 * Contributors: Alexander Winkler

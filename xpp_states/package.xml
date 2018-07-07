@@ -2,7 +2,7 @@
 
 <package format="2">
   <name>xpp_states</name>
-  <version>1.0.7</version>
+  <version>1.0.8</version>
   <description>
     Common definitions (positions, velocities, angular angles,
     angular rates) and robot definitions in Cartesian and joint state

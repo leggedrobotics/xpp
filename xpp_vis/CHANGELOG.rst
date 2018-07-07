@@ -2,8 +2,8 @@
 Changelog for package xpp_vis
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.0.8 (2018-07-07)
+------------------
 * update catkin syntax for unit tests
 * Fix unit test through visualizer improvement.
 * fix wrongly displaying old markers when switching robots.
