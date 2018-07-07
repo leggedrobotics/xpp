@@ -2,6 +2,12 @@
 Changelog for package xpp_vis_hyq
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* avoid IK segfault for biped/hyq when not enough ee positions sent
+* removed limits on hyqleg joint angles
+* Contributors: Alexander Winkler
+
 1.0.7 (2018-07-03)
 ------------------
 * add rviz launch specifically for hyq

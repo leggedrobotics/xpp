@@ -2,6 +2,14 @@
 Changelog for package xpp_vis
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* update catkin syntax for unit tests
+* Fix unit test through visualizer improvement.
+* fix wrongly displaying old markers when switching robots.
+* make printouts in DEVEL only
+* Contributors: Alexander Winkler
+
 1.0.7 (2018-07-03)
 ------------------
 * modified default rviz launch scripts
