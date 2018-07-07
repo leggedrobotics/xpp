@@ -84,13 +84,13 @@ install(
 #############
 
 if (CATKIN_ENABLE_TESTING)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
-catkin_add_gtest(${PROJECT_NAME}_test
-  test/gtest_main.cc 
-  test/rviz_robot_builder_test.cc
-)
-endif()
-
-if(TARGET ${PROJECT_NAME}_test)
-  target_link_libraries(${PROJECT_NAME}_test ${PROJECT_NAME})
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
+  catkin_add_gtest(${PROJECT_NAME}_test
+    test/gtest_main.cc 
+    test/rviz_robot_builder_test.cc
+  )
+  target_link_libraries(${PROJECT_NAME}_test 
+    ${PROJECT_NAME}
+    ${catkin_LIBRARIES}
+  )
 endif()

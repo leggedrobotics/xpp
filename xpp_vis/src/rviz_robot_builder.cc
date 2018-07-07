@@ -54,8 +54,7 @@ RvizRobotBuilder::SetTerrainParameters (const xpp_msgs::TerrainInfo& msg)
 void
 RvizRobotBuilder::FillWithInvisible(int max_size, MarkerVec& vec) const
 {
-  assert(!vec.empty());
-  Marker invisible = vec.back();
+  Marker invisible = vec.empty()? Marker() : vec.back();
   invisible.color.a = 0.0;
   vec.resize(max_size, invisible);
 }
@@ -63,9 +62,10 @@ RvizRobotBuilder::FillWithInvisible(int max_size, MarkerVec& vec) const
 RvizRobotBuilder::MarkerArray
 RvizRobotBuilder::BuildRobotState (const xpp_msgs::RobotStateCartesian& state_msg) const
 {
+  MarkerArray msg;
+
   auto state = Convert::ToXpp(state_msg);
   auto ee_pos = state.ee_motion_.Get(kPos);
-  MarkerArray msg;
 
   Marker base = CreateBasePose(state.base_.lin.p_,
                                state.base_.ang.q,
