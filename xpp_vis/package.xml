@@ -23,4 +23,6 @@
   <depend>visualization_msgs</depend>
   <depend>xpp_states</depend>
   <depend>xpp_msgs</depend>
+  
+  <test_depend>rosunit</test_depend>
 </package>
