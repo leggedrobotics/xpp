@@ -2,6 +2,9 @@
 Changelog for package xpp_states
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 1.0.8 (2018-07-07)
 ------------------
 * avoid IK segfault for biped/hyq when not enough ee positions sent

@@ -2,6 +2,12 @@
 Changelog for package xpp_vis_hyq
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Merge pull request #7 from zlingkang/xacropi2xacro
+  change deprecated xacro.py to xacro
+* Contributors: zlingkang
+
 1.0.8 (2018-07-07)
 ------------------
 * avoid IK segfault for biped/hyq when not enough ee positions sent

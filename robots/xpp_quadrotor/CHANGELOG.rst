@@ -5,6 +5,12 @@ Changelog for package quadrotor_description
 1.0.6 (2018-04-18)
 ------------------
 
+Forthcoming
+-----------
+* Merge pull request #7 from zlingkang/xacropi2xacro
+  change deprecated xacro.py to xacro
+* Contributors: zlingkang
+
 1.0.8 (2018-07-07)
 ------------------
 
