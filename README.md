@@ -4,7 +4,6 @@
 [![Documentation](https://img.shields.io/badge/docs-generated-brightgreen.svg)](http://docs.ros.org/kinetic/api/xpp/html/)
 [![ROS hosting](https://img.shields.io/badge/ROS-integration-blue.svg)](http://wiki.ros.org/xpp)
 [![License BSD-3-Clause](https://img.shields.io/badge/license-BSD--3--Clause-blue.svg)](https://tldrlegal.com/license/bsd-3-clause-license-%28revised%29#fulltext)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1037901.svg)](https://doi.org/10.5281/zenodo.1037901)
 
 <img src="https://i.imgur.com/qI1Jfyl.gif"  width="60%"/>
 
