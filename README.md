@@ -61,7 +61,7 @@ See here the list of [contributors](https://github.com/leggedrobotics/xpp/graphs
 
 
 ## Authors 
-[Alexander W. Winkler](http://awinkler.me) - Initial Work/Maintainer
+[Alexander W. Winkler](https://www.alex-winkler.com) - Initial Work/Maintainer
 
 The work was carried out at the following institutions:
 
