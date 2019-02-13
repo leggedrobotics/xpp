@@ -151,7 +151,7 @@ RvizRobotBuilder::CreateEEForces (const EEForces& ee_forces,
 
     Marker m  = CreateForceArrow(f, p);
     m.color   = color.red;
-    m.color.a = f.sum() > 0.1? 1.0 : 0.0;
+    m.color.a = f.norm() > 0.1 ? 1.0 : 0.0;
     m.ns      = "ee_force";
     vec.push_back(m);
   }
