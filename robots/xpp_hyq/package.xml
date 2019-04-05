@@ -27,6 +27,7 @@
   <url type="bugtracker">http://github.com/leggedrobotics/xpp/issues</url>
   
   <buildtool_depend>catkin</buildtool_depend>
+  <depend>xacro</depend>
   <depend>roscpp</depend>
   <depend>xpp_vis</depend>
 </package>
