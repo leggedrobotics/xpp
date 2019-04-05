@@ -5,8 +5,8 @@ Changelog for package quadrotor_description
 1.0.6 (2018-04-18)
 ------------------
 
-Forthcoming
------------
+1.0.10 (2019-04-05)
+-------------------
 * add xacro dependency to xpp_hyq and xpp_quadrotor
 * Contributors: Alexander Winkler
 

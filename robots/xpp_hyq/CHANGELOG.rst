@@ -2,8 +2,8 @@
 Changelog for package xpp_vis_hyq
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.0.10 (2019-04-05)
+-------------------
 * add xacro dependency
 * Contributors: Alexander Winkler
 
