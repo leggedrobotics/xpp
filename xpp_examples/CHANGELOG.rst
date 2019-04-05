@@ -2,6 +2,12 @@
 Changelog for package xpp_examples
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Update README.txt
+* Improve docs (`#8 <https://github.com/leggedrobotics/xpp/issues/8>`_)
+* Contributors: Alexander Winkler
+
 1.0.9 (2018-07-10)
 ------------------
 

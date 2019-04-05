@@ -2,6 +2,12 @@
 Changelog for package xpp_vis
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* checking sum of the contact forces was hiding negative forces. Use norm instead (`#10 <https://github.com/leggedrobotics/xpp/issues/10>`_)
+* Improve docs (`#8 <https://github.com/leggedrobotics/xpp/issues/8>`_)
+* Contributors: Alexander Winkler, Ruben Grandia
+
 1.0.9 (2018-07-10)
 ------------------
 

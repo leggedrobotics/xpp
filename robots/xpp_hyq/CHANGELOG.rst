@@ -2,6 +2,11 @@
 Changelog for package xpp_vis_hyq
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* add xacro dependency
+* Contributors: Alexander Winkler
+
 1.0.9 (2018-07-10)
 ------------------
 * Merge pull request #7 from zlingkang/xacropi2xacro
