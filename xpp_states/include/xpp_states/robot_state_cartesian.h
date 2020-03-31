@@ -58,6 +58,7 @@ public:
   EndeffectorsMotion ee_motion_;
   Endeffectors<Vector3d> ee_forces_;
   EndeffectorsContact ee_contact_;
+  Endeffectors<Vector3d> ee_decision_;
   double t_global_;
 };
 
