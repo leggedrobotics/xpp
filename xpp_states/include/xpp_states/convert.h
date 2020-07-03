@@ -190,6 +190,9 @@ ToRos(const RobotStateCartesian& xpp)
     ros.ee_contact.push_back(xpp.ee_contact_.at(ee));
     ros.ee_forces. push_back(ToRos<geometry_msgs::Vector3>(xpp.ee_forces_.at(ee)));
     ros.ee_decision_. push_back(ToRos<geometry_msgs::Vector3>(xpp.ee_decision_.at(ee)));
+    ros.ee_f_c_1. push_back(ToRos<geometry_msgs::Vector3>(xpp.ee_f_c_1.at(ee)));
+    ros.ee_f_c_2. push_back(ToRos<geometry_msgs::Vector3>(xpp.ee_f_c_2.at(ee)));
+    ros.ee_vel_loc_. push_back(ToRos<geometry_msgs::Vector3>(xpp.ee_vel_loc_.at(ee)));
   }
 
   return ros;

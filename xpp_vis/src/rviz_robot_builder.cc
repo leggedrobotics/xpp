@@ -293,15 +293,46 @@ RvizRobotBuilder::CreateRangeOfMotion (const State3d& base) const
 
   auto w_R_b = base.ang.q.toRotationMatrix();
 
+  int ee_count = 0;
   for (const auto& pos_B : params_msg_.nominal_ee_pos) {
-    Vector3d pos_W = base.lin.p_ + w_R_b*Convert::ToXpp(pos_B);
 
-    Vector3d edge_length = 2*Convert::ToXpp(params_msg_.ee_max_dev);
-    Marker m  = CreateBox(pos_W, base.ang.q, edge_length);
+
+
+    auto ee_max_rel = Convert::ToXpp(params_msg_.ee_max_rel_0);
+    auto ee_min_rel = Convert::ToXpp(params_msg_.ee_min_rel_0);
+
+    switch(ee_count)
+    {
+    case 0:
+      ee_max_rel = Convert::ToXpp(params_msg_.ee_max_rel_0);
+      ee_min_rel = Convert::ToXpp(params_msg_.ee_min_rel_0);
+      break;
+    case 1:
+      ee_max_rel = Convert::ToXpp(params_msg_.ee_max_rel_1);
+      ee_min_rel = Convert::ToXpp(params_msg_.ee_min_rel_1);
+      break;
+    case 2:
+      ee_max_rel = Convert::ToXpp(params_msg_.ee_max_rel_2);
+      ee_min_rel = Convert::ToXpp(params_msg_.ee_min_rel_2);
+      break;
+    case 3:
+      ee_max_rel = Convert::ToXpp(params_msg_.ee_max_rel_3);
+      ee_min_rel = Convert::ToXpp(params_msg_.ee_min_rel_3);
+      break;
+    default:
+      break;
+    }
+
+    Vector3d edge_length_corrected = ee_max_rel - ee_min_rel;
+    Vector3d pos_B_corrected = Convert::ToXpp(pos_B) + ee_max_rel - (edge_length_corrected/2);
+    Vector3d pos_W_corrected = base.lin.p_ + w_R_b*pos_B_corrected;
+
+    Marker m  = CreateBox(pos_W_corrected, base.ang.q, edge_length_corrected);
     m.color   = color.blue;
     m.color.a = 0.2;
     m.ns      = "range_of_motion";
     vec.push_back(m);
+    ee_count++;
   }
 
   return vec;

@@ -59,6 +59,9 @@ public:
   Endeffectors<Vector3d> ee_forces_;
   EndeffectorsContact ee_contact_;
   Endeffectors<Vector3d> ee_decision_;
+  Endeffectors<Vector3d> ee_f_c_1;
+  Endeffectors<Vector3d> ee_f_c_2;
+  Endeffectors<Vector3d> ee_vel_loc_;
   double t_global_;
 };
 

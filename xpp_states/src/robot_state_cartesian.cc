@@ -37,6 +37,9 @@ RobotStateCartesian::RobotStateCartesian(int n_ee)
   ee_forces_.SetCount(n_ee);
   ee_contact_.SetCount(n_ee);
   ee_decision_.SetCount(n_ee);
+  ee_f_c_1.SetCount(n_ee);
+  ee_f_c_2.SetCount(n_ee);
+  ee_vel_loc_.SetCount(n_ee);
   ee_contact_.SetAll(true);
   t_global_ = 0.0;
 };
