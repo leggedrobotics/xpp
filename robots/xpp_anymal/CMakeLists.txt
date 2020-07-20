@@ -49,6 +49,6 @@ install(
 
 # Mark other files for installation
 install(
-  DIRECTORY launch rviz meshes urdf
+  DIRECTORY launch
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
 )
