@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+
+<package format="2">
+    <name>xpp_anymal</name>
+    <version>1.0.0</version>
+    <description>
+        ANYmal-specific functions for visualization in the  XPP Motion Framework.
+    </description>
+
+    <author>Alexander W. Winkler</author>
+    <author email="henrique.ferrolho@ed.ac.uk">Henrique Ferrolho</author>
+    <maintainer email="alexander.w.winkler@gmail.com">Alexander W. Winkler</maintainer>
+    <license>BSD</license>
+
+    <url type="website">http://github.com/leggedrobotics/xpp</url>
+    <url type="bugtracker">http://github.com/leggedrobotics/xpp/issues</url>
+
+    <buildtool_depend>catkin</buildtool_depend>
+    <depend>xacro</depend>
+    <depend>roscpp</depend>
+    <depend>xpp_vis</depend>
+</package>
