@@ -5,6 +5,8 @@
     <version>1.0.0</version>
     <description>
         ANYmal-specific functions for visualization in the  XPP Motion Framework.
+        For ease of use, this package combines Inverse Kinematics with a anymal description provided by ANYbotics.
+        The URDF description can copied from here: https://github.com/ANYbotics/anymal_b_simple_description.
     </description>
 
     <author>Alexander W. Winkler</author>

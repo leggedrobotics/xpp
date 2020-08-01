@@ -67,8 +67,8 @@ public:
 
 private:
   Vector3d hfe_to_haa_z = Vector3d(0.0, 0.0, 0.0); //distance of HFE to HAA in z direction
-  double length_thigh = 0.27; // length of upper leg
-  double length_shank = 0.29; // length of lower leg
+  double length_thigh = 0.25; // length of upper leg
+  double length_shank = 0.32125; // length of lower leg
 };
 
 } /* namespace xpp */
