@@ -64,7 +64,7 @@ StateLinXd::GetByIndex (MotionDerivative deriv) const
     case kPos:  return p_; break;
     case kVel:  return v_; break;
     case kAcc:  return a_; break;
-    default: assert(false); // derivative not part of state
+    default: throw std::runtime_error("[StateLinXd::GetByIndex] derivative not part of state");
   }
 }
 
@@ -75,7 +75,7 @@ StateLinXd::GetByIndex (MotionDerivative deriv)
     case kPos:  return p_; break;
     case kVel:  return v_; break;
     case kAcc:  return a_; break;
-    default: assert(false); // derivative not part of state
+    default: throw std::runtime_error("[StateLinXd::GetByIndex] derivative not part of state");
   }
 }
 
