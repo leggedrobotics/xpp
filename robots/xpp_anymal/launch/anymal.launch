@@ -1,0 +1,9 @@
+<launch>
+
+    <!-- Upload URDF file to ros parameter server for rviz to find  -->
+    <param name="anymal_rviz_urdf_robot_description" textfile="$(find anymal_b_simple_description)/urdf/anymal.urdf"/>
+
+    <!-- Start tf visualizer  -->
+    <node name="urdf_visualizer_anymal" pkg="xpp_anymal" type="urdf_visualizer_anymal" output="screen"/>
+
+</launch>
