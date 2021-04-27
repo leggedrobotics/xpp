@@ -62,8 +62,7 @@ int main(int argc, char *argv[])
   joint_names.at(n_j*R + KFE) = "R_kfe_joint";
 
   std::string urdf = "biped_rviz_urdf_robot_description";
-  UrdfVisualizer node(urdf, joint_names, "base", "world",
-		      joint_desired_biped, "biped");
+  UrdfVisualizer node(urdf, joint_names, "base", "world", joint_desired_biped);
 
   ::ros::spin();
 

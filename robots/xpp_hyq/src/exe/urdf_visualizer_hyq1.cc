@@ -54,8 +54,7 @@ int main(int argc, char *argv[])
   joint_names.at(KFE) = "kfe_joint";
 
   std::string urdf = "monoped_rviz_urdf_robot_description";
-  UrdfVisualizer node_des(urdf, joint_names, "base", "world",
-			  joint_desired_mono, "monoped");
+  UrdfVisualizer node_des(urdf, joint_names, "base", "world", joint_desired_mono);
 
   ::ros::spin();
 

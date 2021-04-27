@@ -74,8 +74,7 @@ int main(int argc, char *argv[])
   joint_names.at(n_j*RH + KFE) = "rh_kfe_joint";
 
   std::string urdf = "hyq_rviz_urdf_robot_description";
-  UrdfVisualizer hyq_desired(urdf, joint_names, "base", "world",
-			     joint_desired_hyq, "hyq_des");
+  UrdfVisualizer hyq_desired(urdf, joint_names, "base", "world", joint_desired_hyq);
 
   ::ros::spin();
 
