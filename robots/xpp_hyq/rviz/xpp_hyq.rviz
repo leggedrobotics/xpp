@@ -101,7 +101,7 @@ Visualization Manager:
         Expand Link Details: false
         Expand Tree: false
         Link Tree Style: Links in Alphabetic Order
-      Name: Monoped [thvhauwe]
+      Name: Monoped
       Robot Description: /monoped_rviz_urdf_robot_description
       TF Prefix: 
       Update Interval: 0
