@@ -58,7 +58,7 @@ int main(int argc, char *argv[])
 
   // publish base state to RVIZ
   std::string urdf = "quadrotor_rviz_urdf_robot_description";
-  UrdfVisualizer node_des(urdf, {}, "base", "world", joint_quadrotor, "quadrotor");
+  UrdfVisualizer node_des(urdf, {}, "base", "world", joint_quadrotor);
 
   ::ros::spin();
 

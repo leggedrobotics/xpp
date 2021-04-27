@@ -35,13 +35,11 @@ UrdfVisualizer::UrdfVisualizer(const std::string& urdf_name,
                                const std::vector<URDFName>& joint_names_in_urdf,
                                const URDFName& base_joint_in_urdf,
                                const std::string& fixed_frame,
-                               const std::string& state_topic,
-                               const std::string& tf_prefix)
+                               const std::string& state_topic)
 {
   joint_names_in_urdf_ = joint_names_in_urdf;
   base_joint_in_urdf_  = base_joint_in_urdf;
   rviz_fixed_frame_   = fixed_frame;
-  tf_prefix_ = tf_prefix;
 
   ::ros::NodeHandle nh;
   state_sub_des_ = nh.subscribe(state_topic, 1, &UrdfVisualizer::StateCallback, this);
@@ -70,8 +68,8 @@ UrdfVisualizer::StateCallback(const xpp_msgs::RobotStateJoint& msg)
   auto W_X_B_message   = GetBaseFromRos(::ros::Time::now(), msg.base.pose);
 
   tf_broadcaster_.sendTransform(W_X_B_message);
-  robot_publisher->publishTransforms(joint_positions, ::ros::Time::now(), tf_prefix_);
-  robot_publisher->publishFixedTransforms(tf_prefix_);
+  robot_publisher->publishTransforms(joint_positions, ::ros::Time::now());
+  robot_publisher->publishFixedTransforms();
 }
 
 UrdfVisualizer::UrdfnameToJointAngle
@@ -93,7 +91,7 @@ UrdfVisualizer::GetBaseFromRos(const ::ros::Time& stamp,
   geometry_msgs::TransformStamped W_X_B_message;
   W_X_B_message.header.stamp    = stamp;
   W_X_B_message.header.frame_id = rviz_fixed_frame_;
-  W_X_B_message.child_frame_id  = tf_prefix_ + "/" + base_joint_in_urdf_;
+  W_X_B_message.child_frame_id  = "/" + base_joint_in_urdf_;
 
   W_X_B_message.transform.translation.x =  msg.position.x;
   W_X_B_message.transform.translation.y =  msg.position.y;

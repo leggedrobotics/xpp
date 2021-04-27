@@ -72,15 +72,12 @@ public:
    * @param rviz_fixed_frame  The Fixed Frame name specified in RVIZ.
    * @param state_topic  The topic of the xpp_msgs::RobotStateJoint ROS message
    *        to subscribe to.
-   * @param tf_prefix  In case multiple URDFS are loaded, each can be given a
-   *        unique tf_prefix in RIVZ to visualize different states simultaneously.
    */
   UrdfVisualizer(const std::string& urdf_name,
                  const std::vector<URDFName>& joint_names_in_urdf,
                  const URDFName& base_link_in_urdf,
                  const std::string& rviz_fixed_frame,
-                 const std::string& state_topic,
-                 const std::string& tf_prefix = "");
+                 const std::string& state_topic);
   virtual ~UrdfVisualizer() = default;
 
 private:
@@ -99,7 +96,6 @@ private:
 
   std::string state_msg_name_;
   std::string rviz_fixed_frame_;
-  std::string tf_prefix_;
 };
 
 } // namespace xpp

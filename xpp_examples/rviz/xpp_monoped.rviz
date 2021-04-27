@@ -121,7 +121,7 @@ Visualization Manager:
           Value: true
       Name: Monoped
       Robot Description: /monoped_rviz_urdf_robot_description
-      TF Prefix: monoped
+      TF Prefix: 
       Update Interval: 0
       Value: true
       Visual Enabled: true
