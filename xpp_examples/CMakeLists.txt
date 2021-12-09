@@ -53,6 +53,6 @@ install(
 
 # Mark other files for installation
 install(
-  DIRECTORY bags launch
+  DIRECTORY bags launch rviz
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
 )
